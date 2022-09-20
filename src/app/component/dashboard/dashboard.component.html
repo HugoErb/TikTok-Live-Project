@@ -1,0 +1,340 @@
+<div class="container">
+  <div class="navigation">
+    <ul>
+      <li>
+        <a href="#">
+          <span class="icon">
+            <ion-icon name="logo-tiktok"></ion-icon>
+          </span>
+          <span class="title" id="dashboardName">TikTok Live DashBoard</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" id="active">
+          <span class="icon">
+            <ion-icon name="home-outline"></ion-icon>
+          </span>
+          <span class="title">Accueil</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <span class="icon">
+            <ion-icon name="settings-outline"></ion-icon>
+          </span>
+          <span class="title">Paramètres</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <div class="toggle">
+      <ion-icon name="menu-outline"></ion-icon>
+    </div>
+    <div class="search">
+      <label>
+        <input type="text" placeholder="Rechercher">
+        <ion-icon name="search-outline"></ion-icon>
+      </label>
+    </div>
+    <div class="user">
+      <img src="./imgs/tiktok.png">
+    </div>
+  </div>
+
+  <!-- Card Boxes -->
+  <div class="cardBox">
+    <div class="card">
+      <div>
+        <div class="numbers">{{viewer_count| number:'2.' }}</div>
+        <div class="cardName">Viewers simultanés</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="eye-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">1 520</div>
+        <div class="cardName">Nombre max de viewers</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="cellular-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">1 520</div>
+        <div class="cardName">Likes</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="heart-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">1 520</div>
+        <div class="cardName">Commentaires</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphique du nombre de viewers -->
+  <div class="details">
+    <div class="chart">
+      <div class="cardHeader">
+        <h2>Nombre de viewers</h2>
+      </div>
+      <canvas id="vierwerChart" width="400" height="220"></canvas>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat">
+      <div class="cardHeader">
+        <h2>Chat</h2>
+      </div>
+      <table>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="60px">
+            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+          </td>
+          <td>
+            <h4>Pato</h4>
+            <p>Salut tout le monde !</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Card Boxes Row 2 -->
+  <div class="cardBox">
+    <div class="card">
+      <div>
+        <div class="numbers">1 520</div>
+        <div class="cardName">Gifts</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="gift-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">1 520</div>
+        <div class="cardName">Coins</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="disc-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">1 520 €</div>
+        <div class="cardName">Revenus estimés</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="cash-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">1 520</div>
+        <div class="cardName">Coins</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon src="./imgs/tiktokCoin.svg"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gifts -->
+  <div class="details">
+    <div class="recentGifts">
+      <div class="cardHeader">
+        <h2>Gifts récents</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <td>Donateur</td>
+            <td>Type de gift</td>
+            <td>Nombre de gift</td>
+            <td>Valeur u/coin</td>
+            <td>Valeur u/euro</td>
+            <td>Total (coin)</td>
+            <td>Total (€)</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><img src="./imgs/img3.jpg">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Whishing bottle</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+          <tr>
+            <td><img src="./imgs/tiktok.png">Pato</td>
+            <td>Rose</td>
+            <td>10</td>
+            <td>1</td>
+            <td>0.012€</td>
+            <td>10</td>
+            <td>5€</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import {
     StatusService
-} from './shared/status.service';
+} from './services/status.service';
 import {
     Subscription
 } from 'rxjs';
@@ -41,18 +41,18 @@ export class AppComponent {
     particlesOptions = {
         background: {
             color: {
-                value: "#0d47a1"
+                value: "#232323"
             }
         },
-        fpsLimit: 120,
+        fpsLimit: 165,
         interactivity: {
             events: {
                 onClick: {
-                    enable: true,
+                    enable: false,
                     mode: ClickMode.push
                 },
                 onHover: {
-                    enable: true,
+                    enable: false,
                     mode: HoverMode.repulse
                 },
                 resize: true
@@ -79,7 +79,7 @@ export class AppComponent {
                 width: 1
             },
             collisions: {
-                enable: true
+                enable: false
             },
             move: {
                 direction: MoveDirection.none,
@@ -88,7 +88,7 @@ export class AppComponent {
                     default: OutMode.bounce
                 },
                 random: false,
-                speed: 6,
+                speed: 0.3,
                 straight: false
             },
             number: {
@@ -96,7 +96,7 @@ export class AppComponent {
                     enable: true,
                     area: 800
                 },
-                value: 80
+                value: 150
             },
             opacity: {
                 value: 0.5
@@ -105,7 +105,7 @@ export class AppComponent {
                 type: "circle"
             },
             size: {
-                value: { min: 1, max: 5 },
+                value: { min: 1, max: 3 },
             }
         },
         detectRetina: true
@@ -123,33 +123,6 @@ export class AppComponent {
         // starting from v2 you can add only the features you need reducing the bundle size
         await loadFull(engine);
     }
-
-    // ngOnInit() {
-    //   this._docSub = this.statusService.currentDocument.subscribe(gift => {
-    //     console.log("Ajout de " + gift.number + " " + gift.type);
-    //     if (gift.type === "Rose") {
-    //       let roseTarget = this.countRose + gift.number;
-    //       let intervalTime = this.getInterval(roseTarget);
-    //       this.interval = setInterval(() => {
-    //         if (this.countRose < roseTarget) {
-    //           this.countRose++;
-    //         } else {
-    //           clearInterval(this.interval);
-    //         }
-    //       }, intervalTime)
-    //     } else if (gift.type === "Weights") {
-    //       let weightTarget = this.countWeights + gift.number;
-    //       let intervalTime = this.getInterval(weightTarget);
-    //       this.interval = setInterval(() => {
-    //         if (this.countRose < weightTarget) {
-    //           this.countRose++;
-    //         } else {
-    //           clearInterval(this.interval);
-    //         }
-    //       }, intervalTime)
-    //     }
-    //   });
-    // }
 
     getInterval(target: number) {
         let intervalTime = 0;

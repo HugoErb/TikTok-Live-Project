@@ -31,9 +31,15 @@ app.use(express.static(distDir));
 
 app.io = io;
 
-router.post('/handle', (request, response) => {
+router.post('/stream', (request, response) => {
   console.log("Ajout de " + request.body.number + " " + request.body.type)
   request.app.io.emit('document', request.body);
+  response.end("yes")
+});
+
+router.post('/viewer_count', (request, response) => {
+  console.log("Nombre de viewers :" + request.body.viewer_count)
+  request.app.io.emit('viewer_count', request.body);
   response.end("yes")
 });
 

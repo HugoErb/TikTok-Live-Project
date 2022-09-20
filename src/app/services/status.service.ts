@@ -9,6 +9,8 @@ export class StatusService {
     private statusUrl = '/api/status';
     currentDocument = this.socket.fromEvent<any>('document');
 
+    viewerCount = this.socket.fromEvent<any>('viewer_count');
+
     constructor(private http: HttpClient, private socket: Socket) { }
 
     // Error handling

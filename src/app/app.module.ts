@@ -2,7 +2,7 @@ import {
   HttpClientModule
 } from '@angular/common/http';
 import {
-  NgModule
+  NgModule, CUSTOM_ELEMENTS_SCHEMA
 } from '@angular/core';
 import {
   BrowserModule
@@ -20,6 +20,7 @@ import {
 import {
   AppComponent
 } from './app.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:8080',
@@ -28,7 +29,8 @@ const config: SocketIoConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +40,7 @@ const config: SocketIoConfig = {
     NgParticlesModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {}

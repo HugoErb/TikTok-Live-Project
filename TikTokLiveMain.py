@@ -7,7 +7,8 @@ import datetime
 import time
 import requests
 
-api_url = 'http://localhost:8080/handle'
+api_url_stream = 'http://localhost:8080/stream'
+api_url_dashboard_viewer_count = 'http://localhost:8080/viewer_count'
 
 # Nom du live auquel vous souhaitez vous connectez
 liveName = "topparty1"
@@ -73,6 +74,8 @@ async def on_connect(event: ViewerCountUpdateEvent):
         if (event.viewerCount != lastNbViewers):
             lastNbViewers = event.viewerCount 
             print(f"{now} : Viewers :", event.viewerCount)
+            myobj = {'viewer_count': event.viewerCount}
+            requests.post(api_url_dashboard_viewer_count, json = myobj)
         if (maxViewers < event.viewerCount):
             maxViewers = event.viewerCount
 
@@ -165,7 +168,7 @@ async def on_gift(event: GiftEvent):
                     f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
                 if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
                     myobj = {'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()}
-                    requests.post(api_url, json = myobj)
+                    requests.post(api_url_stream, json = myobj)
                     girlCounter += {event.gift.repeat_count}.pop() 
                     print(girlCounter)
 
@@ -176,7 +179,7 @@ async def on_gift(event: GiftEvent):
             nbCoins += giftValue
             if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
                 myobj = {'type': {event.gift.extended_gift.name}.pop(), 'number': 1}
-                requests.post(api_url, json = myobj)
+                requests.post(api_url_stream, json = myobj)
                 girlCounter += 1
                 print(girlCounter)
 
