@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+    font-family: "Raleway", Arial, Helvetica, sans-serif;
+}
+
+main {
+    padding-top: 75px;
+    width: auto;
+    height: auto;
+    background-color: #FFFFFF;
+    color: #303030;
+}
+
+p{
+    font-size: large;
+    font-weight: bold;
+}
+
+h2{
+    letter-spacing: 0.5px;
+    font-weight: bold;
+}
+
+/* Split the screen in half */
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  /* Control the left side */
+  .left {
+    left: 0;
+    background-color: #1E90FF;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: #FFC0CB;
+  }
+  
+  /* If you want the content centered horizontally and vertically */
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  /* Style the image inside the centered container, if needed */
+  .centered img {
+    width: 150px;
+  }
+
+  .points{
+    font-size: large;
+    font-weight: bold;
+  }
