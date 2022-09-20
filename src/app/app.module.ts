@@ -11,7 +11,9 @@ import {
   SocketIoModule,
   SocketIoConfig
 } from 'ngx-socket-io';
-
+import {
+  NgParticlesModule
+} from "ng-particles";
 import {
   AppRoutingModule
 } from './app-routing.module';
@@ -32,7 +34,8 @@ const config: SocketIoConfig = {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    NgParticlesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
