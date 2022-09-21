@@ -15,7 +15,9 @@ api_url_dashboard_follower_count = 'http://localhost:8080/follower_count'
 api_url_dashboard_sub_count = 'http://localhost:8080/sub_count'
 api_url_dashboard_share_count = 'http://localhost:8080/share_count'
 api_url_dashboard_comment_count = 'http://localhost:8080/comment_count'
+api_url_dashboard_comment = 'http://localhost:8080/comment'
 api_url_dashboard_gift_count = 'http://localhost:8080/gift_count'
+api_url_dashboard_gift = 'http://localhost:8080/gift'
 api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 
@@ -157,6 +159,8 @@ async def on_connect(event: CommentEvent):
         print(f"{now} : \033[32m{userNickname}\033[0m a dit : {userComment}")
         payload = {'comment_count': nbJoin}
         requests.post(api_url_dashboard_comment_count, json = payload)
+        payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}
+        requests.post(api_url_dashboard_comment, json = payload)
 
 # Lorsqu'un utilisateur s'abonne au live
 @client.on("subscribe")
@@ -183,6 +187,8 @@ async def on_gift(event: GiftEvent):
         global gifts
         global nbCoin
         giftValue = next(z["coin_value"] for z in gifts if z["name"] == {event.gift.extended_gift.name}.pop())
+        userProfilePicture = event.user.profilePicture.urls[-1]
+        userNickname = event.user.nickname
 
         # Gift streakable, on attend donc que la streak soit finie 
         if event.gift.gift_type == 1:
@@ -213,6 +219,8 @@ async def on_gift(event: GiftEvent):
         requests.post(api_url_dashboard_gift_count, json = payload)
         payload = {'coin_count': nbCoin}
         requests.post(api_url_dashboard_coin_count, json = payload)
+        payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}, 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
+        requests.post(api_url_dashboard_gift, json = payload)
 
 # Lorsque le live se termine
 @client.on("live_end")
