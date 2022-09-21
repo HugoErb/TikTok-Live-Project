@@ -9,7 +9,7 @@ import requests
 
 api_url_stream = 'http://localhost:8080/stream'
 api_url_dashboard_viewer_count = 'http://localhost:8080/viewer_count'
-api_url_dashboard_max_viewers = 'http://localhost:8080/max_viewers'
+api_url_dashboard_max_viewers_count = 'http://localhost:8080/max_viewers_count'
 api_url_dashboard_like_count = 'http://localhost:8080/like_count'
 api_url_dashboard_follower_count = 'http://localhost:8080/follower_count'
 api_url_dashboard_sub_count = 'http://localhost:8080/sub_count'
@@ -23,6 +23,7 @@ api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 
 # Nom du live auquel vous souhaitez vous connectez
 liveName = "topparty1"
+# Streamers de tests : topparty1 cedriccommelabd tiibox
 
 # Variables de statistiques
 nbFollow = 0
@@ -90,6 +91,8 @@ async def on_connect(event: ViewerCountUpdateEvent):
             requests.post(api_url_dashboard_viewer_count, json = payload)
         if (maxViewers < event.viewerCount):
             maxViewers = event.viewerCount
+            payload = {'max_viewer_count': maxViewers}
+            requests.post(api_url_dashboard_viewer_count, json = payload)
 
 # Lorsqu'un utilisateur follow le live
 @client.on("follow")
