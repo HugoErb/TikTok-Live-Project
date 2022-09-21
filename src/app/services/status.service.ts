@@ -10,6 +10,16 @@ export class StatusService {
     currentDocument = this.socket.fromEvent<any>('document');
 
     viewerCount = this.socket.fromEvent<any>('viewer_count');
+    maxViewerCount = this.socket.fromEvent<any>('max_viewer_count');
+    likeCount = this.socket.fromEvent<any>('like_count');
+    followerCount = this.socket.fromEvent<any>('follower_count');
+    subCount = this.socket.fromEvent<any>('sub_count');
+    shareCount = this.socket.fromEvent<any>('share_count');
+    commentCount = this.socket.fromEvent<any>('comment_count');
+    giftCount = this.socket.fromEvent<any>('gift_count');
+    coinCount = this.socket.fromEvent<any>('coin_count');
+    joinCount = this.socket.fromEvent<any>('join_count');
+    comment = this.socket.fromEvent<any>('comment');
 
     constructor(private http: HttpClient, private socket: Socket) { }
 

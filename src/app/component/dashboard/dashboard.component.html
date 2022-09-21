@@ -49,7 +49,7 @@
   <div class="cardBox">
     <div class="card">
       <div>
-        <div class="numbers">{{viewer_count| number:'2.' }}</div>
+        <div class="numbers">{{viewer_count| frnumber }}</div>
         <div class="cardName">Viewers simultanés</div>
       </div>
       <div class="iconBx">
@@ -58,7 +58,7 @@
     </div>
     <div class="card">
       <div>
-        <div class="numbers">1 520</div>
+        <div class="numbers">{{max_viewer_count | frnumber }}</div>
         <div class="cardName">Nombre max de viewers</div>
       </div>
       <div class="iconBx">
@@ -67,7 +67,7 @@
     </div>
     <div class="card">
       <div>
-        <div class="numbers">1 520</div>
+        <div class="numbers">{{like_count| frnumber }}</div>
         <div class="cardName">Likes</div>
       </div>
       <div class="iconBx">
@@ -76,7 +76,7 @@
     </div>
     <div class="card">
       <div>
-        <div class="numbers">1 520</div>
+        <div class="numbers">{{comment_count| frnumber }}</div>
         <div class="cardName">Commentaires</div>
       </div>
       <div class="iconBx">
@@ -189,7 +189,7 @@
   <div class="cardBox">
     <div class="card">
       <div>
-        <div class="numbers">1 520</div>
+        <div class="numbers">{{gift_count| frnumber }}</div>
         <div class="cardName">Gifts</div>
       </div>
       <div class="iconBx">
@@ -198,7 +198,7 @@
     </div>
     <div class="card">
       <div>
-        <div class="numbers">1 520</div>
+        <div class="numbers">{{coin_count| frnumber }}</div>
         <div class="cardName">Coins</div>
       </div>
       <div class="iconBx">
@@ -207,7 +207,7 @@
     </div>
     <div class="card">
       <div>
-        <div class="numbers">1 520 €</div>
+        <div class="numbers">{{money_count| frnumber }} €</div>
         <div class="cardName">Revenus estimés</div>
       </div>
       <div class="iconBx">

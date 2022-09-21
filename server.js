@@ -44,6 +44,7 @@ router.post('/viewer_count', (request, response) => {
 });
 
 router.post('/max_viewer_count', (request, response) => {
+  console.log("ok")
   console.log("Max de viewers :" + request.body.max_viewer_count)
   request.app.io.emit('max_viewer_count', request.body);
   response.end("yes")

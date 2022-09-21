@@ -21,6 +21,7 @@ import {
   AppComponent
 } from './app.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { FrnumberPipe } from './pipe/frnumber.pipe';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:8080',
@@ -30,7 +31,8 @@ const config: SocketIoConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    FrnumberPipe
   ],
   imports: [
     BrowserModule,

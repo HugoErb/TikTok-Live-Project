@@ -9,7 +9,7 @@ import requests
 
 api_url_stream = 'http://localhost:8080/stream'
 api_url_dashboard_viewer_count = 'http://localhost:8080/viewer_count'
-api_url_dashboard_max_viewers_count = 'http://localhost:8080/max_viewers_count'
+api_url_dashboard_max_viewer_count = 'http://localhost:8080/max_viewer_count'
 api_url_dashboard_like_count = 'http://localhost:8080/like_count'
 api_url_dashboard_follower_count = 'http://localhost:8080/follower_count'
 api_url_dashboard_sub_count = 'http://localhost:8080/sub_count'
@@ -22,7 +22,7 @@ api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "topparty1"
+liveName = "diefo93.live3"
 # Streamers de tests : topparty1 cedriccommelabd tiibox
 
 # Variables de statistiques
@@ -90,9 +90,10 @@ async def on_connect(event: ViewerCountUpdateEvent):
             payload = {'viewer_count': event.viewerCount}
             requests.post(api_url_dashboard_viewer_count, json = payload)
         if (maxViewers < event.viewerCount):
+            print(f"maxviewers:{maxViewers}")
             maxViewers = event.viewerCount
             payload = {'max_viewer_count': maxViewers}
-            requests.post(api_url_dashboard_viewer_count, json = payload)
+            requests.post(api_url_dashboard_max_viewer_count, json = payload)
 
 # Lorsqu'un utilisateur follow le live
 @client.on("follow")
@@ -160,10 +161,10 @@ async def on_connect(event: CommentEvent):
         userNickname = event.user.nickname
         userComment = event.comment
         print(f"{now} : \033[32m{userNickname}\033[0m a dit : {userComment}")
-        payload = {'comment_count': nbJoin}
-        requests.post(api_url_dashboard_comment_count, json = payload)
-        payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}
-        requests.post(api_url_dashboard_comment, json = payload)
+        payload1 = {'comment_count': nbJoin}
+        requests.post(api_url_dashboard_comment_count, json = payload1)
+        payload2 = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}
+        requests.post(api_url_dashboard_comment, json = payload2)
 
 # Lorsqu'un utilisateur s'abonne au live
 @client.on("subscribe")
@@ -222,8 +223,8 @@ async def on_gift(event: GiftEvent):
         requests.post(api_url_dashboard_gift_count, json = payload)
         payload = {'coin_count': nbCoin}
         requests.post(api_url_dashboard_coin_count, json = payload)
-        payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}, 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
-        requests.post(api_url_dashboard_gift, json = payload)
+        # payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}, 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
+        # requests.post(api_url_dashboard_gift, json = payload)
 
 # Lorsque le live se termine
 @client.on("live_end")
