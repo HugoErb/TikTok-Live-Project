@@ -39,6 +39,7 @@ heureDebutLive = ""
 dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
+lastJoinHour = ""
 gifts = []
 connected = False
 
@@ -132,11 +133,14 @@ async def on_share(event: ShareEvent):
 async def on_join(event: JoinEvent):
     global connected
     if (connected == True):
-        now = datetime.datetime.now().strftime("%H:%M:%S")
+        now = datetime.datetime.now().strftime("%H:%M")
+        global lastJoinHour
         global nbJoin
         nbJoin += 1
-        payload = {'join_count': nbJoin}
-        requests.post(api_url_dashboard_join_count, json = payload)
+        if(now != lastJoinHour):
+            lastJoinHour = now
+            payload = {'join_count': nbJoin}
+            requests.post(api_url_dashboard_join_count, json = payload)
         # print(f"{now.hour}:{now.minute}:\033[32m{event.user.uniqueId}\033[0m a rejoint le live.")
 
 # Lorsqu'un utilisateur envoie un message sur le live
@@ -204,7 +208,7 @@ async def on_gift(event: GiftEvent):
             #     requests.post(api_url_stream, json = payload)
             #     girlCounter += 1
             #     print(girlCounter)
-            
+
         payload = {'gift_count': nbGift}
         requests.post(api_url_dashboard_gift_count, json = payload)
         payload = {'coin_count': nbCoin}
