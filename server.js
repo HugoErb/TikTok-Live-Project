@@ -93,7 +93,7 @@ router.post('/gift', (request, response) => {
 });
 
 router.post('/comment', (request, response) => {
-  // console.log("Nouveau gift :" + request.body.gift)
+  console.log("Comment :" + request.body)
   request.app.io.emit('comment', request.body);
   response.end("yes")
 });

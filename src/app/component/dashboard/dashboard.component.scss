@@ -19,6 +19,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   min-height: 100vh;
+  max-width: 100vh;
 }
 
 /****************************************** Menu  *******************************************/
@@ -454,7 +455,8 @@ body {
 .chat {
   position: relative;
   display: grid;
-  min-height: 500px;
+  height: 650px;
+  max-width: 500px;
   padding: 20px;
   background: $white;
   box-shadow: 0 7px 25px rgba(0, 0, 0, .08);
@@ -486,6 +488,10 @@ body {
   object-fit: cover;
 }
 
+.chat table{
+  overflow: auto;
+}
+
 .chat table tr:hover {
   background: $blue;
   color: $white;
@@ -500,35 +506,6 @@ body {
   font-weight: 500;
   line-height: 1.2em;
 }
-
-/****************************************** Scroll Bar *******************************************/
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  background: $blue;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: $blue2;
-}
-
 
 /****************************************** Responsive *******************************************/
 

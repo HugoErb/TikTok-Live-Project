@@ -22,8 +22,8 @@ api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "diefo93.live3"
-# Streamers de tests : topparty1 cedriccommelabd tiibox
+liveName = "asmr_kto"
+# Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
 nbFollow = 0
@@ -43,6 +43,7 @@ dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
 lastJoinHour = ""
+lastCommentHour = ""
 gifts = []
 connected = False
 
@@ -84,16 +85,16 @@ async def on_connect(event: ViewerCountUpdateEvent):
         now = datetime.datetime.now().strftime("%H:%M:%S")
         global maxViewers
         global lastNbViewers
+        if (maxViewers < event.viewerCount):
+            print(f"maxviewers:{maxViewers}")
+            maxViewers = event.viewerCount
         if (event.viewerCount != lastNbViewers):
             lastNbViewers = event.viewerCount 
             print(f"{now} : Viewers :", event.viewerCount)
             payload = {'viewer_count': event.viewerCount}
             requests.post(api_url_dashboard_viewer_count, json = payload)
-        if (maxViewers < event.viewerCount):
-            print(f"maxviewers:{maxViewers}")
-            maxViewers = event.viewerCount
             payload = {'max_viewer_count': maxViewers}
-            requests.post(api_url_dashboard_max_viewer_count, json = payload)
+            requests.post(api_url_dashboard_max_viewer_count, json = payload)        
 
 # Lorsqu'un utilisateur follow le live
 @client.on("follow")
@@ -156,13 +157,16 @@ async def on_connect(event: CommentEvent):
     if (connected == True):
         now = datetime.datetime.now().strftime("%H:%M:%S")
         global nbComment
+        global lastCommentHour
         nbComment += 1
         userProfilePicture = event.user.profilePicture.urls[-1]
         userNickname = event.user.nickname
         userComment = event.comment
         print(f"{now} : \033[32m{userNickname}\033[0m a dit : {userComment}")
-        payload1 = {'comment_count': nbJoin}
-        requests.post(api_url_dashboard_comment_count, json = payload1)
+        if(now != lastCommentHour):
+            lastCommentHour = now
+            payload1 = {'comment_count': nbJoin}
+            requests.post(api_url_dashboard_comment_count, json = payload1)
         payload2 = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}
         requests.post(api_url_dashboard_comment, json = payload2)
 

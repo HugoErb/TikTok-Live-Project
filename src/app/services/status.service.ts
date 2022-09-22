@@ -20,6 +20,7 @@ export class StatusService {
     coinCount = this.socket.fromEvent<any>('coin_count');
     joinCount = this.socket.fromEvent<any>('join_count');
     comment = this.socket.fromEvent<any>('comment');
+    gift = this.socket.fromEvent<any>('gift');
 
     constructor(private http: HttpClient, private socket: Socket) { }
 

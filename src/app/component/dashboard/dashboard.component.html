@@ -28,6 +28,7 @@
     </ul>
   </div>
 </div>
+
 <!-- Main -->
 <div class="main">
   <div class="topbar">
@@ -85,13 +86,53 @@
     </div>
   </div>
 
+  <!-- Card Boxes Row 2 -->
+  <div class="cardBox">
+    <div class="card">
+      <div>
+        <div class="numbers">{{follower_count| frnumber }}</div>
+        <div class="cardName">Nouveaux followers</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="people-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">{{sub_count | frnumber }}</div>
+        <div class="cardName">Nouveaux abonnés</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="star-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">{{share_count| frnumber }}</div>
+        <div class="cardName">Partages</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="arrow-redo-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">{{join_count| frnumber }}</div>
+        <div class="cardName">Rejoints le live</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
+
   <!-- Graphique du nombre de viewers -->
   <div class="details">
     <div class="chart">
       <div class="cardHeader">
         <h2>Nombre de viewers</h2>
       </div>
-      <canvas id="vierwerChart" width="400" height="220"></canvas>
+      <div id="chartdiv" style="width: 100%; height: 580px"></div>
     </div>
 
     <!-- Chat -->
@@ -100,85 +141,13 @@
         <h2>Chat</h2>
       </div>
       <table>
-        <tr>
+        <tr *ngFor="let item of user_comment_datas">
           <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
+            <div class="imgBx"><img src="{{item.user_profile_picture}}"></div>
           </td>
           <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
-          </td>
-        </tr>
-        <tr>
-          <td width="60px">
-            <div class="imgBx"><img src="./imgs/img3.jpg"></div>
-          </td>
-          <td>
-            <h4>Pato</h4>
-            <p>Salut tout le monde !</p>
+            <h4>{{item.user_nickname}}</h4>
+            <p>{{item.user_comment}}</p>
           </td>
         </tr>
       </table>
@@ -202,12 +171,12 @@
         <div class="cardName">Coins</div>
       </div>
       <div class="iconBx">
-        <ion-icon name="disc-outline"></ion-icon>
+        <ion-icon name="radio-button-on-outline"></ion-icon>
       </div>
     </div>
     <div class="card">
       <div>
-        <div class="numbers">{{money_count| frnumber }} €</div>
+        <div class="numbers">{{money_count| roundfrnumber }} €</div>
         <div class="cardName">Revenus estimés</div>
       </div>
       <div class="iconBx">
