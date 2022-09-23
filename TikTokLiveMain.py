@@ -22,7 +22,7 @@ api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "asmr_kto"
+liveName = "valdoxan25mg"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
