@@ -32,56 +32,55 @@ app.use(express.static(distDir));
 app.io = io;
 
 router.post('/stream', (request, response) => {
-  console.log("Ajout de " + request.body.number + " " + request.body.type)
+  // console.log("Ajout de " + request.body.number + " " + request.body.type)
   request.app.io.emit('document', request.body);
   response.end("yes")
 });
 
 router.post('/viewer_count', (request, response) => {
-  console.log("Viewers :" + request.body.viewer_count)
+  // console.log("Viewers :" + request.body.viewer_count)
   request.app.io.emit('viewer_count', request.body);
   response.end("yes")
 });
 
 router.post('/max_viewer_count', (request, response) => {
-  console.log("ok")
-  console.log("Max de viewers :" + request.body.max_viewer_count)
+  // console.log("Max de viewers :" + request.body.max_viewer_count)
   request.app.io.emit('max_viewer_count', request.body);
   response.end("yes")
 });
 
 router.post('/like_count', (request, response) => {
-  console.log("Likes :" + request.body.like_count)
+  // console.log("Likes :" + request.body.like_count)
   request.app.io.emit('like_count', request.body);
   response.end("yes")
 });
 
 router.post('/follower_count', (request, response) => {
-  console.log("Nouveaux followers :" + request.body.follower_count)
+  // console.log("Nouveaux followers :" + request.body.follower_count)
   request.app.io.emit('follower_count', request.body);
   response.end("yes")
 });
 
 router.post('/sub_count', (request, response) => {
-  console.log("Nouveaux subs :" + request.body.sub_count)
+  // console.log("Nouveaux subs :" + request.body.sub_count)
   request.app.io.emit('sub_count', request.body);
   response.end("yes")
 });
 
 router.post('/share_count', (request, response) => {
-  console.log("Shares :" + request.body.share_count)
+  // console.log("Shares :" + request.body.share_count)
   request.app.io.emit('share_count', request.body);
   response.end("yes")
 });
 
 router.post('/comment_count', (request, response) => {
-  console.log("Commentaires :" + request.body.comment_count)
+  // console.log("Commentaires :" + request.body.comment_count)
   request.app.io.emit('comment_count', request.body);
   response.end("yes")
 });
 
 router.post('/gift_count', (request, response) => {
-  console.log("Gifts :" + request.body.gift_count)
+  // console.log("Gifts :" + request.body.gift_count)
   request.app.io.emit('gift_count', request.body);
   response.end("yes")
 });
@@ -93,19 +92,19 @@ router.post('/gift', (request, response) => {
 });
 
 router.post('/comment', (request, response) => {
-  console.log("Comment :" + request.body)
+  // console.log("Comment :" + request.body)
   request.app.io.emit('comment', request.body);
   response.end("yes")
 });
 
 router.post('/coin_count', (request, response) => {
-  console.log("Pièces :" + request.body.coin_count)
+  // console.log("Pièces :" + request.body.coin_count)
   request.app.io.emit('coin_count', request.body);
   response.end("yes")
 });
 
 router.post('/join_count', (request, response) => {
-  console.log("Joins :" + request.body.join_count)
+  // console.log("Joins :" + request.body.join_count)
   request.app.io.emit('join_count', request.body);
   response.end("yes")
 });

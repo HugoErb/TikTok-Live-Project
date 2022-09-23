@@ -53,17 +53,11 @@ export class DashboardComponent implements OnInit {
         this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
             console.log("Viewers : " + data.viewer_count);
             this.viewer_count = data.viewer_count;
-            // this.chart_datas.push({
-            //     date: Date.now,
-            //     value: this.chart_datas
-            // });
             let date = new Date();
             let new_data = {
                 date: date.getTime(),
                 value: this.viewer_count
             }
-            console.log(new_data)
-            console.log(this.series.data)
             this.series.data.push(new_data);
         });
         this._maxViewerCountSub = this.statusService.maxViewerCount.subscribe(data => {
@@ -104,7 +98,6 @@ export class DashboardComponent implements OnInit {
             this.join_count = data.join_count;
         });
         this._commentSub = this.statusService.comment.subscribe((data: Comment) => {
-            console.log("Comment : ", data);
             if (this.user_comment_datas.length < 9) {
                 this.user_comment_datas.push(data);
             } else {
@@ -121,7 +114,6 @@ export class DashboardComponent implements OnInit {
             root.setThemes([am5themes_Animated.new(root)]);
 
             // Create chart
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/
             let chart = root.container.children.push(am5xy.XYChart.new(root, {
                 panX: true,
                 panY: true,
@@ -135,14 +127,12 @@ export class DashboardComponent implements OnInit {
             ]);
 
             // Add cursor
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
             let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
                 behavior: "none"
             }));
             cursor.lineY.set("visible", false);
 
             // Create axes
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
             let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
                 maxDeviation: 0.2,
                 baseInterval: {
@@ -159,7 +149,6 @@ export class DashboardComponent implements OnInit {
 
 
             // Add series
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
             this.series = chart.series.push(am5xy.LineSeries.new(root, {
                 name: "Series",
                 xAxis: xAxis,
