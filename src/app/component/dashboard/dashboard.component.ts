@@ -80,6 +80,12 @@ export class DashboardComponent implements OnInit {
     public user_comment_datas: Comment[] = []
     public user_gift_datas: Gift[] = []
 
+    slideOpen: any = {
+        "connexion": true,
+        "statistics": true,
+        "gifts": true
+    };
+
     private root!: am5.Root;
     series: any;
 
@@ -92,14 +98,15 @@ export class DashboardComponent implements OnInit {
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers
         this._connectedStateSub = this.statusService.connectedState.subscribe(data => {
             this.define_connected_state(true);
-            // Mise en place de la date de début de liv
-            let date: Date = new Date();
-            let hour_connector = "h";
-            if (date.getMinutes() < 10) {
-                hour_connector = "h0";
-            }
-            this.start_hour = date.getHours() + hour_connector + date.getMinutes();
         });
+
+        // Mise en place de la date de début de live
+        let date: Date = new Date();
+        let hour_connector = "h";
+        if (date.getMinutes() < 10) {
+            hour_connector = "h0";
+        }
+        this.start_hour = date.getHours() + hour_connector + date.getMinutes();
 
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers
         this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
@@ -271,7 +278,6 @@ export class DashboardComponent implements OnInit {
             });
         }
     }
-
     /****************************************** Connected Icons *******************************************/
     define_connected_state(connected_state: boolean) {
         this.connected_state = connected_state;
@@ -281,10 +287,6 @@ export class DashboardComponent implements OnInit {
             this.connected_text_state = "Déconnecté"
         }
     }
-
-    /****************************************** Read Json *******************************************/
-
-
 
     /****************************************** Particles *******************************************/
     particlesOptions = {
@@ -368,6 +370,19 @@ export class DashboardComponent implements OnInit {
 
     async particlesInit(engine: Engine): Promise<void> {
         await loadFull(engine);
+    }
+
+    changeSlide(type: string): void {
+        this.slideOpen[type] = !this.slideOpen[type];
+        console.log(this.slideOpen)
+    }
+
+    getChevronStyle(type: string) {
+        if (this.slideOpen[type]) {
+            return { 'transform': 'rotate(0deg)' }
+        } else {
+            return { 'transform': 'rotate(-90deg)' }
+        }
     }
 
     ngOnDestroy() {

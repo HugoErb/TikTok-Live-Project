@@ -557,3 +557,7 @@ hr {
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
+.chevron-rotate {
+    transition: all .1s linear;
+}
