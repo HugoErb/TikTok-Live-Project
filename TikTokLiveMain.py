@@ -22,7 +22,7 @@ api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "tiibox_spam"
+liveName = "falcao8000"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -180,7 +180,7 @@ async def on_connect(event: SubscribeEvent):
         nbSub += 1
         userNickname = event.user.nickname
         print(f"{now} : \033[32m{userNickname}\033[0m s'est abonné au live.")
-        payload = {'sub_count': nbJoin}
+        payload = {'sub_count': nbSub}
         requests.post(api_url_dashboard_sub_count, json = payload)
 
 # Lorsqu'un utilisateur envoie un cadeau
