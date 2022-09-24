@@ -20,9 +20,10 @@ api_url_dashboard_gift_count = 'http://localhost:8080/gift_count'
 api_url_dashboard_gift = 'http://localhost:8080/gift'
 api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
+api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "falcao8000"
+liveName = "caroline33335555"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -68,6 +69,8 @@ async def on_connect(_: ConnectEvent):
         gifts.append({"name" : gift.name, "coin_value" : gift.diamond_count, "image_url": gift.icon.url_list[0]})
     print(f"{heureDebutLive} : Connecté au live.")
     connected = True
+    payload = {'connected_state': connected}
+    requests.post(api_url_dashboard_connected_state, json = payload)
 
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
@@ -76,6 +79,8 @@ async def on_disconnect(event: DisconnectEvent):
         print("Déconnecté du live.")
         stats()
         connected = False
+        payload = {'connected_state': connected}
+        requests.post(api_url_dashboard_viewer_count, json = payload)
 
 # Lorsque le compteur de viewers se met à jour
 @client.on("viewer_count_update")
@@ -238,6 +243,8 @@ async def on_connect(event: LiveEndEvent):
         print("Live terminé.")
         stats()
         connected = False
+        payload = {'connected_state': connected}
+        requests.post(api_url_dashboard_viewer_count, json = payload)
     
 def stats():
     now = datetime.datetime.now()

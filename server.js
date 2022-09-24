@@ -109,6 +109,12 @@ router.post('/join_count', (request, response) => {
   response.end("yes")
 });
 
+router.post('/connected_state', (request, response) => {
+  console.log("Connected :" + request.body)
+  request.app.io.emit('connected_state', request.body);
+  response.end("yes")
+});
+
 // add router in the Express app.
 app.use("/", router);
 
