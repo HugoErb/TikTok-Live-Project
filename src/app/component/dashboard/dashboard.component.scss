@@ -213,8 +213,8 @@ body {
 
 .main {
   position: absolute;
-  width: calc(100% - 300px);
   left: 300px;
+  width: calc(100% - 300px);
   min-height: 100vh;
   background: transparent;
   transition: 0.5s;
@@ -246,27 +246,39 @@ body {
   object-fit: cover;
 }
 
+/****************************************** Separator *******************************************/
+
 .separator {
   transition-property: height;
   transition-duration: 0.5s;
   overflow: hidden;
   width: auto;
+  margin-top: -35px;
+}
+
+.separator ion-icon{
+  position: relative;
+  top: 55px;
+  left: 7px;
+  color: $blue;
+  font-size: 2em;
+  cursor: pointer;
+  padding: 5px;
 }
 
 .separator h2{
   color: $blue;
-  position: relative;
-  margin-left: 20px;
+  margin-left: 55px;
   margin-top: 15px;
 }
 
 hr {
   border-top: 2px solid $blue;
-  margin-left: 20px;
+  margin-left: 55px;
   margin-right: 20px;
 }
 
-/****************************************** Cardbox  *******************************************/
+/****************************************** Cardbox *******************************************/
 
 .cardBox {
   position: relative;

@@ -59,8 +59,15 @@ export class DashboardComponent implements OnInit {
   private _giftSub!: Subscription;
 
   private ratioRevenu = 0.01285714286;
-  public connected_icon = "\"checkmark-circle-outline\" style=\"color:green\"";
-  public disconnected_icon = "\"close-circle-outline\" style=\"color:red\"";
+  public connected_icon = "checkmark-circle-outline";
+  public green_color = "green";
+  public disconnected_icon = "close-circle-outline";
+  public red_color = "color:\"red\"";
+  public connected_icon_color = this.red_color;
+  public connected_text_state = "Déconnecté";
+  public connected_icon_state = this.disconnected_icon;
+
+  public connected_state: boolean = false;
 
   public viewer_count = 0;
   public max_viewer_count = 0;
@@ -73,8 +80,6 @@ export class DashboardComponent implements OnInit {
   public coin_count = 0;
   public join_count = 0;
   public money_count = 0;
-  public connected_text_state = "Déconnecté";
-  public connected_icon_state = this.disconnected_icon;
   public start_hour = "--h--";
   public chart_datas!: any[];
   public user_comment_datas: Comment[] = []
@@ -92,14 +97,15 @@ export class DashboardComponent implements OnInit {
     // Mise en place du compteur de vues + màj du graphique du nombre de viewers
     this._connectedStateSub = this.statusService.connectedState.subscribe(data => {
       this.define_connected_state(true);
-      // Mise en place de la date de début de live
-      let date: Date = new Date();
+    });
+
+    // Mise en place de la date de début de liv
+    let date: Date = new Date();
       let hour_connector = "h";
       if (date.getMinutes() < 10) {
         hour_connector = "h0";
       }
       this.start_hour = date.getHours() + hour_connector + date.getMinutes();
-    });
 
     // Mise en place du compteur de vues + màj du graphique du nombre de viewers
     this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
@@ -271,18 +277,26 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
-
+  /****************************************** Connected Icons *******************************************/
   define_connected_state(connected_state: boolean) {
-    if (connected_state == true) {
-      this.connected_text_state = "Connecté";
-      this.connected_icon_state = this.connected_icon;
+    // if (connected_state == true) {
+    //   this.connected_text_state = "Connecté";
+    //   this.connected_icon_state = this.connected_icon;
+    //   this.connected_icon_color = this.green_color;
+    // } else {
+    //   this.connected_text_state = "Déconnecté";
+    //   this.connected_icon_state = this.disconnected_icon;
+    //   this.connected_icon_color = this.red_color;
+    // }
+    this.connected_state = connected_state;
+    if (connected_state === true) {
+      this.connected_text_state = "Connecté"
     } else {
-      this.connected_text_state = "Déconnecté";
-      this.connected_icon_state = this.disconnected_icon;
+      this.connected_text_state = "Déconnecté"
     }
   }
 
-  /* or the classic JavaScript object */
+  /****************************************** Particles *******************************************/
   particlesOptions = {
     background: {
       color: {

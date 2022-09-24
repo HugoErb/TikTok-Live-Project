@@ -23,7 +23,7 @@ api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "caroline33335555"
+liveName = "officialfabiojackson"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -91,7 +91,6 @@ async def on_connect(event: ViewerCountUpdateEvent):
         global maxViewers
         global lastNbViewers
         if (maxViewers < event.viewerCount):
-            print(f"maxviewers:{maxViewers}")
             maxViewers = event.viewerCount
         if (event.viewerCount != lastNbViewers):
             lastNbViewers = event.viewerCount 
@@ -239,12 +238,11 @@ async def on_gift(event: GiftEvent):
 @client.on("live_end")
 async def on_connect(event: LiveEndEvent):
     global connected
-    if (connected == True):
-        print("Live terminé.")
-        stats()
-        connected = False
-        payload = {'connected_state': connected}
-        requests.post(api_url_dashboard_viewer_count, json = payload)
+    print("Live terminé.")
+    stats()
+    connected = False
+    payload = {'connected_state': connected}
+    requests.post(api_url_dashboard_viewer_count, json = payload)
     
 def stats():
     now = datetime.datetime.now()
