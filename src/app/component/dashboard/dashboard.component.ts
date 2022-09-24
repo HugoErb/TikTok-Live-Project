@@ -97,15 +97,14 @@ export class DashboardComponent implements OnInit {
     // Mise en place du compteur de vues + màj du graphique du nombre de viewers
     this._connectedStateSub = this.statusService.connectedState.subscribe(data => {
       this.define_connected_state(true);
-    });
-
-    // Mise en place de la date de début de liv
-    let date: Date = new Date();
+      // Mise en place de la date de début de liv
+      let date: Date = new Date();
       let hour_connector = "h";
       if (date.getMinutes() < 10) {
         hour_connector = "h0";
       }
       this.start_hour = date.getHours() + hour_connector + date.getMinutes();
+    });
 
     // Mise en place du compteur de vues + màj du graphique du nombre de viewers
     this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {

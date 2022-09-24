@@ -1,0 +1,8 @@
+{
+  "darkmode": false,
+  "theme": "blue",
+  "particles": {
+    "isEnabled": true,
+    "type": "triangles"
+  }
+}
