@@ -60,12 +60,7 @@ export class DashboardComponent implements OnInit {
 
   private ratioRevenu = 0.01285714286;
   public connected_icon = "checkmark-circle-outline";
-  public green_color = "green";
-  public disconnected_icon = "close-circle-outline";
-  public red_color = "color:\"red\"";
-  public connected_icon_color = this.red_color;
   public connected_text_state = "Déconnecté";
-  public connected_icon_state = this.disconnected_icon;
 
   public connected_state: boolean = false;
 
@@ -276,17 +271,9 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+
   /****************************************** Connected Icons *******************************************/
   define_connected_state(connected_state: boolean) {
-    // if (connected_state == true) {
-    //   this.connected_text_state = "Connecté";
-    //   this.connected_icon_state = this.connected_icon;
-    //   this.connected_icon_color = this.green_color;
-    // } else {
-    //   this.connected_text_state = "Déconnecté";
-    //   this.connected_icon_state = this.disconnected_icon;
-    //   this.connected_icon_color = this.red_color;
-    // }
     this.connected_state = connected_state;
     if (connected_state === true) {
       this.connected_text_state = "Connecté"
@@ -294,6 +281,10 @@ export class DashboardComponent implements OnInit {
       this.connected_text_state = "Déconnecté"
     }
   }
+
+  /****************************************** Read Json *******************************************/
+
+
 
   /****************************************** Particles *******************************************/
   particlesOptions = {
@@ -373,15 +364,9 @@ export class DashboardComponent implements OnInit {
   };
 
   particlesLoaded(container: Container): void {
-    console.log(container);
   }
 
   async particlesInit(engine: Engine): Promise < void > {
-    console.log(engine);
-
-    // Starting from 1.19.0 you can add custom presets or shape here, using the current tsParticles instance (main)
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
     await loadFull(engine);
   }
 
