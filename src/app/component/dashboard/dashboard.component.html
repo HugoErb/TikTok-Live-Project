@@ -24,7 +24,7 @@
 
 <div class="main">
   <div class="separator">
-	<ion-icon class="chevron" name="chevron-down-outline"></ion-icon>
+	<ion-icon class="chevron chevron-rotate" name="chevron-down-outline" [ngStyle]="getChevronStyle('connexion')" (click)="changeSlide('connexion')"></ion-icon>
     <h2>Connexion au live</h2>
     <hr>
   </div>
@@ -73,7 +73,7 @@
   </div>
 
   <div class="separator">
-	<ion-icon class="chevron" name="chevron-down-outline"></ion-icon>
+	<ion-icon class="chevron chevron-rotate" name="chevron-down-outline" [ngStyle]="getChevronStyle('statistics')" (click)="changeSlide('statistics')"></ion-icon>
     <h2>Statistiques du live</h2>
     <hr>
   </div>
@@ -186,7 +186,7 @@
   </div>
 
   <div class="separator">
-    <ion-icon class="chevron" name="chevron-down-outline"></ion-icon>
+    <ion-icon class="chevron chevron-rotate" name="chevron-down-outline" [ngStyle]="getChevronStyle('statistics')" (click)="changeSlide('statistics')"></ion-icon>
     <h2>Gifts et revenus</h2>
     <hr>
   </div>
