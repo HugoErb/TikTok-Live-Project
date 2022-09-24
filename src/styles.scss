@@ -1,26 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-    margin: 0;
+  margin: 0;
 }
 
-$blue: #287bff;
-$blue2: #0062ff;
+$primary: #287bff;
+$primary2: #0062ff;
 
 /****************************************** Scroll Bar *******************************************/
 
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    border-radius: 50px;
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
-    -ms-border-radius: 50px;
-    -o-border-radius: 50px;
-    background: $blue;
+  width: 10px;
 }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: $blue2;
-  }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+  background: $primary;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $primary2;
+}
