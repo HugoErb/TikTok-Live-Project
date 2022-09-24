@@ -20,6 +20,17 @@ import {
 import {
   isPlatformBrowser
 } from '@angular/common';
+import {
+  MoveDirection,
+  ClickMode,
+  HoverMode,
+  OutMode,
+  Container,
+  Engine
+} from "tsparticles-engine";
+import {
+  loadFull
+} from "tsparticles";
 
 // amCharts imports
 import * as am5 from '@amcharts/amcharts5';
@@ -48,8 +59,8 @@ export class DashboardComponent implements OnInit {
   private _giftSub!: Subscription;
 
   private ratioRevenu = 0.01285714286;
-  public connected_icon = "checkmark-circle-outline";
-  public disconnected_icon = "close-circle-outline";
+  public connected_icon = "\"checkmark-circle-outline\" style=\"color:green\"";
+  public disconnected_icon = "\"close-circle-outline\" style=\"color:red\"";
 
   public viewer_count = 0;
   public max_viewer_count = 0;
@@ -64,13 +75,15 @@ export class DashboardComponent implements OnInit {
   public money_count = 0;
   public connected_text_state = "Déconnecté";
   public connected_icon_state = this.disconnected_icon;
-  public start_hour!: string;
+  public start_hour = "--h--";
   public chart_datas!: any[];
-
   public user_comment_datas: Comment[] = []
   public user_gift_datas: Gift[] = []
+
   private root!: am5.Root;
   series: any;
+
+  id = "tsparticles";
 
   constructor(private statusService: StatusService, @Inject(PLATFORM_ID) private platformId: Object, private zone: NgZone) {}
 
@@ -78,16 +91,15 @@ export class DashboardComponent implements OnInit {
 
     // Mise en place du compteur de vues + màj du graphique du nombre de viewers
     this._connectedStateSub = this.statusService.connectedState.subscribe(data => {
-        this.define_connected_state(true);
-    });
-
-    // Mise en place de la date de début de live
-    let date: Date = new Date();
-    let hour_connector = "h";
-    if (date.getMinutes() < 10){
+      this.define_connected_state(true);
+      // Mise en place de la date de début de live
+      let date: Date = new Date();
+      let hour_connector = "h";
+      if (date.getMinutes() < 10) {
         hour_connector = "h0";
-    }
-    this.start_hour = date.getHours() + hour_connector + date.getMinutes();
+      }
+      this.start_hour = date.getHours() + hour_connector + date.getMinutes();
+    });
 
     // Mise en place du compteur de vues + màj du graphique du nombre de viewers
     this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
@@ -260,14 +272,104 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  define_connected_state(connected_state:boolean){
+  define_connected_state(connected_state: boolean) {
     if (connected_state == true) {
-        this.connected_text_state = "Connecté";
-        this.connected_icon_state = this.connected_icon;
-      } else {
-        this.connected_text_state = "Déconnecté";
-        this.connected_icon_state = this.disconnected_icon;
+      this.connected_text_state = "Connecté";
+      this.connected_icon_state = this.connected_icon;
+    } else {
+      this.connected_text_state = "Déconnecté";
+      this.connected_icon_state = this.disconnected_icon;
+    }
+  }
+
+  /* or the classic JavaScript object */
+  particlesOptions = {
+    background: {
+      color: {
+        value: "#fff"
       }
+    },
+    fpsLimit: 165,
+    interactivity: {
+      events: {
+        onClick: {
+          enable: false,
+          mode: ClickMode.push
+        },
+        onHover: {
+          enable: false,
+          mode: HoverMode.repulse
+        },
+        resize: true
+      },
+      modes: {
+        push: {
+          quantity: 4
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4
+        }
+      }
+    },
+    particles: {
+      color: {
+        value: "#287bff"
+      },
+      links: {
+        color: "#287bff",
+        distance: 150,
+        enable: true,
+        opacity: 0.5,
+        width: 1
+      },
+      collisions: {
+        enable: false
+      },
+      move: {
+        direction: MoveDirection.none,
+        enable: true,
+        outModes: {
+          default: OutMode.bounce
+        },
+        random: false,
+        speed: 0.3,
+        straight: false
+      },
+      number: {
+        density: {
+          enable: true,
+          area: 800
+        },
+        value: 50
+      },
+      opacity: {
+        value: 0.5
+      },
+      shape: {
+        type: "circle"
+      },
+      size: {
+        value: {
+          min: 1,
+          max: 3
+        },
+      }
+    },
+    detectRetina: true
+  };
+
+  particlesLoaded(container: Container): void {
+    console.log(container);
+  }
+
+  async particlesInit(engine: Engine): Promise < void > {
+    console.log(engine);
+
+    // Starting from 1.19.0 you can add custom presets or shape here, using the current tsParticles instance (main)
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(engine);
   }
 
   ngOnDestroy() {

@@ -2,6 +2,8 @@
   <title>TikTok Live Dashboard</title>
   <link rel="icon" type="image/x-icon" href="../../../assets/img/tiktok.png" />
 </head>
+<ng-particles [id]="id" [options]="particlesOptions" [particlesInit]="particlesInit"
+  (particlesLoaded)="particlesLoaded($event)"></ng-particles>
 <div class="container">
   <div class="navigation">
     <ul>
@@ -19,151 +21,158 @@
 </div>
 
 <!-- Main -->
+
 <div class="main">
-  <div class="cardBox">
-    <div class="card">
-      <div>
-        <div class="numbers">{{connected_text_state}}</div>
-        <div class="cardName">Connexion au live</div>
+  <div class="separator">
+    <h2>Connexion au live</h2>
+    <hr>
+    <div class="cardBox">
+      <div class="card">
+        <div>
+          <div class="numbers" id="connected_state">{{connected_text_state}}</div>
+          <div class="cardName">Connexion au live</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name={{connected_icon_state}}></ion-icon>
+        </div>
       </div>
-      <div class="iconBx">
-        <ion-icon name={{connected_icon_state}}></ion-icon>
+      <div class="card">
+        <div>
+          <div class="numbers">{{max_viewer_count | frnumber }}</div>
+          <div class="cardName">Hôte du live</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="cellular-outline"></ion-icon>
+        </div>
       </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{max_viewer_count | frnumber }}</div>
-        <div class="cardName">Hôte du live</div>
+      <div class="card">
+        <div>
+          <div class="numbers">{{start_hour}}</div>
+          <div class="cardName">Heure de début du live</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="time-outline"></ion-icon>
+        </div>
       </div>
-      <div class="iconBx">
-        <ion-icon name="cellular-outline"></ion-icon>
-      </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{start_hour}}</div>
-        <div class="cardName">Heure de début du live</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="time-outline"></ion-icon>
-      </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{comment_count| frnumber }}</div>
-        <div class="cardName">Temps écoulé</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="stopwatch-outline"></ion-icon>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card Boxes -->
-  <div class="cardBox">
-    <div class="card">
-      <div>
-        <div class="numbers">{{viewer_count| frnumber }}</div>
-        <div class="cardName">Viewers simultanés</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="eye-outline"></ion-icon>
-      </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{max_viewer_count | frnumber }}</div>
-        <div class="cardName">Nombre max de viewers</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="cellular-outline"></ion-icon>
-      </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{like_count| frnumber }}</div>
-        <div class="cardName">Likes</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="heart-outline"></ion-icon>
-      </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{comment_count| frnumber }}</div>
-        <div class="cardName">Commentaires</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+      <div class="card">
+        <div>
+          <div class="numbers">{{comment_count| frnumber }}</div>
+          <div class="cardName">Temps écoulé</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="stopwatch-outline"></ion-icon>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Card Boxes Row 2 -->
-  <div class="cardBox">
-    <div class="card">
-      <div>
-        <div class="numbers">{{follower_count| frnumber }}</div>
-        <div class="cardName">Nouveaux followers</div>
+  <div class="separator">
+    <!-- Card Boxes -->
+    <div class="cardBox">
+      <div class="card">
+        <div>
+          <div class="numbers">{{viewer_count| frnumber }}</div>
+          <div class="cardName">Viewers simultanés</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
       </div>
-      <div class="iconBx">
-        <ion-icon name="people-outline"></ion-icon>
+      <div class="card">
+        <div>
+          <div class="numbers">{{max_viewer_count | frnumber }}</div>
+          <div class="cardName">Nombre max de viewers</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="cellular-outline"></ion-icon>
+        </div>
       </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{sub_count | frnumber }}</div>
-        <div class="cardName">Nouveaux abonnés</div>
+      <div class="card">
+        <div>
+          <div class="numbers">{{like_count| frnumber }}</div>
+          <div class="cardName">Likes</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="heart-outline"></ion-icon>
+        </div>
       </div>
-      <div class="iconBx">
-        <ion-icon name="star-outline"></ion-icon>
+      <div class="card">
+        <div>
+          <div class="numbers">{{comment_count| frnumber }}</div>
+          <div class="cardName">Commentaires</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+        </div>
       </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{share_count| frnumber }}</div>
-        <div class="cardName">Partages</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="arrow-redo-outline"></ion-icon>
-      </div>
-    </div>
-    <div class="card">
-      <div>
-        <div class="numbers">{{join_count| frnumber }}</div>
-        <div class="cardName">Rejoints le live</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="add-outline"></ion-icon>
-      </div>
-    </div>
-  </div>
-
-  <!-- Graphique du nombre de viewers -->
-  <div class="details">
-    <div class="chart">
-      <div class="cardHeader">
-        <h2>Nombre de viewers</h2>
-      </div>
-      <div id="chartdiv" style="width: 100%; height: 580px"></div>
     </div>
 
-    <!-- Chat -->
-    <div class="chat">
-      <div class="cardHeader">
-        <h2>Chat</h2>
+    <!-- Card Boxes Row 2 -->
+    <div class="cardBox">
+      <div class="card">
+        <div>
+          <div class="numbers">{{follower_count| frnumber }}</div>
+          <div class="cardName">Nouveaux followers</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="people-outline"></ion-icon>
+        </div>
       </div>
-      <table>
-        <tr *ngFor="let item of user_comment_datas">
-          <td width="60px">
-            <div class="imgBx"><img src="{{item.user_profile_picture}}"></div>
-          </td>
-          <td>
-            <h4>{{item.user_nickname}}</h4>
-            <p>{{item.user_comment}}</p>
-          </td>
-        </tr>
-      </table>
+      <div class="card">
+        <div>
+          <div class="numbers">{{sub_count | frnumber }}</div>
+          <div class="cardName">Nouveaux abonnés</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="star-outline"></ion-icon>
+        </div>
+      </div>
+      <div class="card">
+        <div>
+          <div class="numbers">{{share_count| frnumber }}</div>
+          <div class="cardName">Partages</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="arrow-redo-outline"></ion-icon>
+        </div>
+      </div>
+      <div class="card">
+        <div>
+          <div class="numbers">{{join_count| frnumber }}</div>
+          <div class="cardName">Rejoints le live</div>
+        </div>
+        <div class="iconBx">
+          <ion-icon name="add-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphique du nombre de viewers -->
+    <div class="details">
+      <div class="chart">
+        <div class="cardHeader">
+          <h2>Nombre de viewers</h2>
+        </div>
+        <div id="chartdiv" style="width: 100%; height: 580px"></div>
+      </div>
+
+      <!-- Chat -->
+      <div class="chat">
+        <div class="cardHeader">
+          <h2>Chat</h2>
+        </div>
+        <table>
+          <tr *ngFor="let item of user_comment_datas">
+            <td width="60px">
+              <div class="imgBx"><img src="{{item.user_profile_picture}}"></div>
+            </td>
+            <td>
+              <h4>{{item.user_nickname}}</h4>
+              <p>{{item.user_comment}}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 
