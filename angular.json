@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "socket-test": {
+    "tiktokLive_socket": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/socket-test",
+            "outputPath": "dist/tiktokLive_socket",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "socket-test:build:production"
+              "browserTarget": "tiktokLive_socket:build:production"
             },
             "development": {
-              "browserTarget": "socket-test:build:development"
+              "browserTarget": "tiktokLive_socket:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "socket-test:build"
+            "browserTarget": "tiktokLive_socket:build"
           }
         },
         "test": {

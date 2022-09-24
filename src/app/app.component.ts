@@ -17,7 +17,7 @@ import { loadFull } from "tsparticles";
 })
 export class AppComponent {
     id = "tsparticles";
-    title = 'socket-test';
+    title = 'tiktokLive_socket';
     private _docSub!: Subscription;
 
     countRose: number = 0;
