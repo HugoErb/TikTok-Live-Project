@@ -83,6 +83,7 @@ export class DashboardComponent implements OnInit {
     public join_count = 0;
     public money_count = 0;
     public start_hour = "--h--";
+    public live_start_hour = "";
     public coinGoal = 1000;
     public chart_datas!: any[];
     public user_comment_datas: Comment[] = []
@@ -182,6 +183,13 @@ export class DashboardComponent implements OnInit {
         this._joinCountSub = this.statusService.joinCount.subscribe(data => {
             console.log("Joins : " + data.join_count);
             this.join_count = data.join_count;
+            this.define_connected_state(true);
+        });
+        
+        // Mise en place de l'heure de début de live
+        this._joinCountSub = this.statusService.liveStartHour.subscribe(data => {
+            console.log("Live start hour : " + data.live_start_hour);
+            this.live_start_hour = data.live_start_hour;
             this.define_connected_state(true);
         });
 
@@ -295,12 +303,9 @@ export class DashboardComponent implements OnInit {
         }
         // Mise en place de la date de début de live
         if (this.start_hour === "--h--") {
-            let date: Date = new Date();
-            let hour_connector = "h";
-            if (date.getMinutes() < 10) {
-                hour_connector = "h0";
-            }
-            this.start_hour = date.getHours() + hour_connector + date.getMinutes();
+            console.log("sqdfsdfsdfsdf" + this.live_start_hour);
+            
+            this.start_hour = this.live_start_hour;
         }
     }
 
@@ -388,7 +393,7 @@ export class DashboardComponent implements OnInit {
         await loadFull(engine);
     }
 
-    /****************************************** Chevrons *******************************************/
+    /****************************************** Chevrons et div refermables *******************************************/
 
     changeSlide(type: string): void {
         this.slideOpen[type] = !this.slideOpen[type];

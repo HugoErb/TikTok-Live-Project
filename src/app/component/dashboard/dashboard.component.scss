@@ -340,8 +340,8 @@ hr {
 
 .cardBox .card:hover .numbers,
 .cardBox .card:hover .cardName,
-.cardBox .card:hover .iconBx {
-  color: $background;
+.cardBox .card:hover .iconBx ion-icon{
+  color: $background !important;
 }
 
 #connected_state {

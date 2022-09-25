@@ -26,6 +26,7 @@ export class StatusService {
   coinCount = this.socket.fromEvent < any > ('coin_count');
   joinCount = this.socket.fromEvent < any > ('join_count');
   connectedState = this.socket.fromEvent < any > ('connected_state');
+  liveStartHour = this.socket.fromEvent < any > ('live_start_hour');
   comment = this.socket.fromEvent < any > ('comment');
   gift = this.socket.fromEvent < any > ('gift');
 

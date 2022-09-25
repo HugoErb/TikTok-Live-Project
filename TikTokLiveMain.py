@@ -21,9 +21,10 @@ api_url_dashboard_gift = 'http://localhost:8080/gift'
 api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
+api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "noveltoys1"
+liveName = "cedriccommelabd"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -64,11 +65,13 @@ async def on_connect(_: ConnectEvent):
     global gifts
     global connected
     dateDebutLive = now
-    heureDebutLive = dateDebutLive.strftime("%H:%M:%S")
+    heureDebutLive = dateDebutLive.strftime("%Hh%Mm")
     for gift in client.available_gifts.values():
         gifts.append({"name" : gift.name, "coin_value" : gift.diamond_count, "image_url": gift.icon.url_list[0]})
     print(f"{heureDebutLive} : Connecté au live.")
     connected = True
+    payload = {'live_start_hour': heureDebutLive}
+    requests.post(api_url_dashboard_live_start_hour, json = payload)
     payload = {'connected_state': connected}
     requests.post(api_url_dashboard_connected_state, json = payload)
 
