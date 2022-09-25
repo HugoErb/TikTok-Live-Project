@@ -86,7 +86,7 @@ router.post('/gift_count', (request, response) => {
 });
 
 router.post('/gift', (request, response) => {
-  console.log("Nouveau gift :" + request.body)
+  // console.log("Nouveau gift :" + request.body)
   request.app.io.emit('gift', request.body);
   response.end("yes")
 });

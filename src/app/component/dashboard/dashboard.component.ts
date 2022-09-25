@@ -95,18 +95,10 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(): void {
 
-        // Mise en place du compteur de vues + màj du graphique du nombre de viewers
+        // Mise en place de l'état de connexion et de l'heure de début de live
         this._connectedStateSub = this.statusService.connectedState.subscribe(data => {
             this.define_connected_state(true);
         });
-
-        // Mise en place de la date de début de live
-        let date: Date = new Date();
-        let hour_connector = "h";
-        if (date.getMinutes() < 10) {
-            hour_connector = "h0";
-        }
-        this.start_hour = date.getHours() + hour_connector + date.getMinutes();
 
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers
         this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
@@ -278,13 +270,24 @@ export class DashboardComponent implements OnInit {
             });
         }
     }
-    /****************************************** Connected Icons *******************************************/
+
+    /****************************************** Connected Cardbox *******************************************/
+
     define_connected_state(connected_state: boolean) {
         this.connected_state = connected_state;
         if (connected_state === true) {
             this.connected_text_state = "Connecté"
         } else {
             this.connected_text_state = "Déconnecté"
+        }
+        // Mise en place de la date de début de live
+        if (this.start_hour === "--h--") {
+            let date: Date = new Date();
+            let hour_connector = "h";
+            if (date.getMinutes() < 10) {
+                hour_connector = "h0";
+            }
+            this.start_hour = date.getHours() + hour_connector + date.getMinutes();
         }
     }
 
