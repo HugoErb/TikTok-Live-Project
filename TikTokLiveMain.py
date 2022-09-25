@@ -23,7 +23,7 @@ api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "officialfabiojackson"
+liveName = "topparty1"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -207,7 +207,6 @@ async def on_gift(event: GiftEvent):
             if event.gift.repeat_end == 1:
                 nbGift += {event.gift.repeat_count}.pop()
                 nbCoin += {event.gift.repeat_count}.pop() * giftValue
-                
                 # print(
                 #     f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
                 # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
@@ -215,6 +214,12 @@ async def on_gift(event: GiftEvent):
                 #     requests.post(api_url_stream, json = payload)
                 #     girlCounter += {event.gift.repeat_count}.pop() 
                 #     print(girlCounter)
+                payload = {'gift_count': nbGift}
+                requests.post(api_url_dashboard_gift_count, json = payload)
+                payload = {'coin_count': nbCoin}
+                requests.post(api_url_dashboard_coin_count, json = payload)
+                payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
+                requests.post(api_url_dashboard_gift, json = payload)
 
         # Gift non streakable, on fait donc la suite directement
         else:
@@ -226,13 +231,12 @@ async def on_gift(event: GiftEvent):
             #     requests.post(api_url_stream, json = payload)
             #     girlCounter += 1
             #     print(girlCounter)
-
-        payload = {'gift_count': nbGift}
-        requests.post(api_url_dashboard_gift_count, json = payload)
-        payload = {'coin_count': nbCoin}
-        requests.post(api_url_dashboard_coin_count, json = payload)
-        # payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}, 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
-        # requests.post(api_url_dashboard_gift, json = payload)
+            payload = {'gift_count': nbGift}
+            requests.post(api_url_dashboard_gift_count, json = payload)
+            payload = {'coin_count': nbCoin}
+            requests.post(api_url_dashboard_coin_count, json = payload)
+            payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
+            requests.post(api_url_dashboard_gift, json = payload)
 
 # Lorsque le live se termine
 @client.on("live_end")

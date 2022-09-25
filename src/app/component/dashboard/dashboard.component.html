@@ -246,95 +246,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><img src="./imgs/img3.jpg">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Whishing bottle</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
-					</tr>
-					<tr>
-						<td><img src="./imgs/tiktok.png">Pato</td>
-						<td>Rose</td>
-						<td>10</td>
-						<td>1</td>
-						<td>0.012€</td>
-						<td>10</td>
-						<td>5€</td>
+					<tr *ngFor="let item of user_gift_datas">
+						<td><img src="{{item.user_profile_picture}}">{{item.user_nickname}}</td>
+						<td>{{item.user_type_gifted}}</td>
+						<td>{{item.user_nb_gifted}}</td>
+						<td>{{item.gifted_value}}</td>
+						<td>{{item.gifted_value * this.ratioRevenu | roundfrnumber }}€</td>
+						<td>{{item.total_gifted_value}}</td>
+						<td>{{item.total_gifted_value * this.ratioRevenu | roundfrnumber }}€</td>
 					</tr>
 				</tbody>
 			</table>

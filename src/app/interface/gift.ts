@@ -9,5 +9,5 @@ export interface Gift {
 
     gifted_value:number;
 
-    total_gifted_value:number
+    total_gifted_value:number;
 }

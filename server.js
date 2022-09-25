@@ -86,7 +86,7 @@ router.post('/gift_count', (request, response) => {
 });
 
 router.post('/gift', (request, response) => {
-  // console.log("Nouveau gift :" + request.body.gift)
+  console.log("Nouveau gift :" + request.body)
   request.app.io.emit('gift', request.body);
   response.end("yes")
 });
@@ -110,7 +110,7 @@ router.post('/join_count', (request, response) => {
 });
 
 router.post('/connected_state', (request, response) => {
-  console.log("Connected :" + request.body)
+  console.log("Connected")
   request.app.io.emit('connected_state', request.body);
   response.end("yes")
 });

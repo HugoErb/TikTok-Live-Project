@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
     private _commentSub!: Subscription;
     private _giftSub!: Subscription;
 
-    private ratioRevenu = 0.01285714286;
+    public ratioRevenu = 0.01285714286;
     public connected_icon = "checkmark-circle-outline";
     public connected_text_state = "Déconnecté";
 
@@ -372,9 +372,10 @@ export class DashboardComponent implements OnInit {
         await loadFull(engine);
     }
 
+    /****************************************** Chevrons *******************************************/
+
     changeSlide(type: string): void {
         this.slideOpen[type] = !this.slideOpen[type];
-        console.log(this.slideOpen)
     }
 
     getChevronStyle(type: string) {
@@ -385,6 +386,7 @@ export class DashboardComponent implements OnInit {
         }
     }
 
+    /****************************************** Destroy *******************************************/
     ngOnDestroy() {
         this._viewerCountSub.unsubscribe();
         this._maxViewerCountSub.unsubscribe();
