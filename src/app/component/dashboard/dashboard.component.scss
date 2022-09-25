@@ -274,8 +274,21 @@ hr {
   margin-right: 20px;
 }
 
-.vanishing{
+.vanishing {
   overflow: hidden;
+  transition: max-height 0.25s ease-in;
+  -webkit-transition: max-height 0.25s ease-in;
+  -moz-transition: max-height 0.25s ease-in;
+  -ms-transition: max-height 0.25s ease-in;
+  -o-transition: max-height 0.25s ease-in;
+}
+
+.chevron-rotate {
+  transition: all .25s ease-in;
+  -webkit-transition: all .25s ease-in;
+  -moz-transition: all .25s ease-in;
+  -ms-transition: all .25s ease-in;
+  -o-transition: all .25s ease-in;
 }
 
 /****************************************** Cardbox *******************************************/
@@ -337,7 +350,7 @@ hr {
   padding-top: 7px;
 }
 
-/****************************************** Gifts *******************************************/
+/****************************************** Gifts details and chart *******************************************/
 
 .details {
   position: relative;
@@ -427,7 +440,7 @@ hr {
   -o-border-radius: 50%;
 }
 
-/****************************************** Chat *******************************************/
+/****************************************** Chat and Top Contributors *******************************************/
 
 .chat {
   position: relative;
@@ -557,8 +570,4 @@ hr {
   .cardBox {
     grid-template-columns: repeat(1, 1fr);
   }
-}
-
-.chevron-rotate {
-    transition: all .1s linear;
 }

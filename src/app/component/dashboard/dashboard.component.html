@@ -18,14 +18,13 @@
 
 <!-- Main -->
 <div class="main">
-	
 		<div class="separator">
 			<ion-icon class="chevron chevron-rotate" name="chevron-down-outline"
 				[ngStyle]="getChevronStyle('connexion')" (click)="changeSlide('connexion')"></ion-icon>
 			<h2>Connexion au live</h2>
 			<hr>
 		</div>
-		<div class="vanishing" [ngStyle]="getDivStyle('connexion')">
+		<div class="vanishing" #connexion [ngStyle]="getDivStyle('connexion')">
 		<div class="cardBox">
 			<div class="card">
 				<div>
@@ -77,7 +76,7 @@
 		<h2>Statistiques du live</h2>
 		<hr>
 	</div>
-	<div class="vanishing" [ngStyle]="getDivStyle('statistics')">
+	<div class="vanishing" #statistics [ngStyle]="getDivStyle('statistics')">
 		<!-- Card Boxes -->
 		<div class="cardBox">
 			<div class="card">
@@ -194,7 +193,7 @@
 		<hr>
 	</div>
 	<!-- Card Boxes Row 2 -->
-	<div class="vanishing" [ngStyle]="getDivStyle('gifts')">
+	<div class="vanishing" #gifts [ngStyle]="getDivStyle('gifts')">
 		<div class="cardBox">
 			<div class="card">
 				<div>
@@ -266,5 +265,13 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+			<div class="chat">
+				<div class="cardHeader">
+					<h2>Top Contributeurs</h2>
+				</div>
+				<table>
+
+				</table>
+			</div>
+		</div>	
 	</div>

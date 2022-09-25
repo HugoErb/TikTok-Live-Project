@@ -3,7 +3,9 @@ import {
     OnInit,
     Inject,
     NgZone,
-    PLATFORM_ID
+    PLATFORM_ID,
+    ViewChild,
+    ElementRef
 } from '@angular/core';
 import {
     Subscription
@@ -58,10 +60,16 @@ export class DashboardComponent implements OnInit {
     private _commentSub!: Subscription;
     private _giftSub!: Subscription;
 
+    @ViewChild("connexion") connexionDiv!: ElementRef<HTMLDivElement>;
+    @ViewChild("statistics") statisticsDiv!: ElementRef<HTMLDivElement>;
+    @ViewChild("gifts") giftsDiv!: ElementRef<HTMLDivElement>;
+    public connexionDivHeight!: number;
+    public statisticsDivHeight!: number;
+    public giftsDivHeight!: number;
+
     public ratioRevenu = 0.01285714286;
     public connected_icon = "checkmark-circle-outline";
     public connected_text_state = "Déconnecté";
-
     public connected_state: boolean = false;
     public viewer_count = 0;
     public max_viewer_count = 0;
@@ -199,8 +207,13 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    // Config du graphique du nombre de viewers
+
     ngAfterViewInit() {
+        this.connexionDivHeight = this.connexionDiv.nativeElement.clientHeight;
+        this.statisticsDivHeight = this.statisticsDiv.nativeElement.clientHeight;
+        this.giftsDivHeight = this.giftsDiv.nativeElement.clientHeight;
+
+        // Config du graphique du nombre de viewers
         this.browserOnly(() => {
             let root = am5.Root.new("chartdiv");
 
@@ -391,9 +404,21 @@ export class DashboardComponent implements OnInit {
 
     getDivStyle(type: string) {
         if (this.slideOpen[type]) {
-            return { 'transition-duration': '0.5s', 'height': 'auto' }
+            let divHeigt;
+            switch (type) {
+                case "connexion":
+                    divHeigt = this.connexionDivHeight;
+                    break;
+                case "statistics":
+                    divHeigt = this.statisticsDivHeight;
+                    break;
+                case "gifts":
+                    divHeigt = this.giftsDivHeight;
+                    break;
+            }
+            return { 'max-height': divHeigt + 'px' }
         } else {
-            return {'transition-duration': '0.5s', 'height': '0' }
+            return { 'max-height': '0' }
         }
     }
 
