@@ -23,7 +23,7 @@ api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "topparty1"
+liveName = "noveltoys1"
 # Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -75,12 +75,11 @@ async def on_connect(_: ConnectEvent):
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
     global connected
-    if (connected == True):
-        print("Déconnecté du live.")
-        stats()
-        connected = False
-        payload = {'connected_state': connected}
-        requests.post(api_url_dashboard_viewer_count, json = payload)
+    print("Déconnecté du live.")
+    stats()
+    connected = False
+    payload = {'connected_state': connected}
+    requests.post(api_url_dashboard_viewer_count, json = payload)
 
 # Lorsque le compteur de viewers se met à jour
 @client.on("viewer_count_update")

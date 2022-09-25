@@ -63,7 +63,6 @@ export class DashboardComponent implements OnInit {
     public connected_text_state = "Déconnecté";
 
     public connected_state: boolean = false;
-
     public viewer_count = 0;
     public max_viewer_count = 0;
     public like_count = 0;
@@ -76,6 +75,7 @@ export class DashboardComponent implements OnInit {
     public join_count = 0;
     public money_count = 0;
     public start_hour = "--h--";
+    public coinGoal = 1000;
     public chart_datas!: any[];
     public user_comment_datas: Comment[] = []
     public user_gift_datas: Gift[] = []
@@ -386,6 +386,14 @@ export class DashboardComponent implements OnInit {
             return { 'transform': 'rotate(0deg)' }
         } else {
             return { 'transform': 'rotate(-90deg)' }
+        }
+    }
+
+    getDivStyle(type: string) {
+        if (this.slideOpen[type]) {
+            return { 'transition-duration': '0.5s', 'height': 'auto' }
+        } else {
+            return {'transition-duration': '0.5s', 'height': '0' }
         }
     }
 
