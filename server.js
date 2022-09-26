@@ -116,7 +116,7 @@ router.post('/connected_state', (request, response) => {
 });
 
 router.post('/live_start_hour', (request, response) => {
-  console.log("Live start hour:" + request.body)
+  console.log("Live start hour:" + request.body.live_start_hour)
   request.app.io.emit('live_start_hour', request.body);
   response.end("Done")
 });

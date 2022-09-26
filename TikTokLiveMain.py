@@ -24,8 +24,8 @@ api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "cedriccommelabd"
-# Streamers de tests : topparty1 cedriccommelabd tiibox d.fdetalles_pirograbados
+liveName = "camille_la_danseuse"
+# Streamers de tests : topparty1 cedriccommelabd tiibox tiibox_spam d.fdetalles_pirograbados
 
 # Variables de statistiques
 nbFollow = 0
@@ -65,7 +65,7 @@ async def on_connect(_: ConnectEvent):
     global gifts
     global connected
     dateDebutLive = now
-    heureDebutLive = dateDebutLive.strftime("%Hh%Mm")
+    heureDebutLive = dateDebutLive.strftime("%Hh%M")
     for gift in client.available_gifts.values():
         gifts.append({"name" : gift.name, "coin_value" : gift.diamond_count, "image_url": gift.icon.url_list[0]})
     print(f"{heureDebutLive} : Connecté au live.")
@@ -74,15 +74,6 @@ async def on_connect(_: ConnectEvent):
     requests.post(api_url_dashboard_live_start_hour, json = payload)
     payload = {'connected_state': connected}
     requests.post(api_url_dashboard_connected_state, json = payload)
-
-@client.on("disconnect")
-async def on_disconnect(event: DisconnectEvent):
-    global connected
-    print("Déconnecté du live.")
-    stats()
-    connected = False
-    payload = {'connected_state': connected}
-    requests.post(api_url_dashboard_viewer_count, json = payload)
 
 # Lorsque le compteur de viewers se met à jour
 @client.on("viewer_count_update")
@@ -171,7 +162,7 @@ async def on_connect(event: CommentEvent):
         print(f"{now} : \033[32m{userNickname}\033[0m a dit : {userComment}")
         if(now != lastCommentHour):
             lastCommentHour = now
-            payload1 = {'comment_count': nbJoin}
+            payload1 = {'comment_count': nbComment}
             requests.post(api_url_dashboard_comment_count, json = payload1)
         payload2 = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}
         requests.post(api_url_dashboard_comment, json = payload2)
@@ -209,8 +200,7 @@ async def on_gift(event: GiftEvent):
             if event.gift.repeat_end == 1:
                 nbGift += {event.gift.repeat_count}.pop()
                 nbCoin += {event.gift.repeat_count}.pop() * giftValue
-                # print(
-                #     f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
+                print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
                 # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
                 #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()}
                 #     requests.post(api_url_stream, json = payload)
@@ -249,6 +239,17 @@ async def on_connect(event: LiveEndEvent):
     connected = False
     payload = {'connected_state': connected}
     requests.post(api_url_dashboard_viewer_count, json = payload)
+    print("Payload : Live terminé.")
+
+@client.on("disconnect")
+async def on_disconnect(event: DisconnectEvent):
+    global connected
+    print("Déconnecté du live.")
+    stats()
+    connected = False
+    payload = {'connected_state': connected}
+    requests.post(api_url_dashboard_viewer_count, json = payload)
+    print("Payload : Déconnecté du live.")
     
 def stats():
     now = datetime.datetime.now()

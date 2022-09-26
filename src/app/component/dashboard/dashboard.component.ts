@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
         "statistics": true,
         "gifts": true
     };
-
+    
     private root!: am5.Root;
     series: any;
 
@@ -302,9 +302,7 @@ export class DashboardComponent implements OnInit {
             this.connected_text_state = "Déconnecté"
         }
         // Mise en place de la date de début de live
-        if (this.start_hour === "--h--") {
-            console.log("sqdfsdfsdfsdf" + this.live_start_hour);
-            
+        if (this.start_hour != this.live_start_hour) {
             this.start_hour = this.live_start_hour;
         }
     }
