@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit {
     private _coinCountSub!: Subscription;
     private _joinCountSub!: Subscription;
     private _connectedStateSub!: Subscription;
+    private _liveNameSub!: Subscription;
     private _commentSub!: Subscription;
     private _giftSub!: Subscription;
     private _liveStartHourSub!: Subscription;
@@ -83,6 +84,7 @@ export class DashboardComponent implements OnInit {
     public coin_count = 0;
     public join_count = 0;
     public money_count = 0;
+    public live_name = ""
     public start_hour = "--h--";
     public live_start_hour = "";
     public coinGoal = 1000;
@@ -120,6 +122,11 @@ export class DashboardComponent implements OnInit {
             if (this.start_hour != this.live_start_hour) {
                 this.start_hour = this.live_start_hour;
             }
+        });
+
+        // Mise en place de la date de début de live
+        this._liveNameSub = this.statusService.liveName.subscribe(data => {
+            this.live_name = data.live_name;
         });
         
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers

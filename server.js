@@ -116,8 +116,14 @@ router.post('/connected_state', (request, response) => {
 });
 
 router.post('/live_start_hour', (request, response) => {
-  console.log("Live start hour:" + request.body.live_start_hour)
+  // console.log("Live start hour:" + request.body.live_start_hour)
   request.app.io.emit('live_start_hour', request.body);
+  response.end("Done")
+});
+
+router.post('/live_name', (request, response) => {
+  // console.log("Live name:" + request.body.live_name)
+  request.app.io.emit('live_name', request.body);
   response.end("Done")
 });
 

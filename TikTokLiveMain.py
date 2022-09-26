@@ -21,6 +21,7 @@ api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
 api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
+api_url_dashboard_live_name = 'http://localhost:8080/live_name'
 
 # Nom du live auquel vous souhaitez vous connectez
 liveName = "lyric_sander"
@@ -61,6 +62,7 @@ async def on_connect(_: ConnectEvent):
     global dateDebutLive
     global gifts
     global connected
+    global liveName
     dateDebutLive = now
     heureDebutLive = dateDebutLive.strftime("%Hh%M")
     for gift in client.available_gifts.values():
@@ -68,7 +70,8 @@ async def on_connect(_: ConnectEvent):
     print(f"{heureDebutLive} : Connecté au live.")
     connected = True
     send_payload({'live_start_hour': heureDebutLive}, api_url_dashboard_live_start_hour)
-    send_payload({'connected_state': connected}, api_url_dashboard_connected_state)  
+    send_payload({'connected_state': connected}, api_url_dashboard_connected_state)
+    send_payload({'live_name': liveName}, api_url_dashboard_live_name)
 
 # Lorsque le compteur de viewers se met à jour
 @client.on("viewer_count_update")

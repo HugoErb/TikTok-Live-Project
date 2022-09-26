@@ -28,6 +28,7 @@ export class StatusService {
   connectedState = this.socket.fromEvent < any > ('connected_state');
   liveStartHour = this.socket.fromEvent < any > ('live_start_hour');
   comment = this.socket.fromEvent < any > ('comment');
+  liveName = this.socket.fromEvent < any > ('live_name');
   gift = this.socket.fromEvent < any > ('gift');
 
   constructor(private http: HttpClient, private socket: Socket) {}
