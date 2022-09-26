@@ -238,8 +238,7 @@ async def on_connect(event: LiveEndEvent):
     stats()
     connected = False
     payload = {'connected_state': connected}
-    requests.post(api_url_dashboard_viewer_count, json = payload)
-    print("Payload : Live terminé.")
+    requests.post(api_url_dashboard_connected_state, json = payload)
 
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
@@ -248,8 +247,7 @@ async def on_disconnect(event: DisconnectEvent):
     stats()
     connected = False
     payload = {'connected_state': connected}
-    requests.post(api_url_dashboard_viewer_count, json = payload)
-    print("Payload : Déconnecté du live.")
+    requests.post(api_url_dashboard_connected_state, json = payload)
     
 def stats():
     now = datetime.datetime.now()
