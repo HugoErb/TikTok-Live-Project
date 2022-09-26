@@ -24,7 +24,7 @@ api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
 api_url_dashboard_live_name = 'http://localhost:8080/live_name'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "lyric_sander"
+liveName = "encoremohaaa"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -256,9 +256,12 @@ def stats():
 def send_payload(payload, url):
     global connected
     global heureDebutLive
+    global liveName
     requests.post(url, json = payload)
     payload_connected_state = {'connected_state': connected}
     requests.post(api_url_dashboard_connected_state, json = payload_connected_state)
+    payload_live_name = {'live_name': liveName}
+    requests.post(api_url_dashboard_live_name, json = payload_live_name)
     payload_live_start_hour = {'live_start_hour': heureDebutLive}
     requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
 

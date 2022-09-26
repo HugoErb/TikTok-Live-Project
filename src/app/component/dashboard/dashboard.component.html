@@ -15,7 +15,6 @@
 			<li><a href="#"><span class="icon">
 						<ion-icon name="settings-outline"></ion-icon>
 					</span><span class="title">Paramètres</span></a></li>
-
 		</ul>
 	</div>
 </div>
@@ -46,11 +45,12 @@
 			</div>
 			<div class="card">
 				<div>
-					<div class="numbers">{{liveName}}</div>
-					<div class="cardName"><a [href]="'https://www.tiktok.com/@{{liveName}}"" target="_blank">Hôte du live</a></div>
+					<div class="numbers"><a [href]="'https://www.tiktok.com/@' + live_name"
+							target="_blank">{{live_name}}</a></div>
+					<div class="cardName">Hôte du live</div>
 				</div>
 				<div class="iconBx">
-					<ion-icon name="cellular-outline"></ion-icon>
+					<ion-icon name="person-outline"></ion-icon>
 				</div>
 			</div>
 			<div class="card">

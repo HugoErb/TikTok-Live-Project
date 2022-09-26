@@ -126,7 +126,10 @@ export class DashboardComponent implements OnInit {
 
         // Mise en place de la date de début de live
         this._liveNameSub = this.statusService.liveName.subscribe(data => {
-            this.live_name = data.live_name;
+            console.log(data.live_name);
+            if (this.live_name != data.live_name){
+                this.live_name = data.live_name;
+            }
         });
         
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers

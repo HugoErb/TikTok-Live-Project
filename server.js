@@ -110,7 +110,7 @@ router.post('/join_count', (request, response) => {
 });
 
 router.post('/connected_state', (request, response) => {
-  console.log("Connexion:" + request.body)
+  // console.log("Connexion:" + request.body)
   request.app.io.emit('connected_state', request.body);
   response.end("Done")
 });

@@ -338,6 +338,22 @@ hr {
   color: $black2;
 }
 
+.cardBox a{
+  text-decoration: none;
+  color: $primary;
+  font-size: 0.8em;
+  margin-bottom: 6px;
+  padding-top: 7px;
+}
+
+.cardBox a:hover{
+  text-decoration: underline;
+}
+
+.cardBox .card:hover a{
+  color: $background;
+}
+
 .cardBox .card:hover .numbers,
 .cardBox .card:hover .cardName,
 .cardBox .card:hover .iconBx ion-icon{
