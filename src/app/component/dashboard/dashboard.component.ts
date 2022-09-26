@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
     private _connectedStateSub!: Subscription;
     private _commentSub!: Subscription;
     private _giftSub!: Subscription;
+    private _liveStartHourSub!: Subscription;
 
     @ViewChild("connexion") connexionDiv!: ElementRef<HTMLDivElement>;
     @ViewChild("statistics") statisticsDiv!: ElementRef<HTMLDivElement>;
@@ -94,7 +95,7 @@ export class DashboardComponent implements OnInit {
         "statistics": true,
         "gifts": true
     };
-    
+
     private root!: am5.Root;
     series: any;
 
@@ -104,11 +105,23 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(): void {
 
-        // Mise en place de l'état de connexion et de l'heure de début de live
+        // Mise en place de l'état de connexion
         this._connectedStateSub = this.statusService.connectedState.subscribe(data => {
-            this.define_connected_state(true);
+            this.connected_state = data.connected_state;
+            if (this.connected_state === true) {
+                this.connected_text_state = "Connecté";
+            } else {
+                this.connected_text_state = "Déconnecté";
+            }
         });
 
+        // Mise en place de la date de début de live
+        this._liveStartHourSub = this.statusService.liveStartHour.subscribe(data => {
+            if (this.start_hour != this.live_start_hour) {
+                this.start_hour = this.live_start_hour;
+            }
+        });
+        
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers
         this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
             console.log("Viewers : " + data.viewer_count);
@@ -119,56 +132,48 @@ export class DashboardComponent implements OnInit {
                 value: this.viewer_count
             }
             this.series.data.push(new_data);
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de vues maximum
         this._maxViewerCountSub = this.statusService.maxViewerCount.subscribe(data => {
             console.log("Max de viewers : " + data.max_viewer_count);
             this.max_viewer_count = data.max_viewer_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de likes 
         this._likeCountSub = this.statusService.likeCount.subscribe(data => {
             console.log("Likes : " + data.like_count);
             this.like_count = data.like_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de followers
         this._followerCountSub = this.statusService.followerCount.subscribe(data => {
             console.log("Followers : " + data.follower_count);
             this.follower_count = data.follower_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de subs
         this._subCountSub = this.statusService.subCount.subscribe(data => {
             console.log("Subscribers : " + data.sub_count);
             this.sub_count = data.sub_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de shares
         this._shareCountSub = this.statusService.shareCount.subscribe(data => {
             console.log("Shares : " + data.share_count);
             this.share_count = data.share_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de commentaires
         this._commentCountSub = this.statusService.commentCount.subscribe(data => {
             console.log("Comments : " + data.comment_count);
             this.comment_count = data.comment_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de gift
         this._giftCountSub = this.statusService.giftCount.subscribe(data => {
             console.log("Gifts : " + data.gift_count);
             this.gift_count = data.gift_count;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de coins
@@ -176,21 +181,18 @@ export class DashboardComponent implements OnInit {
             console.log("Coins : " + data.coin_count);
             this.coin_count = data.coin_count;
             this.money_count = data.coin_count * this.ratioRevenu;
-            this.define_connected_state(true);
         });
 
         // Mise en place du compteur de joins
         this._joinCountSub = this.statusService.joinCount.subscribe(data => {
             console.log("Joins : " + data.join_count);
             this.join_count = data.join_count;
-            this.define_connected_state(true);
         });
-        
+
         // Mise en place de l'heure de début de live
         this._joinCountSub = this.statusService.liveStartHour.subscribe(data => {
             console.log("Live start hour : " + data.live_start_hour);
             this.live_start_hour = data.live_start_hour;
-            this.define_connected_state(true);
         });
 
         // Mise en place du chat
@@ -201,7 +203,6 @@ export class DashboardComponent implements OnInit {
                 this.user_comment_datas.shift();
                 this.user_comment_datas.push(data);
             }
-            this.define_connected_state(true);
         });
 
         // Mise en place du tableau des gifts
@@ -214,7 +215,6 @@ export class DashboardComponent implements OnInit {
             }
         });
     }
-
 
     ngAfterViewInit() {
         this.connexionDivHeight = this.connexionDiv.nativeElement.clientHeight;
@@ -289,21 +289,6 @@ export class DashboardComponent implements OnInit {
             this.zone.runOutsideAngular(() => {
                 f();
             });
-        }
-    }
-
-    /****************************************** Connected Cardbox *******************************************/
-
-    define_connected_state(connected_state: boolean) {
-        this.connected_state = connected_state;
-        if (connected_state === true) {
-            this.connected_text_state = "Connecté"
-        } else {
-            this.connected_text_state = "Déconnecté"
-        }
-        // Mise en place de la date de début de live
-        if (this.start_hour != this.live_start_hour) {
-            this.start_hour = this.live_start_hour;
         }
     }
 

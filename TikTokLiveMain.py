@@ -4,7 +4,6 @@ from TikTokLive.types.events import CommentEvent, ConnectEvent, FollowEvent, Sha
 from TikTokLive.types.errors import FailedConnection, LiveNotFound
 from TikTokLive.types import User
 import datetime
-import time
 import requests
 
 api_url_stream = 'http://localhost:8080/stream'
@@ -24,8 +23,8 @@ api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "camille_la_danseuse"
-# Streamers de tests : topparty1 cedriccommelabd tiibox tiibox_spam d.fdetalles_pirograbados
+liveName = "lyric_sander"
+# Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
 nbFollow = 0
@@ -44,8 +43,6 @@ heureDebutLive = ""
 dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
-lastJoinHour = ""
-lastCommentHour = ""
 gifts = []
 connected = False
 
@@ -70,10 +67,8 @@ async def on_connect(_: ConnectEvent):
         gifts.append({"name" : gift.name, "coin_value" : gift.diamond_count, "image_url": gift.icon.url_list[0]})
     print(f"{heureDebutLive} : Connecté au live.")
     connected = True
-    payload = {'live_start_hour': heureDebutLive}
-    requests.post(api_url_dashboard_live_start_hour, json = payload)
-    payload = {'connected_state': connected}
-    requests.post(api_url_dashboard_connected_state, json = payload)
+    send_payload({'live_start_hour': heureDebutLive}, api_url_dashboard_live_start_hour)
+    send_payload({'connected_state': connected}, api_url_dashboard_connected_state)  
 
 # Lorsque le compteur de viewers se met à jour
 @client.on("viewer_count_update")
@@ -88,10 +83,8 @@ async def on_connect(event: ViewerCountUpdateEvent):
         if (event.viewerCount != lastNbViewers):
             lastNbViewers = event.viewerCount 
             print(f"{now} : Viewers :", event.viewerCount)
-            payload = {'viewer_count': event.viewerCount}
-            requests.post(api_url_dashboard_viewer_count, json = payload)
-            payload = {'max_viewer_count': maxViewers}
-            requests.post(api_url_dashboard_max_viewer_count, json = payload)        
+            send_payload({'viewer_count': event.viewerCount}, api_url_dashboard_viewer_count)  
+            send_payload({'max_viewer_count': maxViewers}, api_url_dashboard_max_viewer_count)      
 
 # Lorsqu'un utilisateur follow le live
 @client.on("follow")
@@ -102,8 +95,7 @@ async def on_follow(event: FollowEvent):
         global nbFollow
         nbFollow += 1
         print(f"{now} : \033[32m{event.user.uniqueId}\033[0m a follow l'hôte.")
-        payload = {'follower_count': nbFollow}
-        requests.post(api_url_dashboard_follower_count, json = payload)
+        send_payload({'follower_count': nbFollow}, api_url_dashboard_follower_count)
 
 # Lorsqu'un utilisateur like le live
 @client.on("like")
@@ -114,11 +106,10 @@ async def on_like(event: LikeEvent):
         global nbLike
         global lastLikedUser
         nbLike += 1
-        payload = {'like_count': nbLike}
-        requests.post(api_url_dashboard_like_count, json = payload)
         if {event.user.uniqueId} != lastLikedUser:
             lastLikedUser = {event.user.uniqueId}
             print(f"{now} : \033[32m{event.user.uniqueId}\033[0m a liké le live.")
+        send_payload({'like_count': nbLike}, api_url_dashboard_like_count)
 
 # Lorsqu'un utilisateur partage le live
 @client.on("share")
@@ -129,8 +120,8 @@ async def on_share(event: ShareEvent):
         global nbShare
         nbShare += 1
         print(f"{now} : \033[32m{event.user.uniqueId}\033[0m a partagé le live.")
-        payload = {'share_count': nbShare}
-        requests.post(api_url_dashboard_share_count, json = payload)
+        send_payload({'share_count': nbShare}, api_url_dashboard_share_count)
+        
 
 # Lorsqu'un utilisateur rejoint le live
 @client.on("join")
@@ -138,13 +129,9 @@ async def on_join(event: JoinEvent):
     global connected
     if (connected == True):
         now = datetime.datetime.now().strftime("%H:%M")
-        global lastJoinHour
         global nbJoin
         nbJoin += 1
-        if(now != lastJoinHour):
-            lastJoinHour = now
-            payload = {'join_count': nbJoin}
-            requests.post(api_url_dashboard_join_count, json = payload)
+        send_payload({'join_count': nbJoin}, api_url_dashboard_join_count)
         # print(f"{now.hour}:{now.minute}:\033[32m{event.user.uniqueId}\033[0m a rejoint le live.")
 
 # Lorsqu'un utilisateur envoie un message sur le live
@@ -154,18 +141,13 @@ async def on_connect(event: CommentEvent):
     if (connected == True):
         now = datetime.datetime.now().strftime("%H:%M:%S")
         global nbComment
-        global lastCommentHour
         nbComment += 1
         userProfilePicture = event.user.profilePicture.urls[-1]
         userNickname = event.user.nickname
         userComment = event.comment
         print(f"{now} : \033[32m{userNickname}\033[0m a dit : {userComment}")
-        if(now != lastCommentHour):
-            lastCommentHour = now
-            payload1 = {'comment_count': nbComment}
-            requests.post(api_url_dashboard_comment_count, json = payload1)
-        payload2 = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}
-        requests.post(api_url_dashboard_comment, json = payload2)
+        send_payload({'comment_count': nbComment}, api_url_dashboard_comment_count)
+        send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}, api_url_dashboard_comment)
 
 # Lorsqu'un utilisateur s'abonne au live
 @client.on("subscribe")
@@ -177,8 +159,7 @@ async def on_connect(event: SubscribeEvent):
         nbSub += 1
         userNickname = event.user.nickname
         print(f"{now} : \033[32m{userNickname}\033[0m s'est abonné au live.")
-        payload = {'sub_count': nbSub}
-        requests.post(api_url_dashboard_sub_count, json = payload)
+        send_payload({'sub_count': nbSub}, api_url_dashboard_sub_count)
 
 # Lorsqu'un utilisateur envoie un cadeau
 @client.on("gift")
@@ -206,29 +187,24 @@ async def on_gift(event: GiftEvent):
                 #     requests.post(api_url_stream, json = payload)
                 #     girlCounter += {event.gift.repeat_count}.pop() 
                 #     print(girlCounter)
-                payload = {'gift_count': nbGift}
-                requests.post(api_url_dashboard_gift_count, json = payload)
-                payload = {'coin_count': nbCoin}
-                requests.post(api_url_dashboard_coin_count, json = payload)
-                payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
-                requests.post(api_url_dashboard_gift, json = payload)
+                send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
+                send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
+                send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
+
 
         # Gift non streakable, on fait donc la suite directement
         else:
-            print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
             nbGift += 1
             nbCoin += giftValue
+            print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
             # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
             #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': 1}
             #     requests.post(api_url_stream, json = payload)
             #     girlCounter += 1
             #     print(girlCounter)
-            payload = {'gift_count': nbGift}
-            requests.post(api_url_dashboard_gift_count, json = payload)
-            payload = {'coin_count': nbCoin}
-            requests.post(api_url_dashboard_coin_count, json = payload)
-            payload = {'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}
-            requests.post(api_url_dashboard_gift, json = payload)
+            send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
+            send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
+            send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
 
 # Lorsque le live se termine
 @client.on("live_end")
@@ -273,6 +249,15 @@ def stats():
     print(f"Personnes ayant rejoint : {nbJoin}")
     print(f"Commentaires : {nbComment}")
     print("---------------------------------------------------------------------")
+
+def send_payload(payload, url):
+    global connected
+    global heureDebutLive
+    requests.post(url, json = payload)
+    payload_connected_state = {'connected_state': connected}
+    requests.post(api_url_dashboard_connected_state, json = payload_connected_state)
+    payload_live_start_hour = {'live_start_hour': heureDebutLive}
+    requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
 
 # @client.on("error")
 # async def on_connect(error: Exception):
