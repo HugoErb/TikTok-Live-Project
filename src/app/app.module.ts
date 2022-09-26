@@ -23,6 +23,7 @@ import {
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { FrnumberPipe } from './pipe/frnumber.pipe';
 import { RoundfrnumberPipe } from './pipe/roundfrnumber.pipe';
+import { LiveComponent } from './component/live/live.component';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:8080',
@@ -34,7 +35,8 @@ const config: SocketIoConfig = {
     AppComponent,
     DashboardComponent,
     FrnumberPipe,
-    RoundfrnumberPipe
+    RoundfrnumberPipe,
+    LiveComponent
   ],
   imports: [
     BrowserModule,
