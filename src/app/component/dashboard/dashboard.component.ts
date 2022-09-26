@@ -33,6 +33,7 @@ import {
 import {
     loadFull
 } from "tsparticles";
+import { Config } from '../../config/config';
 
 // amCharts imports
 import * as am5 from '@amcharts/amcharts5';
@@ -46,6 +47,7 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 })
 export class DashboardComponent implements OnInit {
 
+    // Sub global variables
     private _viewerCountSub!: Subscription;
     private _maxViewerCountSub!: Subscription;
     private _likeCountSub!: Subscription;
@@ -62,13 +64,8 @@ export class DashboardComponent implements OnInit {
     private _giftSub!: Subscription;
     private _liveStartHourSub!: Subscription;
 
-    @ViewChild("connexion") connexionDiv!: ElementRef<HTMLDivElement>;
-    @ViewChild("statistics") statisticsDiv!: ElementRef<HTMLDivElement>;
-    @ViewChild("gifts") giftsDiv!: ElementRef<HTMLDivElement>;
-    public connexionDivHeight!: number;
-    public statisticsDivHeight!: number;
-    public giftsDivHeight!: number;
-
+    
+    // Miscellaneous dashboard global variables
     public ratioRevenu = 0.01285714286;
     public connected_icon = "checkmark-circle-outline";
     public connected_text_state = "Déconnecté";
@@ -87,20 +84,39 @@ export class DashboardComponent implements OnInit {
     public live_name = ""
     public start_hour = "--h--";
     public live_start_hour = "";
-    public coinGoal = 1000;
-    public chart_datas!: any[];
+
+    // Global variables from config file
+    public darkmode!:string;
+    public theme!:string;
+    public particlesEnabled!:string;
+    public particlesType!:string;
+    public coinGoal!:number;
+    public backgroundColor!:string;
+    public primaryColor!:string;
+    
+    // Dashboard tables global variables
     public user_comment_datas: Comment[] = []
     public user_gift_datas: Gift[] = []
 
+    // Chevrons and separator global variables
     slideOpen: any = {
         "connexion": true,
         "statistics": true,
         "gifts": true
     };
+    @ViewChild("connexion") connexionDiv!: ElementRef<HTMLDivElement>;
+    @ViewChild("statistics") statisticsDiv!: ElementRef<HTMLDivElement>;
+    @ViewChild("gifts") giftsDiv!: ElementRef<HTMLDivElement>;
+    public connexionDivHeight!: number;
+    public statisticsDivHeight!: number;
+    public giftsDivHeight!: number;
 
+    // Charts global variables
+    public chart_datas!: any[];
     private root!: am5.Root;
     series: any;
 
+    // Particles global variables
     id = "tsparticles";
 
     constructor(private statusService: StatusService, @Inject(PLATFORM_ID) private platformId: Object, private zone: NgZone) { }
@@ -127,11 +143,11 @@ export class DashboardComponent implements OnInit {
         // Mise en place de la date de début de live
         this._liveNameSub = this.statusService.liveName.subscribe(data => {
             console.log(data.live_name);
-            if (this.live_name != data.live_name){
+            if (this.live_name != data.live_name) {
                 this.live_name = data.live_name;
             }
         });
-        
+
         // Mise en place du compteur de vues + màj du graphique du nombre de viewers
         this._viewerCountSub = this.statusService.viewerCount.subscribe(data => {
             console.log("Viewers : " + data.viewer_count);
@@ -227,11 +243,14 @@ export class DashboardComponent implements OnInit {
     }
 
     ngAfterViewInit() {
+
+        /****************************************** // Chevrons and separator config *******************************************/
+
         this.connexionDivHeight = this.connexionDiv.nativeElement.clientHeight;
         this.statisticsDivHeight = this.statisticsDiv.nativeElement.clientHeight;
         this.giftsDivHeight = this.giftsDiv.nativeElement.clientHeight;
 
-        // Config du graphique du nombre de viewers
+        /****************************************** Chart Config *******************************************/
         this.browserOnly(() => {
             let root = am5.Root.new("chartdiv");
 
@@ -302,7 +321,7 @@ export class DashboardComponent implements OnInit {
         }
     }
 
-    /****************************************** Particles *******************************************/
+    /****************************************** Particles config *******************************************/
     particlesOptions = {
         background: {
             color: {
