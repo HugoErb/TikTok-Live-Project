@@ -24,8 +24,6 @@ import {
 } from '@angular/common';
 import {
     MoveDirection,
-    ClickMode,
-    HoverMode,
     OutMode,
     Container,
     Engine
