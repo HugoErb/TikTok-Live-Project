@@ -24,7 +24,7 @@ api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
 api_url_dashboard_live_name = 'http://localhost:8080/live_name'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "encoremohaaa"
+liveName = "coachhamond"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -190,6 +190,8 @@ async def on_gift(event: GiftEvent):
                 #     requests.post(api_url_stream, json = payload)
                 #     girlCounter += {event.gift.repeat_count}.pop() 
                 #     print(girlCounter)
+                userRank = event.user.top_gifter_rank
+                print(userRank)
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)

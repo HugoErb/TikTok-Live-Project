@@ -141,7 +141,7 @@ export class DashboardComponent implements OnInit {
                 this.start_hour_to_date.setHours(parseInt(this.start_hour.slice(0, 2)));
                 this.start_hour_to_date.setMinutes(parseInt(this.start_hour.slice(3, 5)));
             }
-            this.temps_ecoule = new Date().getTime() - this.start_hour_to_date.getTime();
+            this.temps_ecoule = this.msToTime(new Date().getTime() - this.start_hour_to_date.getTime());
         });
 
         // Mise en place du nom de l'hôte du live
@@ -329,14 +329,6 @@ export class DashboardComponent implements OnInit {
         fpsLimit: 165,
         interactivity: {
             events: {
-                onClick: {
-                    enable: false,
-                    mode: ClickMode.push
-                },
-                onHover: {
-                    enable: false,
-                    mode: HoverMode.repulse
-                },
                 resize: true
             },
             modes: {
@@ -435,6 +427,17 @@ export class DashboardComponent implements OnInit {
         } else {
             return { 'max-height': '0' }
         }
+    }
+
+    msToTime(duration: number) {
+        let seconds = Math.floor((duration / 1000) % 60);
+        let minutes = Math.floor((duration / (1000 * 60)) % 60);
+        let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+        let hoursResult = (hours < 10) ? "0" + hours : hours;
+        let minutesResult = (minutes < 10) ? "0" + minutes : minutes;
+        let secondsResult = (seconds < 10) ? "0" + seconds : seconds;
+
+        return hoursResult + ":" + minutesResult + ":" + secondsResult;
     }
 
     /****************************************** Destroy *******************************************/

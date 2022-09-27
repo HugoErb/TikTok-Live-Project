@@ -14,7 +14,12 @@ import {
   templateUrl: './live.component.html',
   styleUrls: ['./live.component.scss']
 })
+
+
 export class LiveComponent implements OnInit {
+  
+  // Particles global variables
+  id = "tsparticles";
 
   constructor() { }
 
