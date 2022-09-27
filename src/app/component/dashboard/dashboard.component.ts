@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
     private _giftSub!: Subscription;
     private _liveStartHourSub!: Subscription;
 
-    
+
     // Miscellaneous dashboard global variables
     public ratioRevenu = 0.01285714286;
     public connected_icon = "checkmark-circle-outline";
@@ -83,17 +83,18 @@ export class DashboardComponent implements OnInit {
     public money_count = 0;
     public live_name = ""
     public start_hour = "--h--";
-    public live_start_hour = "";
+    public start_hour_to_date!: Date;
+    public temps_ecoule!: any;
 
     // Global variables from config file
-    public darkmode!:string;
-    public theme!:string;
-    public particlesEnabled!:string;
-    public particlesType!:string;
-    public coinGoal!:number;
-    public backgroundColor!:string;
-    public primaryColor!:string;
-    
+    public darkmode!: string;
+    public theme!: string;
+    public particlesEnabled!: string;
+    public particlesType!: string;
+    public coinGoal!: number;
+    public backgroundColor!: string;
+    public primaryColor!: string;
+
     // Dashboard tables global variables
     public user_comment_datas: Comment[] = []
     public user_gift_datas: Gift[] = []
@@ -135,12 +136,17 @@ export class DashboardComponent implements OnInit {
 
         // Mise en place de la date de début de live
         this._liveStartHourSub = this.statusService.liveStartHour.subscribe(data => {
-            if (this.start_hour != this.live_start_hour) {
-                this.start_hour = this.live_start_hour;
+            // console.log("Live start hour : " + data.live_start_hour);
+            if (this.start_hour != data.live_start_hour) {
+                this.start_hour = data.live_start_hour;
+                this.start_hour_to_date = new Date();
+                this.start_hour_to_date.setHours(parseInt(this.start_hour.slice(0, 2)));
+                this.start_hour_to_date.setMinutes(parseInt(this.start_hour.slice(3, 5)));
             }
+            this.temps_ecoule = new Date().getTime() - this.start_hour_to_date.getTime();
         });
 
-        // Mise en place de la date de début de live
+        // Mise en place du nom de l'hôte du live
         this._liveNameSub = this.statusService.liveName.subscribe(data => {
             console.log(data.live_name);
             if (this.live_name != data.live_name) {
@@ -215,12 +221,6 @@ export class DashboardComponent implements OnInit {
             this.join_count = data.join_count;
         });
 
-        // Mise en place de l'heure de début de live
-        this._joinCountSub = this.statusService.liveStartHour.subscribe(data => {
-            console.log("Live start hour : " + data.live_start_hour);
-            this.live_start_hour = data.live_start_hour;
-        });
-
         // Mise en place du chat
         this._commentSub = this.statusService.comment.subscribe((data: Comment) => {
             if (this.user_comment_datas.length < 9) {
@@ -244,7 +244,7 @@ export class DashboardComponent implements OnInit {
 
     ngAfterViewInit() {
 
-        /****************************************** // Chevrons and separator config *******************************************/
+        /****************************************** Chevrons and separator config *******************************************/
 
         this.connexionDivHeight = this.connexionDiv.nativeElement.clientHeight;
         this.statisticsDivHeight = this.statisticsDiv.nativeElement.clientHeight;
@@ -405,7 +405,7 @@ export class DashboardComponent implements OnInit {
         await loadFull(engine);
     }
 
-    /****************************************** Chevrons et div refermables *******************************************/
+    /*************************************** Chevrons et div refermables ****************************************/
 
     changeSlide(type: string): void {
         this.slideOpen[type] = !this.slideOpen[type];
