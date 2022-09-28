@@ -458,7 +458,7 @@ hr {
 
 /****************************************** Chat and Top Contributors *******************************************/
 
-.chat {
+.chat, .top_gifters {
   position: relative;
   display: grid;
   height: 650px;
@@ -486,7 +486,20 @@ hr {
   overflow: hidden;
 }
 
-.chat .imgBx img {
+.top_gifters .imgBx {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  overflow: hidden;
+}
+
+.chat .imgBx img,
+.top_gifters .imgBx img{
   position: absolute;
   top: 0;
   left: 0;
@@ -495,12 +508,14 @@ hr {
   object-fit: cover;
 }
 
-.chat table tr:hover {
+.chat table tr:hover,
+.top_gifters table tr:hover{
   background: $primary;
   color: $background;
 }
 
-.chat table tr td {
+.chat table tr td,
+.top_gifters tr td {
   padding: 10px 10px;
 }
 
@@ -508,6 +523,27 @@ hr {
   font-size: 16px;
   font-weight: 500;
   line-height: 1.2em;
+}
+
+.top_gifters tr td h4 {
+  font-size: 1.2em;
+  font-weight: 500;
+  line-height: 1.5em;
+}
+
+#trophy_first{
+  color: #FFD700;
+  font-size: 5em;
+}
+
+#trophy_second{
+  color: #C0C0C0;
+  font-size: 5em;
+}
+
+#trophy_third{
+  color: #CD7F32;
+  font-size: 5em;
 }
 
 /****************************************** Responsive *******************************************/

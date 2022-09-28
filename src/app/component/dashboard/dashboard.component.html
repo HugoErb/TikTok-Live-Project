@@ -269,12 +269,27 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="chat">
+			<div class="top_gifters">
 				<div class="cardHeader">
 					<h2>Top Contributeurs</h2>
 				</div>
 				<table>
-
+					<tr *ngFor="let item of user_top_gifters_datas.reverse(); let index = index">
+						<td width="60px">
+							<div class="imgBx"><img src="{{item.user_profile_picture}}"></div>
+						</td>
+						<td>
+							<h4>{{item.user_nickname}}</h4>
+							<p>{{item.user_total_coins_gifted}} coins</p>
+						</td>
+						<td>
+							<div *ngIf="index == 0; then thenBlock else elseBlock"></div>
+							<ng-template #thenBlock><ion-icon name="trophy-outline" id="trophy_first"></ion-icon></ng-template>
+							<ng-template #elseBlock><div *ngIf="index == 1; then thenBlock1 else elseBlock1"></div></ng-template>
+							<ng-template #thenBlock1><ion-icon name="trophy-outline" id="trophy_second"></ion-icon></ng-template>
+							<ng-template #elseBlock1><ion-icon name="trophy-outline" id="trophy_third"></ion-icon></ng-template>
+						</td>
+					</tr>
 				</table>
 			</div>
 		</div>

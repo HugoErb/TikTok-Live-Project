@@ -110,7 +110,7 @@ router.post('/join_count', (request, response) => {
 });
 
 router.post('/connected_state', (request, response) => {
-  // console.log("Connexion:" + request.body)
+  // console.log("Connexion:" + request.body.connected_state)
   request.app.io.emit('connected_state', request.body);
   response.end("Done")
 });
@@ -124,6 +124,12 @@ router.post('/live_start_hour', (request, response) => {
 router.post('/live_name', (request, response) => {
   // console.log("Live name:" + request.body.live_name)
   request.app.io.emit('live_name', request.body);
+  response.end("Done")
+});
+
+router.post('/top_gifters', (request, response) => {
+  // console.log("Live name:" + request.body.top_gifters)
+  request.app.io.emit('top_gifters', request.body);
   response.end("Done")
 });
 

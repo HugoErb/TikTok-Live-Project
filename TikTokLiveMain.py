@@ -25,7 +25,7 @@ api_url_dashboard_live_name = 'http://localhost:8080/live_name'
 api_url_dashboard_top_gifters = 'http://localhost:8080/top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "tiibox"
+liveName = "cedriccommelabd"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -163,7 +163,7 @@ async def on_connect(event: SubscribeEvent):
         now = datetime.datetime.now().strftime("%H:%M:%S")
         global nbSub
         nbSub += 1
-        userNickname = event.user.nickname
+        userNickname = event.user.uniqueId
         print(f"{now} : \033[32m{userNickname}\033[0m s'est abonné au live.")
         send_payload({'sub_count': nbSub}, api_url_dashboard_sub_count)
 
@@ -323,22 +323,20 @@ def set_top_gifters(potential_new_top_gifter):
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-        if(len(top_gifters) > 1):
-            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     else:
         # Si l'utilisateur n'est pas un top contributeur
         if not user:
-            for top_gifter in top_gifters:
-                if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifter['user_total_coins_gifted']):
-                    top_gifters.remove(top_gifter)
+                if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifters[0]['user_total_coins_gifted']):
+                    del top_gifters[0]
                     top_gifters.append(potential_new_top_gifter)
-                    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
-                    break
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
-            top_gifters[user_index] = user           
+            top_gifters[user_index] = user
+    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+    print(top_gifters)
+    send_payload(top_gifters, api_url_dashboard_top_gifters)     
 
 # @client.on("error")
 # async def on_connect(error: Exception):
@@ -356,6 +354,3 @@ if __name__ == '__main__':
     Fonction main : lance le client et bloque le thread principal
     """
     client.run()
-
-    
-    

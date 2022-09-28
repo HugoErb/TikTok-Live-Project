@@ -30,6 +30,7 @@ export class StatusService {
   comment = this.socket.fromEvent < any > ('comment');
   liveName = this.socket.fromEvent < any > ('live_name');
   gift = this.socket.fromEvent < any > ('gift');
+  topGifters = this.socket.fromEvent < any > ('top_gifters');
 
   constructor(private http: HttpClient, private socket: Socket) {}
 
