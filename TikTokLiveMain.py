@@ -45,6 +45,7 @@ dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
 gifts = []
+gifters = []
 connected = False
 
 # Constantes 
@@ -178,8 +179,9 @@ async def on_gift(event: GiftEvent):
         giftValue = next(z["coin_value"] for z in gifts if z["name"] == {event.gift.extended_gift.name}.pop())
         userProfilePicture = event.user.profilePicture.urls[-1]
         userNickname = event.user.nickname
+        userID = event.user.uniqueId
 
-        # Gift streakable, on attend donc que la streak soit finie 
+        # Gift streakable, on attend donc que la streak soit finie
         if event.gift.gift_type == 1:
             if event.gift.repeat_end == 1:
                 nbGift += {event.gift.repeat_count}.pop()
@@ -190,12 +192,10 @@ async def on_gift(event: GiftEvent):
                 #     requests.post(api_url_stream, json = payload)
                 #     girlCounter += {event.gift.repeat_count}.pop() 
                 #     print(girlCounter)
-                userRank = event.user.top_gifter_rank
-                print(userRank)
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-
+                check_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
 
         # Gift non streakable, on fait donc la suite directement
         else:
@@ -210,6 +210,7 @@ async def on_gift(event: GiftEvent):
             send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
             send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
             send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
+            check_gifters({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
 
 # Lorsque le live se termine
 @client.on("live_end")
@@ -231,6 +232,9 @@ async def on_disconnect(event: DisconnectEvent):
     requests.post(api_url_dashboard_connected_state, json = payload)
     
 def stats():
+    """
+    Affiche les statistiques du live
+    """
     now = datetime.datetime.now()
     global dateFinLive
     global dateDebutLive
@@ -256,6 +260,14 @@ def stats():
     print("---------------------------------------------------------------------")
 
 def send_payload(payload, url):
+    """
+    Envoie le payload reçu en paramètre, sur l'url reçue en paramètre.
+    Envoie également l'état de la connexion, le nom du live et l'heure de connexion du live au dashboard afin de le garder à jour.
+
+    Args:
+        payload (dict): payload à envoyer
+        url (string): url sur laquelle doit être envoyée le payload (dashboard ou live)
+    """
     global connected
     global heureDebutLive
     global liveName
@@ -266,6 +278,32 @@ def send_payload(payload, url):
     requests.post(api_url_dashboard_live_name, json = payload_live_name)
     payload_live_start_hour = {'live_start_hour': heureDebutLive}
     requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
+
+def check_gifters(potential_new_gifter):
+    """
+    Cherche si le donateur actuel est déjà connu de la liste des donateurs.
+    Si oui, on augmente son nombre de coins envoyées.
+    Sinon, on l'ajoute à la liste des donateurs.
+
+    Args:
+        potential_new_gifter (dict): données du donateur actuel
+    """
+    global gifters
+    user_id_to_check = potential_new_gifter['user_ID']
+
+def get_dict_from_list(dict_list, id_key, value):
+    """
+    extrait un dictionnaire d'une liste de dictionnaire en fonction d'une clé et d'une valeur
+    Args:
+        dict_list:
+        id_key:
+        value:
+
+    Returns:
+
+    """
+    my_item = next((item for item in dict_list if item[id_key] == value), None)
+    return my_item
 
 # @client.on("error")
 # async def on_connect(error: Exception):
@@ -279,8 +317,9 @@ def send_payload(payload, url):
 
 # Fonction main
 if __name__ == '__main__':
-    # Run the client and block the main thread
-    # await client.start() to run non-blocking
+    """
+    Fonction main : lance le client et bloque le thread principal
+    """
     client.run()
 
     
