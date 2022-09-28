@@ -22,9 +22,10 @@ api_url_dashboard_join_count = 'http://localhost:8080/join_count'
 api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
 api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
 api_url_dashboard_live_name = 'http://localhost:8080/live_name'
+api_url_dashboard_top_gifters = 'http://localhost:8080/top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "coachhamond"
+liveName = "tiibox"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -46,6 +47,7 @@ dateFinLive = ""
 lastLikedUser = ""
 gifts = []
 gifters = []
+top_gifters = []
 connected = False
 
 # Constantes 
@@ -195,7 +197,7 @@ async def on_gift(event: GiftEvent):
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-                check_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
+                set_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
 
         # Gift non streakable, on fait donc la suite directement
         else:
@@ -210,7 +212,7 @@ async def on_gift(event: GiftEvent):
             send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
             send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
             send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-            check_gifters({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
+            set_gifters({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
 
 # Lorsque le live se termine
 @client.on("live_end")
@@ -279,7 +281,7 @@ def send_payload(payload, url):
     payload_live_start_hour = {'live_start_hour': heureDebutLive}
     requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
 
-def check_gifters(potential_new_gifter):
+def set_gifters(potential_new_gifter):
     """
     Cherche si le donateur actuel est déjà connu de la liste des donateurs.
     Si oui, on augmente son nombre de coins envoyées.
@@ -290,20 +292,53 @@ def check_gifters(potential_new_gifter):
     """
     global gifters
     user_id_to_check = potential_new_gifter['user_ID']
+    user = next((item for item in gifters if item['user_ID'] == user_id_to_check), None)
+    if not user:
+        gifters.append(potential_new_gifter)
+        set_top_gifters(potential_new_gifter)
+    else:
+        user_index = gifters.index(user)
+        user['user_total_coins_gifted'] += potential_new_gifter['user_total_coins_gifted']
+        gifters[user_index] = user
+        set_top_gifters(user)
 
-def get_dict_from_list(dict_list, id_key, value):
+def set_top_gifters(potential_new_top_gifter):
     """
-    extrait un dictionnaire d'une liste de dictionnaire en fonction d'une clé et d'une valeur
+    Cherche si le donateur actuel est déjà connu de la liste des top donateurs.
+    Si oui, on augmente son nombre de coins envoyées.
+    Sinon, on l'ajoute à la liste des donateurs si il en fait partie.
+
     Args:
-        dict_list:
-        id_key:
-        value:
-
-    Returns:
-
+        potential_new_top_gifter (dict): données du donateur actuel
     """
-    my_item = next((item for item in dict_list if item[id_key] == value), None)
-    return my_item
+    global top_gifters
+    user = next((item for item in top_gifters if item['user_ID'] == potential_new_top_gifter['user_ID']), None)
+    # Si on a pas encore complètement rempli le tableau
+    if(len(top_gifters) < 3):
+        # Si l'utilisateur n'est pas un top contributeur
+        if not user:
+            top_gifters.append(potential_new_top_gifter)
+        # Si l'utilisateur est déjà un top contributeur
+        else:
+            user_index = top_gifters.index(user)
+            user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
+            top_gifters[user_index] = user
+        if(len(top_gifters) > 1):
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+    else:
+        # Si l'utilisateur n'est pas un top contributeur
+        if not user:
+            for top_gifter in top_gifters:
+                if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifter['user_total_coins_gifted']):
+                    top_gifters.remove(top_gifter)
+                    top_gifters.append(potential_new_top_gifter)
+                    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+                    break
+        # Si l'utilisateur est déjà un top contributeur
+        else:
+            user_index = top_gifters.index(user)
+            user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
+            top_gifters[user_index] = user           
 
 # @client.on("error")
 # async def on_connect(error: Exception):
