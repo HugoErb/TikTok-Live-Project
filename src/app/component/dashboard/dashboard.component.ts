@@ -236,7 +236,7 @@ export class DashboardComponent implements OnInit {
 
         // Mise en place du tableau des gifts
         this._giftSub = this.statusService.gift.subscribe((data: Gift) => {
-            if (this.user_gift_datas.length < 9) {
+            if (this.user_gift_datas.length < 10) {
                 this.user_gift_datas.push(data);
             } else {
                 this.user_gift_datas.shift();

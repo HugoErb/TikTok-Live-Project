@@ -25,7 +25,7 @@ api_url_dashboard_live_name = 'http://localhost:8080/live_name'
 api_url_dashboard_top_gifters = 'http://localhost:8080/top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "cedriccommelabd"
+liveName = "tiibox"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -46,7 +46,6 @@ dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
 gifts = []
-gifters = []
 top_gifters = []
 connected = False
 
@@ -197,7 +196,7 @@ async def on_gift(event: GiftEvent):
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-                set_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
+                set_top_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
 
         # Gift non streakable, on fait donc la suite directement
         else:
@@ -212,7 +211,7 @@ async def on_gift(event: GiftEvent):
             send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
             send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
             send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-            set_gifters({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
+            set_top_gifters({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
 
 # Lorsque le live se termine
 @client.on("live_end")
@@ -281,27 +280,6 @@ def send_payload(payload, url):
     payload_live_start_hour = {'live_start_hour': heureDebutLive}
     requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
 
-def set_gifters(potential_new_gifter):
-    """
-    Cherche si le donateur actuel est déjà connu de la liste des donateurs.
-    Si oui, on augmente son nombre de coins envoyées.
-    Sinon, on l'ajoute à la liste des donateurs.
-
-    Args:
-        potential_new_gifter (dict): données du donateur actuel
-    """
-    global gifters
-    user_id_to_check = potential_new_gifter['user_ID']
-    user = next((item for item in gifters if item['user_ID'] == user_id_to_check), None)
-    if not user:
-        gifters.append(potential_new_gifter)
-        set_top_gifters(potential_new_gifter)
-    else:
-        user_index = gifters.index(user)
-        user['user_total_coins_gifted'] += potential_new_gifter['user_total_coins_gifted']
-        gifters[user_index] = user
-        set_top_gifters(user)
-
 def set_top_gifters(potential_new_top_gifter):
     """
     Cherche si le donateur actuel est déjà connu de la liste des top donateurs.
@@ -317,26 +295,29 @@ def set_top_gifters(potential_new_top_gifter):
     if(len(top_gifters) < 3):
         # Si l'utilisateur n'est pas un top contributeur
         if not user:
-            top_gifters.append(potential_new_top_gifter)
+            top_gifters.insert(0,potential_new_top_gifter)
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+    # Si on a déjà 3 top contributeurs
     else:
         # Si l'utilisateur n'est pas un top contributeur
         if not user:
                 if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifters[0]['user_total_coins_gifted']):
                     del top_gifters[0]
-                    top_gifters.append(potential_new_top_gifter)
+                    top_gifters.insert(0,potential_new_top_gifter)
+                    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
-    print(top_gifters)
-    send_payload(top_gifters, api_url_dashboard_top_gifters)     
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+    send_payload(top_gifters, api_url_dashboard_top_gifters)
 
 # @client.on("error")
 # async def on_connect(error: Exception):

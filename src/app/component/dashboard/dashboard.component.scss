@@ -514,9 +514,19 @@ hr {
   color: $background;
 }
 
-.chat table tr td,
-.top_gifters tr td {
+.chat table tr td{
   padding: 10px 10px;
+}
+
+.top_gifters tr td{
+  padding-top: 12%;
+  padding-bottom: 12%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.top_gifters{
+  overflow: hidden;
 }
 
 .chat table tr td h4 {
@@ -531,19 +541,21 @@ hr {
   line-height: 1.5em;
 }
 
+.trophy{
+  font-size: 4.9em;
+  float: right;
+}
+
 #trophy_first{
   color: #FFD700;
-  font-size: 5em;
 }
 
 #trophy_second{
   color: #C0C0C0;
-  font-size: 5em;
 }
 
 #trophy_third{
   color: #CD7F32;
-  font-size: 5em;
 }
 
 /****************************************** Responsive *******************************************/
