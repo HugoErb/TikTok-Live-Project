@@ -6,23 +6,24 @@ from TikTokLive.types import User
 import datetime
 import requests
 
-api_url_stream = 'http://localhost:8080/stream'
-api_url_dashboard_viewer_count = 'http://localhost:8080/viewer_count'
-api_url_dashboard_max_viewer_count = 'http://localhost:8080/max_viewer_count'
-api_url_dashboard_like_count = 'http://localhost:8080/like_count'
-api_url_dashboard_follower_count = 'http://localhost:8080/follower_count'
-api_url_dashboard_sub_count = 'http://localhost:8080/sub_count'
-api_url_dashboard_share_count = 'http://localhost:8080/share_count'
-api_url_dashboard_comment_count = 'http://localhost:8080/comment_count'
-api_url_dashboard_comment = 'http://localhost:8080/comment'
-api_url_dashboard_gift_count = 'http://localhost:8080/gift_count'
-api_url_dashboard_gift = 'http://localhost:8080/gift'
-api_url_dashboard_coin_count = 'http://localhost:8080/coin_count'
-api_url_dashboard_join_count = 'http://localhost:8080/join_count'
-api_url_dashboard_connected_state = 'http://localhost:8080/connected_state'
-api_url_dashboard_live_start_hour = 'http://localhost:8080/live_start_hour'
-api_url_dashboard_live_name = 'http://localhost:8080/live_name'
-api_url_dashboard_top_gifters = 'http://localhost:8080/top_gifters'
+base_url = 'http://localhost:8080/'
+api_url_stream = base_url + 'stream'
+api_url_dashboard_viewer_count = base_url + 'viewer_count'
+api_url_dashboard_max_viewer_count = base_url + 'max_viewer_count'
+api_url_dashboard_like_count = base_url + 'like_count'
+api_url_dashboard_follower_count = base_url + 'follower_count'
+api_url_dashboard_sub_count = base_url + 'sub_count'
+api_url_dashboard_share_count = base_url + 'share_count'
+api_url_dashboard_comment_count = base_url + 'comment_count'
+api_url_dashboard_comment = base_url + 'comment'
+api_url_dashboard_gift_count = base_url + 'gift_count'
+api_url_dashboard_gift = base_url + 'gift'
+api_url_dashboard_coin_count = base_url + 'coin_count'
+api_url_dashboard_join_count = base_url + 'join_count'
+api_url_dashboard_connected_state = base_url + 'connected_state'
+api_url_dashboard_live_start_hour = base_url + 'live_start_hour'
+api_url_dashboard_live_name = base_url + 'live_name'
+api_url_dashboard_top_gifters = base_url + 'top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
 liveName = "tiibox"
@@ -296,13 +297,11 @@ def set_top_gifters(potential_new_top_gifter):
         # Si l'utilisateur n'est pas un top contributeur
         if not user:
             top_gifters.insert(0,potential_new_top_gifter)
-            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     # Si on a déjà 3 top contributeurs
     else:
         # Si l'utilisateur n'est pas un top contributeur
@@ -310,24 +309,13 @@ def set_top_gifters(potential_new_top_gifter):
                 if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifters[0]['user_total_coins_gifted']):
                     del top_gifters[0]
                     top_gifters.insert(0,potential_new_top_gifter)
-                    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     send_payload(top_gifters, api_url_dashboard_top_gifters)
-
-# @client.on("error")
-# async def on_connect(error: Exception):
-#     # Handle the error
-#     if isinstance(error, LiveNotFound):
-#         print("Désolé, cet utilisateur n'est pas en live actuellement.")
-#         return
-
-#     # Otherwise, log the error
-#     client._log_error(error)
 
 # Fonction main
 if __name__ == '__main__':
