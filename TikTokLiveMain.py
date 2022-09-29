@@ -318,23 +318,26 @@ def set_top_gifters(potential_new_top_gifter):
         # Si l'utilisateur n'est pas un top contributeur
         if not user:
             top_gifters.append(potential_new_top_gifter)
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     else:
         # Si l'utilisateur n'est pas un top contributeur
         if not user:
                 if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifters[0]['user_total_coins_gifted']):
                     del top_gifters[0]
                     top_gifters.append(potential_new_top_gifter)
+                    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
         # Si l'utilisateur est déjà un top contributeur
         else:
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
+            top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     print(top_gifters)
     send_payload(top_gifters, api_url_dashboard_top_gifters)     
 
