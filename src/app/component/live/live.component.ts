@@ -1,4 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  NgZone,
+  PLATFORM_ID,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
+import {
+  Subscription
+} from 'rxjs';
+import {
+  StatusService
+} from './../../services/status.service';
+import {
+  TopGifter
+} from './../../interface/top_gifter';
+import {
+  isPlatformBrowser
+} from '@angular/common';
 import {
   MoveDirection,
   OutMode,
@@ -17,13 +37,25 @@ import {
 
 
 export class LiveComponent implements OnInit {
+
+  // Sub global variables
+  private _topGiftersSub!: Subscription;
+
+  // Dashboard tables global variables
+  public user_top_gifters_datas: TopGifter[] = []
   
   // Particles global variables
   id = "tsparticles";
 
-  constructor() { }
+  constructor(private statusService: StatusService) { }
 
   ngOnInit(): void {
+
+    // Mise en place du tableau des top donnateurs
+    this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
+      this.user_top_gifters_datas = data
+      console.log(this.user_top_gifters_datas);
+  });
   }
 
   /****************************************** Particles config *******************************************/
@@ -68,7 +100,7 @@ export class LiveComponent implements OnInit {
           enable: true,
           area: 800
         },
-        value: 150
+        value: 120
       },
       opacity: {
         value: 0.5
@@ -84,15 +116,9 @@ export class LiveComponent implements OnInit {
   };
 
   particlesLoaded(container: Container): void {
-    console.log(container);
   }
 
   async particlesInit(engine: Engine): Promise<void> {
-    console.log(engine);
-
-    // Starting from 1.19.0 you can add custom presets or shape here, using the current tsParticles instance (main)
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
     await loadFull(engine);
   }
 

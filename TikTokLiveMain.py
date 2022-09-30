@@ -1,8 +1,6 @@
 # https://github.com/isaackogan/TikTokLive
 from TikTokLive import TikTokLiveClient
 from TikTokLive.types.events import CommentEvent, ConnectEvent, FollowEvent, ShareEvent, ViewerCountUpdateEvent, SubscribeEvent, LiveEndEvent, LikeEvent, JoinEvent, GiftEvent, DisconnectEvent
-from TikTokLive.types.errors import FailedConnection, LiveNotFound
-from TikTokLive.types import User
 import datetime
 import requests
 
@@ -26,7 +24,7 @@ api_url_dashboard_live_name = base_url + 'live_name'
 api_url_dashboard_top_gifters = base_url + 'top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "tiibox"
+liveName = "amir.dz.b"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -172,47 +170,48 @@ async def on_connect(event: SubscribeEvent):
 async def on_gift(event: GiftEvent):
     global connected
     if (connected == True):
-        now = datetime.datetime.now().strftime("%H:%M:%S")
-        global boyCounter
-        global girlCounter
-        global nbGift
-        global gifts
-        global nbCoin
-        giftValue = next(z["coin_value"] for z in gifts if z["name"] == {event.gift.extended_gift.name}.pop())
-        userProfilePicture = event.user.profilePicture.urls[-1]
-        userNickname = event.user.nickname
-        userID = event.user.uniqueId
+        if (event.gift.extended_gift):
+            now = datetime.datetime.now().strftime("%H:%M:%S")
+            global boyCounter
+            global girlCounter
+            global nbGift
+            global gifts
+            global nbCoin
+            giftValue = next(z["coin_value"] for z in gifts if z["name"] == {event.gift.extended_gift.name}.pop())
+            userProfilePicture = event.user.profilePicture.urls[-1]
+            userNickname = event.user.nickname
+            userID = event.user.uniqueId
 
-        # Gift streakable, on attend donc que la streak soit finie
-        if event.gift.gift_type == 1:
-            if event.gift.repeat_end == 1:
-                nbGift += {event.gift.repeat_count}.pop()
-                nbCoin += {event.gift.repeat_count}.pop() * giftValue
-                print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
+            # Gift streakable, on attend donc que la streak soit finie
+            if event.gift.gift_type == 1:
+                if event.gift.repeat_end == 1:
+                    nbGift += {event.gift.repeat_count}.pop()
+                    nbCoin += {event.gift.repeat_count}.pop() * giftValue
+                    print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
+                    # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
+                    #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()}
+                    #     requests.post(api_url_stream, json = payload)
+                    #     girlCounter += {event.gift.repeat_count}.pop() 
+                    #     print(girlCounter)
+                    send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
+                    send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
+                    send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
+                    set_top_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
+
+            # Gift non streakable, on fait donc la suite directement
+            else:
+                nbGift += 1
+                nbCoin += giftValue
+                print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
                 # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
-                #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()}
+                #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': 1}
                 #     requests.post(api_url_stream, json = payload)
-                #     girlCounter += {event.gift.repeat_count}.pop() 
+                #     girlCounter += 1
                 #     print(girlCounter)
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-                set_top_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
-
-        # Gift non streakable, on fait donc la suite directement
-        else:
-            nbGift += 1
-            nbCoin += giftValue
-            print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
-            # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
-            #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': 1}
-            #     requests.post(api_url_stream, json = payload)
-            #     girlCounter += 1
-            #     print(girlCounter)
-            send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
-            send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
-            send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-            set_top_gifters({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
+                set_top_gifters({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
 
 # Lorsque le live se termine
 @client.on("live_end")
