@@ -17,8 +17,8 @@ import {
   TopGifter
 } from './../../interface/top_gifter';
 import {
-  isPlatformBrowser
-} from '@angular/common';
+  buzz
+} from 'buzz';
 import {
   MoveDirection,
   OutMode,
@@ -43,19 +43,39 @@ export class LiveComponent implements OnInit {
 
   // Dashboard tables global variables
   public user_top_gifters_datas: TopGifter[] = []
-  
+
   // Particles global variables
   id = "tsparticles";
+
 
   constructor(private statusService: StatusService) { }
 
   ngOnInit(): void {
 
+    // Sounds global variables
+    buzz.defaults.preload = 'auto';
+    var soundCollection = new buzz.group([
+      new buzz.sound("../../../assets/musics/Aaron Smith Dancin.mp3"),
+      new buzz.sound("../../../assets/musics/After Dark.mp3"),
+      new buzz.sound("../../../assets/musics/Discord.mp3"),
+      new buzz.sound("../../../assets/musics/Gimme.mp3"),
+      new buzz.sound("../../../assets/musics/HENSONN - SAHARA.mp3"),
+      new buzz.sound("../../../assets/musics/House of Memories.mp3"),
+      new buzz.sound("../../../assets/musics/Industry Baby vs. E.T.mp3"),
+      new buzz.sound("../../../assets/musics/MURDER IN MY MIND.mp3"),
+      new buzz.sound("../../../assets/musics/My Ordinary Life.mp3"),
+      new buzz.sound("../../../assets/musics/One Piece OST.mp3"),
+      new buzz.sound("../../../assets/musics/Reject weakness; workout.mp3"),
+      new buzz.sound("../../../assets/musics/Thank You.mp3"),
+      new buzz.sound("../../../assets/musics/all the things she said.mp3"),
+    ]);
+    soundCollection.loop().play().loop()
+
     // Mise en place du tableau des top donnateurs
     this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
       this.user_top_gifters_datas = data
       console.log(this.user_top_gifters_datas);
-  });
+    });
   }
 
   /****************************************** Particles config *******************************************/
