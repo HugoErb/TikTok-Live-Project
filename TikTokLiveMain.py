@@ -236,8 +236,10 @@ async def on_disconnect(event: DisconnectEvent):
         print("Déconnecté du live. ")
         stats()
         connected = False
-        print("Tentative de reconnexion...")
         requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
+        print("Tentative de reconnexion...")
+        await client.stop()
+        await client.start()
     
 def stats():
     """
@@ -327,7 +329,7 @@ def set_top_gifters(potential_new_top_gifter):
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-            
+
     # Tri de la liste (ordre croissant selon le nombre de dons), puis on envoie l'info à l'API
     top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     send_payload(top_gifters, api_url_dashboard_top_gifters)
