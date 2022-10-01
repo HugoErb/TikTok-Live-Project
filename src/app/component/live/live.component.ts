@@ -54,20 +54,20 @@ export class LiveComponent implements OnInit {
 
     // Sounds global variables
     buzz.defaults.preload = 'auto';
-    var soundCollection = new buzz.group([
-      new buzz.sound("../../../assets/musics/Aaron Smith Dancin.mp3"),
-      new buzz.sound("../../../assets/musics/After Dark.mp3"),
-      new buzz.sound("../../../assets/musics/Discord.mp3"),
-      new buzz.sound("../../../assets/musics/Gimme.mp3"),
-      new buzz.sound("../../../assets/musics/HENSONN - SAHARA.mp3"),
-      new buzz.sound("../../../assets/musics/House of Memories.mp3"),
-      new buzz.sound("../../../assets/musics/Industry Baby vs. E.T.mp3"),
-      new buzz.sound("../../../assets/musics/MURDER IN MY MIND.mp3"),
-      new buzz.sound("../../../assets/musics/My Ordinary Life.mp3"),
-      new buzz.sound("../../../assets/musics/One Piece OST.mp3"),
-      new buzz.sound("../../../assets/musics/Reject weakness; workout.mp3"),
-      new buzz.sound("../../../assets/musics/Thank You.mp3"),
-      new buzz.sound("../../../assets/musics/all the things she said.mp3"),
+    var soundCollection = new buzz.sound([
+      "../../../assets/musics/Aaron Smith Dancin.mp3",
+      "../../../assets/musics/After Dark.mp3",
+      "../../../assets/musics/Discord.mp3",
+      "../../../assets/musics/Gimme.mp3",
+      "../../../assets/musics/HENSONN - SAHARA.mp3",
+      "../../../assets/musics/House of Memories.mp3",
+      "../../../assets/musics/Industry Baby vs. E.T.mp3",
+      "../../../assets/musics/MURDER IN MY MIND.mp3",
+      "../../../assets/musics/My Ordinary Life.mp3",
+      "../../../assets/musics/One Piece OST.mp3",
+      "../../../assets/musics/Reject weakness; workout.mp3",
+      "../../../assets/musics/Thank You.mp3",
+      "../../../assets/musics/all the things she said.mp3",
     ]);
     soundCollection.loop().play().loop()
 
