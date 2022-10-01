@@ -46,7 +46,10 @@ dateFinLive = ""
 lastLikedUser = ""
 gifts = []
 top_gifters = []
+
+# Variables de connexion
 connected = False
+live_ended = False
 
 # Constantes 
 ratioRevenu = 0.01285714286
@@ -217,20 +220,24 @@ async def on_gift(event: GiftEvent):
 @client.on("live_end")
 async def on_connect(event: LiveEndEvent):
     global connected
+    global live_ended
+    live_ended = True
     print("Live terminé.")
     stats()
     connected = False
-    payload = {'connected_state': connected}
-    requests.post(api_url_dashboard_connected_state, json = payload)
+    requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
 
+# Lorsque l'on subit une déconnexion du live
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
     global connected
-    print("Déconnecté du live.")
-    stats()
-    connected = False
-    payload = {'connected_state': connected}
-    requests.post(api_url_dashboard_connected_state, json = payload)
+    global live_ended
+    if(live_ended == False):
+        print("Déconnecté du live. ")
+        stats()
+        connected = False
+        print("Tentative de reconnexion...")
+        requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
     
 def stats():
     """
@@ -284,35 +291,44 @@ def set_top_gifters(potential_new_top_gifter):
     """
     Cherche si le donateur actuel est déjà connu de la liste des top donateurs.
     Si oui, on augmente son nombre de coins envoyées.
-    Sinon, on l'ajoute à la liste des donateurs si il en fait partie.
+    Sinon, on l'ajoute à la liste des donateurs si il a fait assez de don.
 
     Args:
         potential_new_top_gifter (dict): données du donateur actuel
     """
     global top_gifters
     user = next((item for item in top_gifters if item['user_ID'] == potential_new_top_gifter['user_ID']), None)
-    # Si on a pas encore complètement rempli le tableau
+
+    # Si on a pas encore complètement rempli la liste, c'est à dire pas encore 3 top contributeurs
     if(len(top_gifters) < 3):
-        # Si l'utilisateur n'est pas un top contributeur
+        # Si l'utilisateur n'est pas présent dans la liste des top contributeurs
         if not user:
             top_gifters.insert(0,potential_new_top_gifter)
-        # Si l'utilisateur est déjà un top contributeur
+        # Si l'utilisateur est déjà présent dans la liste des top contributeurs
         else:
+            # On cherche sa position dans la liste, et on le remplace par lui même avec sa valeur incrémentée
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
-    # Si on a déjà 3 top contributeurs
+
+    # Si on a déjà 3 top contributeurs, donc que la liste est complète
     else:
-        # Si l'utilisateur n'est pas un top contributeur
+        # Si l'utilisateur n'est pas présent dans la liste des top contributeurs
         if not user:
+                # On regarde si son nombre de coins envoyées est supérieur au dernier des top contributeurs 
+                # Si oui, on supprime le dernier et on ajoute le nouveau top contributeurs
                 if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifters[0]['user_total_coins_gifted']):
                     del top_gifters[0]
                     top_gifters.insert(0,potential_new_top_gifter)
-        # Si l'utilisateur est déjà un top contributeur
+
+        # Si l'utilisateur est déjà présent dans la liste des top contributeurs
         else:
+            # On cherche sa position dans la liste, et on le remplace par lui même avec sa valeur incrémentée
             user_index = top_gifters.index(user)
             user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
             top_gifters[user_index] = user
+            
+    # Tri de la liste (ordre croissant selon le nombre de dons), puis on envoie l'info à l'API
     top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
     send_payload(top_gifters, api_url_dashboard_top_gifters)
 
