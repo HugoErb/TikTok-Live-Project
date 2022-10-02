@@ -34,7 +34,7 @@ export class LiveComponent implements OnInit {
   // Sub global variables
   private _topGiftersSub!: Subscription;
 
-  // Dashboard tables global variables
+  // Top gifters global variables
   public user_top_gifters_datas: TopGifter[] = []
 
   // Particles global variables
@@ -68,7 +68,7 @@ export class LiveComponent implements OnInit {
     console.log("Music played : " + music.replace(".mp3","").replace("../../../assets/musics/",""));
     this.soundSeter(mySound, listSound);
 
-    // Mise en place du tableau des top donnateurs
+    // Mise en place du tableau des top donateurs
     this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
       this.user_top_gifters_datas = data
       // console.log(this.user_top_gifters_datas);

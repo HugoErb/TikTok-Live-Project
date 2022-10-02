@@ -244,7 +244,7 @@ export class DashboardComponent implements OnInit {
             }
         });
         
-        // Mise en place du tableau des top donnateurs
+        // Mise en place du tableau des top donateurs
         this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
             this.user_top_gifters_datas = data
             console.log(this.user_top_gifters_datas);

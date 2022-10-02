@@ -9,6 +9,50 @@
 
 /****************************************** Top gifters section *******************************************/
 
+.main {
+    height: 100%;
+    width: 100%;
+}
+
+.animated_section {
+    position: relative;
+    display: grid;
+    width: 100%;
+    overflow: hidden;
+}
+
+.animated_section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    transform-origin: bottom right;
+    background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+    animation: animate 6s linear infinite;
+    -webkit-animation: animate 6s linear infinite;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.animated_section::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    transform-origin: bottom right;
+    background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+    animation: animate 6s linear infinite;
+    -webkit-animation: animate 6s linear infinite;
+    animation-delay: 3s;
+}
+
 .top_gifters {
     color: white;
     position: relative;
@@ -50,21 +94,22 @@
 .top_gifters table {
     border-collapse: separate;
     border-spacing: 0 20px;
+    width: 100%;
 }
 
-tr td:first-child {
+.top_gifters table tr td:first-child {
     border-top-left-radius: 10px;
 }
 
-tr td:last-child {
+.top_gifters table tr td:last-child {
     border-top-right-radius: 10px;
 }
 
-tr td:first-child {
+.top_gifters table tr td:first-child {
     border-bottom-left-radius: 10px;
 }
 
-tr td:last-child {
+.top_gifters table tr td:last-child {
     border-bottom-right-radius: 10px;
 }
 
@@ -80,12 +125,45 @@ tr td:last-child {
     line-height: 1.5em;
 }
 
+.top_gifters tr {
+    width: 100%;
+}
+
 .top_gifters table tr td p {
     color: #232323;
 }
 
 .cardHeader h2 {
     text-align: center;
+    color: white;
+}
+
+/****************************************** Infos *******************************************/
+
+.info_div {
+    margin: 20px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    position: relative;
+    display: grid;
+    text-align: center;
+}
+
+.info_div p {
+    color: #232323;
+}
+
+.info_component {
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
 
 /****************************************** Trophys *******************************************/
@@ -105,4 +183,41 @@ tr td:last-child {
 
 #trophy_third {
     color: #CD7F32;
+}
+
+/****************************************** Animations *******************************************/
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+    }
+}
+
+.fadeIn {
+    opacity: 0;
+    -webkit-transition: opacity 1s ease-in;
+    -moz-transition: opacity 1s ease-in;
+    -o-transition: opacity 1s ease-in;
+    -ms-transition: opacity 1s ease-in;
+    transition: opacity 1s ease-in;
+}
+
+.fadeIn.load {
+    opacity: 1;
+}
+
+.fadeIn.unload {
+    opacity: 0;
 }
