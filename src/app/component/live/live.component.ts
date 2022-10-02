@@ -44,7 +44,7 @@ export class LiveComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Sounds global variables
+    // Sounds setup 
     buzz.defaults.preload = 'auto';
     buzz.defaults.volume = 5;
     let listSound = [
@@ -52,28 +52,26 @@ export class LiveComponent implements OnInit {
       "../../../assets/musics/After Dark.mp3",
       "../../../assets/musics/Discord.mp3",
       "../../../assets/musics/Gimme.mp3",
-      "../../../assets/musics/HENSONN - SAHARA.mp3",
+      "../../../assets/musics/Sahara.mp3",
       "../../../assets/musics/House of Memories.mp3",
-      "../../../assets/musics/Industry Baby vs. E.T.mp3",
-      "../../../assets/musics/MURDER IN MY MIND.mp3",
+      "../../../assets/musics/I told you long ago on the road.mp3",
+      "../../../assets/musics/Murder in my mind.mp3",
       "../../../assets/musics/My Ordinary Life.mp3",
       "../../../assets/musics/One Piece OST.mp3",
       "../../../assets/musics/Reject weakness; workout.mp3",
       "../../../assets/musics/Thank You.mp3",
-      "../../../assets/musics/all the things she said.mp3",
+      "../../../assets/musics/All the things she said.mp3",
     ];
-    var mySound = new buzz.sound(listSound[Math.floor(Math.random() * listSound.length)]);
+    var music = listSound[Math.floor(Math.random() * listSound.length)];
+    var mySound = new buzz.sound(music);
     mySound.play();
-    mySound.bind("ended", function () {
-      mySound = new buzz.sound(listSound[Math.floor(Math.random() * listSound.length)]);
-      mySound.play();
-    });
-
+    console.log("Music played : " + music.replace(".mp3","").replace("../../../assets/musics/",""));
+    this.soundSeter(mySound, listSound);
 
     // Mise en place du tableau des top donnateurs
     this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
       this.user_top_gifters_datas = data
-      console.log(this.user_top_gifters_datas);
+      // console.log(this.user_top_gifters_datas);
     });
   }
 
@@ -158,5 +156,15 @@ export class LiveComponent implements OnInit {
 
     return array;
   };
+
+  soundSeter(sound:any, listSound:any){
+    sound.bind("ended",  () => {
+      var music = listSound[Math.floor(Math.random() * listSound.length)];
+      var newSound = new buzz.sound(music);
+      newSound.play();
+      console.log("Music played : " + music.replace(".mp3","").replace("../../../assets/musics/",""));
+      this.soundSeter(newSound, listSound);
+    });
+  }
 
 }
