@@ -28,6 +28,8 @@ declare var buzz: any;
 
 export class LiveComponent implements OnInit {
 
+    interval!: NodeJS.Timeout;
+
     // Sub global variables
     private _topGiftersSub!: Subscription;
 
@@ -76,11 +78,23 @@ export class LiveComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        console.log(this.info_div.nativeElement.childNodes)
-        setInterval(() => {
-            console.log(this.test)
-            console.log(this.test.nativeElement.parentElement)
+        let counter = 0;
+        this.interval = setInterval(() => {
+            if (counter >= this.info_div.nativeElement.children.length) {
+                counter = 0;
+            }
+            if (counter === 0) {
+                this.info_div.nativeElement.children[this.info_div.nativeElement.children.length - 1].classList.remove('load')
+            } else {
+                this.info_div.nativeElement.children[counter - 1].classList.remove('load')
+            }
+            this.info_div.nativeElement.children[counter].classList.add('load')
+            counter++;
         }, 5000);
+    }
+
+    ngOnDrestroy() {
+        clearInterval(this.interval)
     }
 
     /****************************************** Particles config *******************************************/
