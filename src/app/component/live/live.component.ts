@@ -34,7 +34,8 @@ export class LiveComponent implements OnInit {
     private _topGiftersSub!: Subscription;
 
     // Top gifters global variables
-    public user_top_gifters_datas: TopGifter[] = []
+    public user_top_gifters_datas: TopGifter[] = [];
+    public top_gifter_msg: any;
 
     // Particles global variables
     id = "tsparticles";
@@ -53,7 +54,6 @@ export class LiveComponent implements OnInit {
             "../../../assets/musics/Aaron Smith Dancin.mp3",
             "../../../assets/musics/After Dark.mp3",
             "../../../assets/musics/Discord.mp3",
-            "../../../assets/musics/Gimme.mp3",
             "../../../assets/musics/Sahara.mp3",
             "../../../assets/musics/House of Memories.mp3",
             "../../../assets/musics/I told you long ago on the road.mp3",
@@ -73,6 +73,7 @@ export class LiveComponent implements OnInit {
         // Mise en place du tableau des top donateurs
         this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
             this.user_top_gifters_datas = data
+            this.top_gifter_msg = "Abonnez vous à " + this.user_top_gifters_datas[2].user_ID.trim()+ " !";
             // console.log(this.user_top_gifters_datas);
         });
     }
@@ -90,7 +91,7 @@ export class LiveComponent implements OnInit {
             }
             this.info_div.nativeElement.children[counter].classList.add('load')
             counter++;
-        }, 5000);
+        }, 10000);
     }
 
     ngOnDrestroy() {
@@ -139,7 +140,7 @@ export class LiveComponent implements OnInit {
                     enable: true,
                     area: 800
                 },
-                value: 120
+                value: 100
             },
             opacity: {
                 value: 0.5

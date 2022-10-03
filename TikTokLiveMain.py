@@ -1,4 +1,5 @@
 # https://github.com/isaackogan/TikTokLive
+from multiprocessing.connection import wait
 from TikTokLive import TikTokLiveClient
 from TikTokLive.types.events import CommentEvent, ConnectEvent, FollowEvent, ShareEvent, ViewerCountUpdateEvent, SubscribeEvent, LiveEndEvent, LikeEvent, JoinEvent, GiftEvent, DisconnectEvent
 import datetime
@@ -24,7 +25,7 @@ api_url_dashboard_live_name = base_url + 'live_name'
 api_url_dashboard_top_gifters = base_url + 'top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "cedriccommelabd"
+liveName = "alteanne"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques
@@ -230,6 +231,7 @@ async def on_connect(event: LiveEndEvent):
 # Lorsque l'on subit une déconnexion du live
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
+    wait(5000)
     global connected
     global live_ended
     if(live_ended == False):
@@ -238,8 +240,8 @@ async def on_disconnect(event: DisconnectEvent):
         connected = False
         requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
         print("Tentative de reconnexion...")
-        await client.stop()
-        await client.start()
+        client.stop()
+        client.start()
     
 def stats():
     """
