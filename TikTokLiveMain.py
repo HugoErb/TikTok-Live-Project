@@ -24,7 +24,7 @@ api_url_dashboard_live_name = base_url + 'live_name'
 api_url_dashboard_top_gifters = base_url + 'top_gifters'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "amir.dz.b"
+liveName = "cedriccommelabd"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
 
 # Variables de statistiques

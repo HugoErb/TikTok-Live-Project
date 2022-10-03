@@ -11,7 +11,7 @@
 					<div class="imgBx"><img src="{{item.user_profile_picture}}"></div>
 				</td>
 				<td>
-					<h4>{{item.user_nickname.trim()}}</h4>
+					<h4>{{item.user_ID.trim()}}</h4>
 					<p>{{item.user_total_coins_gifted | frnumber }} coins</p>
 				</td>
 				<td>
@@ -32,21 +32,25 @@
 			</tr>
 		</table>
 	</div>
-	<div class="info_div">
-		<div class="info_component" id="get_subscribers" >
-			<p>Pour gagner des abonnés, abonnez vous aux</p>
+	<div class="info_div" #info_div>
+		<div class="info_component fadeIn" id="get_subscribers" #test>
+			<p>Pour gagner des abos, abonnez vous aux 3</p>
 			<p>top donateurs et à leurs 5 derniers abonnés.</p>
 		</div>
-		<div class="info_component" id="how_to" >
+		<div class="info_component fadeIn" id="subscribe_to_first">
+			<p>Abonnez vous en priorité au premier top</p>
+			<p>donateur, vous gagnerez plus d'abonnés.</p>
+		</div>
+		<div class="info_component fadeIn" id="how_to">
 			<p>Faites des dons pour être dans</p>
 			<p>le classement des top donateurs.</p>
 		</div>
-		<div class="info_component" id="subscribe">
-			<p>Abonnez vous à mon compte</p>
-			<p>pour ne rater aucun live !</p>
+		<div class="info_component fadeIn" id="subscribe">
+			<p>Abonnez vous à mon compte pour</p>
+			<p>ne rater aucun de mes lives !</p>
 		</div>
-		<div class="info_component" id="subscribe_to">
-			<!-- <p>Abonnez vous à {{user_top_gifters_datas[2].user_nickname}} </p>  -->
+		<div class="info_component fadeIn" id="subscribe_to">
+			<!-- <p>Abonnez vous à {{user_top_gifters_datas[2].user_ID.trim()}} </p>  -->
 		</div>
 	</div>
 </div>
