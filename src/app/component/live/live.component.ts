@@ -35,7 +35,7 @@ export class LiveComponent implements OnInit {
 
     // Top gifters global variables
     public user_top_gifters_datas: TopGifter[] = [];
-    public top_gifter_msg: any;
+    public top_gifter_msg = "Faites des dons pour être dans le classement des top donateurs."
 
     // Particles global variables
     id = "tsparticles";
