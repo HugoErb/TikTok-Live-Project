@@ -1,4 +1,4 @@
-export interface TopGifter {
+export interface TopDonator {
 
     user_ID: string;
 

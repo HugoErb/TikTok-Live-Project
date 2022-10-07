@@ -6,8 +6,8 @@ import {
     StatusService
 } from './../../services/status.service';
 import {
-    TopGifter
-} from './../../interface/top_gifter';
+    TopDonator
+} from './../../interface/topDonator';
 import {
     MoveDirection,
     OutMode,
@@ -31,11 +31,11 @@ export class LiveComponent implements OnInit {
     interval!: NodeJS.Timeout;
 
     // Sub global variables
-    private _topGiftersSub!: Subscription;
+    private _topDonatorsSub!: Subscription;
 
-    // Top gifters global variables
-    public user_top_gifters_datas: TopGifter[] = [];
-    public top_gifter_msg = "Faites des dons pour être dans le classement des top donateurs."
+    // Top donators global variables
+    public user_top_donators_datas: TopDonator[] = [];
+    public top_donator_msg = "Faites des dons pour être dans le classement des top donateurs."
 
     // Particles global variables
     id = "tsparticles";
@@ -63,18 +63,19 @@ export class LiveComponent implements OnInit {
             "../../../assets/musics/Reject weakness; workout.mp3",
             "../../../assets/musics/Thank You.mp3",
             "../../../assets/musics/All the things she said.mp3",
+            "../../../assets/musics/Neon Blade.mp3",
         ];
         var music = listSound[Math.floor(Math.random() * listSound.length)];
         var mySound = new buzz.sound(music);
         mySound.play();
         console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
-        this.soundSeter(mySound, listSound);
+        this.setSounds(mySound, listSound);
 
         // Mise en place du tableau des top donateurs
-        this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
-            this.user_top_gifters_datas = data
-            this.top_gifter_msg = "Abonnez vous à " + this.user_top_gifters_datas[2].user_ID.trim()+ " !";
-            // console.log(this.user_top_gifters_datas);
+        this._topDonatorsSub = this.statusService.topDonators.subscribe((data: TopDonator[]) => {
+            this.user_top_donators_datas = data
+            this.top_donator_msg = "Abonnez vous à " + this.user_top_donators_datas[2].user_ID.trim()+ " !";
+            // console.log(this.user_top_donators_datas);
         });
     }
 
@@ -94,7 +95,7 @@ export class LiveComponent implements OnInit {
         }, 10000);
     }
 
-    ngOnDrestroy() {
+    ngOnDestroy() {
         clearInterval(this.interval)
     }
 
@@ -180,13 +181,13 @@ export class LiveComponent implements OnInit {
         return array;
     };
 
-    soundSeter(sound: any, listSound: any) {
+    setSounds(sound: any, listSound: any) {
         sound.bind("ended", () => {
             var music = listSound[Math.floor(Math.random() * listSound.length)];
             var newSound = new buzz.sound(music);
             newSound.play();
             console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
-            this.soundSeter(newSound, listSound);
+            this.setSounds(newSound, listSound);
         });
     }
 

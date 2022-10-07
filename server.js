@@ -127,9 +127,9 @@ router.post('/live_name', (request, response) => {
   response.end("Done")
 });
 
-router.post('/top_gifters', (request, response) => {
-  // console.log("Live name:" + request.body.top_gifters)
-  request.app.io.emit('top_gifters', request.body);
+router.post('/top_donators', (request, response) => {
+  // console.log("Live name:" + request.body.top_donators)
+  request.app.io.emit('top_donators', request.body);
   response.end("Done")
 });
 

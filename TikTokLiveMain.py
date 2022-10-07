@@ -1,8 +1,8 @@
 # https://github.com/isaackogan/TikTokLive
-from multiprocessing.connection import wait
 from TikTokLive import TikTokLiveClient
 from TikTokLive.types.events import CommentEvent, ConnectEvent, FollowEvent, ShareEvent, ViewerCountUpdateEvent, SubscribeEvent, LiveEndEvent, LikeEvent, JoinEvent, GiftEvent, DisconnectEvent
 import datetime
+from anyio import sleep
 import requests
 
 base_url = 'http://localhost:8080/'
@@ -22,11 +22,11 @@ api_url_dashboard_join_count = base_url + 'join_count'
 api_url_dashboard_connected_state = base_url + 'connected_state'
 api_url_dashboard_live_start_hour = base_url + 'live_start_hour'
 api_url_dashboard_live_name = base_url + 'live_name'
-api_url_dashboard_top_gifters = base_url + 'top_gifters'
+api_url_dashboard_top_donators = base_url + 'top_donators'
 
 # Nom du live auquel vous souhaitez vous connectez
 liveName = "boys_officialchad"
-# Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados
+# Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados | alteanne
 # Mon live : boys_officialchad
 
 # Variables de statistiques
@@ -47,7 +47,7 @@ dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
 gifts = []
-top_gifters = []
+top_donators = []
 
 # Variables de connexion
 connected = False
@@ -187,7 +187,7 @@ async def on_gift(event: GiftEvent):
             userNickname = event.user.nickname
             userID = event.user.uniqueId
 
-            # Gift streakable, on attend donc que la streak soit finie
+            # Gift chainable, on attend donc que la streak soit finie
             if event.gift.gift_type == 1:
                 if event.gift.repeat_end == 1:
                     nbGift += {event.gift.repeat_count}.pop()
@@ -201,9 +201,9 @@ async def on_gift(event: GiftEvent):
                     send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                     send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                     send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-                    set_top_gifters({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
+                    set_top_donators({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
 
-            # Gift non streakable, on fait donc la suite directement
+            # Gift non chainable, on fait donc la suite directement
             else:
                 nbGift += 1
                 nbCoin += giftValue
@@ -216,7 +216,7 @@ async def on_gift(event: GiftEvent):
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
-                set_top_gifters({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
+                set_top_donators({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
 
 # Lorsque le live se termine
 @client.on("live_end")
@@ -232,7 +232,7 @@ async def on_connect(event: LiveEndEvent):
 # Lorsque l'on subit une déconnexion du live
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
-    wait(5000)
+    sleep(5000)
     global connected
     global live_ended
     if(live_ended == False):
@@ -292,29 +292,29 @@ def send_payload(payload, url):
     payload_live_start_hour = {'live_start_hour': heureDebutLive}
     requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
 
-def set_top_gifters(potential_new_top_gifter):
+def set_top_donators(potential_new_top_donator):
     """
     Cherche si le donateur actuel est déjà connu de la liste des top donateurs.
     Si oui, on augmente son nombre de coins envoyées.
     Sinon, on l'ajoute à la liste des donateurs si il a fait assez de don.
 
     Args:
-        potential_new_top_gifter (dict): données du donateur actuel
+        potential_new_top_donator (dict): données du donateur actuel
     """
-    global top_gifters
-    user = next((item for item in top_gifters if item['user_ID'] == potential_new_top_gifter['user_ID']), None)
+    global top_donators
+    user = next((item for item in top_donators if item['user_ID'] == potential_new_top_donator['user_ID']), None)
 
     # Si on a pas encore complètement rempli la liste, c'est à dire pas encore 3 top contributeurs
-    if(len(top_gifters) < 3):
+    if(len(top_donators) < 3):
         # Si l'utilisateur n'est pas présent dans la liste des top contributeurs
         if not user:
-            top_gifters.insert(0,potential_new_top_gifter)
+            top_donators.insert(0,potential_new_top_donator)
         # Si l'utilisateur est déjà présent dans la liste des top contributeurs
         else:
             # On cherche sa position dans la liste, et on le remplace par lui même avec sa valeur incrémentée
-            user_index = top_gifters.index(user)
-            user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
-            top_gifters[user_index] = user
+            user_index = top_donators.index(user)
+            user['user_total_coins_gifted'] += potential_new_top_donator['user_total_coins_gifted']
+            top_donators[user_index] = user
 
     # Si on a déjà 3 top contributeurs, donc que la liste est complète
     else:
@@ -322,20 +322,20 @@ def set_top_gifters(potential_new_top_gifter):
         if not user:
                 # On regarde si son nombre de coins envoyées est supérieur au dernier des top contributeurs 
                 # Si oui, on supprime le dernier et on ajoute le nouveau top contributeurs
-                if(potential_new_top_gifter['user_total_coins_gifted'] > top_gifters[0]['user_total_coins_gifted']):
-                    del top_gifters[0]
-                    top_gifters.insert(0,potential_new_top_gifter)
+                if(potential_new_top_donator['user_total_coins_gifted'] > top_donators[0]['user_total_coins_gifted']):
+                    del top_donators[0]
+                    top_donators.insert(0,potential_new_top_donator)
 
         # Si l'utilisateur est déjà présent dans la liste des top contributeurs
         else:
             # On cherche sa position dans la liste, et on le remplace par lui même avec sa valeur incrémentée
-            user_index = top_gifters.index(user)
-            user['user_total_coins_gifted'] += potential_new_top_gifter['user_total_coins_gifted']
-            top_gifters[user_index] = user
+            user_index = top_donators.index(user)
+            user['user_total_coins_gifted'] += potential_new_top_donator['user_total_coins_gifted']
+            top_donators[user_index] = user
 
     # Tri de la liste (ordre croissant selon le nombre de dons), puis on envoie l'info à l'API
-    top_gifters = sorted(top_gifters, key=lambda x: x['user_total_coins_gifted'])
-    send_payload(top_gifters, api_url_dashboard_top_gifters)
+    top_donators = sorted(top_donators, key=lambda x: x['user_total_coins_gifted'])
+    send_payload(top_donators, api_url_dashboard_top_donators)
 
 # Fonction main
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ import {
 } from './../../interface/gift';
 import {
     TopGifter
-} from './../../interface/top_gifter';
+} from '../../interface/topDonator';
 import {
     isPlatformBrowser
 } from '@angular/common';

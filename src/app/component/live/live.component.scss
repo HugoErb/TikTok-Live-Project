@@ -5,7 +5,7 @@
     font-family: "Tahoma", sans-serif;
 }
 
-/****************************************** Top gifters section *******************************************/
+/****************************************** Top donators section *******************************************/
 
 .main {
     height: 100%;
@@ -51,7 +51,7 @@
 //     animation-delay: 3s;
 // }
 
-.top_gifters {
+.top_donators {
     color: white;
     position: relative;
     display: grid;
@@ -65,10 +65,10 @@
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
     margin: 10px;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
-.top_gifters .imgBx {
+.top_donators .imgBx {
     position: relative;
     width: 3em;
     height: 3em;
@@ -80,7 +80,7 @@
     overflow: hidden;
 }
 
-.top_gifters .imgBx img {
+.top_donators .imgBx img {
     position: absolute;
     top: 0;
     left: 0;
@@ -89,45 +89,45 @@
     object-fit: cover;
 }
 
-.top_gifters table {
+.top_donators table {
     border-collapse: separate;
     border-spacing: 0 20px;
     width: 100%;
 }
 
-.top_gifters table tr td:first-child {
+.top_donators table tr td:first-child {
     border-top-left-radius: 10px;
 }
 
-.top_gifters table tr td:last-child {
+.top_donators table tr td:last-child {
     border-top-right-radius: 10px;
 }
 
-.top_gifters table tr td:first-child {
+.top_donators table tr td:first-child {
     border-bottom-left-radius: 10px;
 }
 
-.top_gifters table tr td:last-child {
+.top_donators table tr td:last-child {
     border-bottom-right-radius: 10px;
 }
 
-.top_gifters table tr td {
+.top_donators table tr td {
     padding: 10px;
     background-color: white;
     border-collapse: collapse;
 }
 
-.top_gifters tr td h4 {
+.top_donators tr td h4 {
     color: #232323;
     font-size: 1.1em;
     line-height: 1.5em;
 }
 
-.top_gifters tr {
+.top_donators tr {
     width: 100%;
 }
 
-.top_gifters table tr td p {
+.top_donators table tr td p {
     color: #232323;
 }
 
