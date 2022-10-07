@@ -20,7 +20,7 @@ import {
     Gift
 } from './../../interface/gift';
 import {
-    TopGifter
+    TopDonator
 } from '../../interface/topDonator';
 import {
     isPlatformBrowser
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
     private _commentSub!: Subscription;
     private _giftSub!: Subscription;
     private _liveStartHourSub!: Subscription;
-    private _topGiftersSub!: Subscription;
+    private _topDonatorsSub!: Subscription;
 
 
     // Miscellaneous dashboard global variables
@@ -100,7 +100,7 @@ export class DashboardComponent implements OnInit {
     // Dashboard tables global variables
     public user_comment_datas: Comment[] = []
     public user_gift_datas: Gift[] = []
-    public user_top_gifters_datas: TopGifter[] = []
+    public user_top_donators_datas: TopDonator[] = []
 
     // Chevrons and separator global variables
     slideOpen: any = {
@@ -245,9 +245,9 @@ export class DashboardComponent implements OnInit {
         });
         
         // Mise en place du tableau des top donateurs
-        this._topGiftersSub = this.statusService.topGifters.subscribe((data: TopGifter[]) => {
-            this.user_top_gifters_datas = data
-            console.log(this.user_top_gifters_datas);
+        this._topDonatorsSub = this.statusService.topDonators.subscribe((data: TopDonator[]) => {
+            this.user_top_donators_datas = data
+            console.log(this.user_top_donators_datas);
         });
     }
 

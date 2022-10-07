@@ -133,6 +133,12 @@ router.post('/top_donators', (request, response) => {
   response.end("Done")
 });
 
+router.post('/boys_girls_counter', (request, response) => {
+  console.log("boys_girls_counter:" + request.body)
+  request.app.io.emit('boys_girls_counter', request.body);
+  response.end("Done")
+});
+
 // add router in the Express app.
 app.use("/", router);
 

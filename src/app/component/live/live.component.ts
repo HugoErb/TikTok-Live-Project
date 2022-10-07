@@ -1,22 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import {
-    Subscription
-} from 'rxjs';
+import { Component, OnInit} from '@angular/core';
 import {
     StatusService
 } from './../../services/status.service';
-import {
-    TopDonator
-} from './../../interface/topDonator';
-import {
-    MoveDirection,
-    OutMode,
-    Container,
-    Engine
-} from "tsparticles-engine";
-import {
-    loadFull
-} from "tsparticles";
 
 declare var buzz: any;
 
@@ -28,24 +13,25 @@ declare var buzz: any;
 
 export class LiveComponent implements OnInit {
 
-    interval!: NodeJS.Timeout;
+    countRose: number = 0;
+    countWeights: number = 0;
+    interval!: NodeJS.Timer;
 
     // Sub global variables
-    private _topDonatorsSub!: Subscription;
-
-    // Top donators global variables
-    public user_top_donators_datas: TopDonator[] = [];
-    public top_donator_msg = "Faites des dons pour être dans le classement des top donateurs."
-
-    // Particles global variables
-    id = "tsparticles";
-
-    @ViewChild("info_div") info_div!: ElementRef<HTMLDivElement>;
-    @ViewChild("test") test!: ElementRef<HTMLDivElement>;
+    private _boysGirlsCounter!:any;
 
     constructor(private statusService: StatusService) { }
 
     ngOnInit(): void {
+
+        this._boysGirlsCounter = this.statusService.boysGirlsCounter.subscribe(gift => {
+            console.log("Ajout de " + gift.number + " " + gift.type);
+            if (gift.type === "Rose") {
+                this.countRose = this.countRose + gift.number;
+            } else if (gift.type === "Weights") {
+                this.countWeights = this.countWeights + gift.number;
+            }
+        });
 
         // Sounds setup 
         buzz.defaults.preload = 'auto';
@@ -71,115 +57,27 @@ export class LiveComponent implements OnInit {
         console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
         this.setSounds(mySound, listSound);
 
-        // Mise en place du tableau des top donateurs
-        this._topDonatorsSub = this.statusService.topDonators.subscribe((data: TopDonator[]) => {
-            this.user_top_donators_datas = data
-            this.top_donator_msg = "Abonnez vous à " + this.user_top_donators_datas[2].user_ID.trim()+ " !";
-            // console.log(this.user_top_donators_datas);
-        });
     }
 
-    ngAfterViewInit() {
-        let counter = 0;
-        this.interval = setInterval(() => {
-            if (counter >= this.info_div.nativeElement.children.length) {
-                counter = 0;
-            }
-            if (counter === 0) {
-                this.info_div.nativeElement.children[this.info_div.nativeElement.children.length - 1].classList.remove('load')
-            } else {
-                this.info_div.nativeElement.children[counter - 1].classList.remove('load')
-            }
-            this.info_div.nativeElement.children[counter].classList.add('load')
-            counter++;
-        }, 10000);
-    }
+    // ngAfterViewInit() {
+    //     let counter = 0;
+    //     this.interval = setInterval(() => {
+    //         if (counter >= this.info_div.nativeElement.children.length) {
+    //             counter = 0;
+    //         }
+    //         if (counter === 0) {
+    //             this.info_div.nativeElement.children[this.info_div.nativeElement.children.length - 1].classList.remove('load')
+    //         } else {
+    //             this.info_div.nativeElement.children[counter - 1].classList.remove('load')
+    //         }
+    //         this.info_div.nativeElement.children[counter].classList.add('load')
+    //         counter++;
+    //     }, 10000);
+    // }
 
     ngOnDestroy() {
         clearInterval(this.interval)
     }
-
-    /****************************************** Particles config *******************************************/
-    particlesOptions = {
-        background: {
-            color: {
-                value: "#232323"
-            }
-        },
-        fpsLimit: 165,
-        interactivity: {
-            events: {
-                resize: true
-            },
-        },
-        particles: {
-            color: {
-                value: "#ffffff"
-            },
-            links: {
-                color: "#ffffff",
-                distance: 150,
-                enable: true,
-                opacity: 0.5,
-                width: 1
-            },
-            collisions: {
-                enable: false
-            },
-            move: {
-                direction: MoveDirection.none,
-                enable: true,
-                outModes: {
-                    default: OutMode.bounce
-                },
-                random: false,
-                speed: 0.3,
-                straight: false
-            },
-            number: {
-                density: {
-                    enable: true,
-                    area: 800
-                },
-                value: 100
-            },
-            opacity: {
-                value: 0.5
-            },
-            shape: {
-                type: "circle"
-            },
-            size: {
-                value: { min: 1, max: 3 },
-            }
-        },
-        detectRetina: true
-    };
-
-    particlesLoaded(container: Container): void {
-    }
-
-    async particlesInit(engine: Engine): Promise<void> {
-        await loadFull(engine);
-    }
-
-    shuffle<T>(array: T[]): T[] {
-        let currentIndex = array.length, randomIndex;
-
-        // While there remain elements to shuffle.
-        while (currentIndex != 0) {
-
-            // Pick a remaining element.
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex], array[currentIndex]];
-        }
-
-        return array;
-    };
 
     setSounds(sound: any, listSound: any) {
         sound.bind("ended", () => {

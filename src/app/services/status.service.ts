@@ -32,6 +32,8 @@ export class StatusService {
   gift = this.socket.fromEvent < any > ('gift');
   topDonators = this.socket.fromEvent < any > ('top_donators');
 
+  boysGirlsCounter = this.socket.fromEvent < any > ('boys_girls_counter');
+
   constructor(private http: HttpClient, private socket: Socket) {}
 
   // Error handling

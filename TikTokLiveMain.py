@@ -23,9 +23,10 @@ api_url_dashboard_connected_state = base_url + 'connected_state'
 api_url_dashboard_live_start_hour = base_url + 'live_start_hour'
 api_url_dashboard_live_name = base_url + 'live_name'
 api_url_dashboard_top_donators = base_url + 'top_donators'
+api_url_dashboard_boys_girls_counter = base_url + 'boys_girls_counter'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "boys_officialchad"
+liveName = "gaby952775"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados | alteanne
 # Mon live : boys_officialchad
 
@@ -193,11 +194,8 @@ async def on_gift(event: GiftEvent):
                     nbGift += {event.gift.repeat_count}.pop()
                     nbCoin += {event.gift.repeat_count}.pop() * giftValue
                     print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
-                    # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
-                    #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()}
-                    #     requests.post(api_url_stream, json = payload)
-                    #     girlCounter += {event.gift.repeat_count}.pop() 
-                    #     print(girlCounter)
+                    if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
+                        send_payload({'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()},api_url_dashboard_boys_girls_counter)
                     send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                     send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                     send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
@@ -208,11 +206,8 @@ async def on_gift(event: GiftEvent):
                 nbGift += 1
                 nbCoin += giftValue
                 print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
-                # if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
-                #     payload = {'type': {event.gift.extended_gift.name}.pop(), 'number': 1}
-                #     requests.post(api_url_stream, json = payload)
-                #     girlCounter += 1
-                #     print(girlCounter)
+                if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
+                    send_payload({'type': {event.gift.extended_gift.name}.pop(), 'number': 1},api_url_dashboard_boys_girls_counter)
                 send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
                 send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
                 send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)

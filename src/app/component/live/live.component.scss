@@ -5,222 +5,70 @@
     font-family: "Tahoma", sans-serif;
 }
 
-/****************************************** Top donators section *******************************************/
-
-.main {
-    height: 100%;
-    width: 100%;
+.background {
+    background: "../../../assets/img/benimaru.gif";
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    position: relative;
+    height: 845px;
 }
 
-// .animated_section {
-//     position: relative;
-//     display: grid;
-//     width: 100%;
-//     overflow: hidden;
-// }
+.split {
+    height: 50%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+}
 
-// .animated_section::before {
-//     content: '';
-//     position: absolute;
-//     top: -50%;
-//     left: -50%;
-//     width: 100%;
-//     height: 100%;
-//     transform-origin: bottom right;
-//     background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
-//     animation: animate 6s linear infinite;
-//     -webkit-animation: animate 6s linear infinite;
-//     border-radius: 10px;
-//     -webkit-border-radius: 10px;
-//     -moz-border-radius: 10px;
-//     -ms-border-radius: 10px;
-//     -o-border-radius: 10px;
-// }
+.top {
+    top: 0;
+    background-image: url('https://media.tenor.com/mrzI0AC4Rz4AAAAC/rias-gremory-rias.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+}
 
-// .animated_section::after {
-//     content: '';
-//     position: absolute;
-//     top: -50%;
-//     left: -50%;
-//     width: 100%;
-//     height: 100%;
-//     transform-origin: bottom right;
-//     background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
-//     animation: animate 6s linear infinite;
-//     -webkit-animation: animate 6s linear infinite;
-//     animation-delay: 3s;
-// }
+.bottom {
+    top: 50%;
+    background-image: url('https://media.tenor.com/8I-zJn-yrocAAAAC/benimaru.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+}
 
-.top_donators {
-    color: white;
-    position: relative;
-    display: grid;
-    height: 340px;
-    padding: 15px 15px 0px 15px;
-    background: transparent;
-    border: 3px solid white;
+.centered {
+    margin-left: 10px;
+    width: auto;
+}
+
+.topCounter {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.botCounter {
+    margin-top: 74%;
+    margin-left: 2%;
+}
+
+.points {
+    padding: 5px 15px 5px 15px;
+    width: fit-content;
+    font-size: 2.4em;
+    font-weight: bold;
+    background-color: white;
+    box-shadow: 10px 10px 5px rgba(0, 0, 0, .08);
+    color: #303030;
     border-radius: 20px;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
-    margin: 10px;
-    margin-top: 80px;
 }
 
-.top_donators .imgBx {
-    position: relative;
-    width: 3em;
-    height: 3em;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    overflow: hidden;
-}
-
-.top_donators .imgBx img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.top_donators table {
-    border-collapse: separate;
-    border-spacing: 0 20px;
-    width: 100%;
-}
-
-.top_donators table tr td:first-child {
-    border-top-left-radius: 10px;
-}
-
-.top_donators table tr td:last-child {
-    border-top-right-radius: 10px;
-}
-
-.top_donators table tr td:first-child {
-    border-bottom-left-radius: 10px;
-}
-
-.top_donators table tr td:last-child {
-    border-bottom-right-radius: 10px;
-}
-
-.top_donators table tr td {
-    padding: 10px;
-    background-color: white;
-    border-collapse: collapse;
-}
-
-.top_donators tr td h4 {
-    color: #232323;
-    font-size: 1.1em;
-    line-height: 1.5em;
-}
-
-.top_donators tr {
-    width: 100%;
-}
-
-.top_donators table tr td p {
-    color: #232323;
-}
-
-.cardHeader h2 {
-    text-align: center;
-    color: white;
-    letter-spacing: 1px;
-}
-
-/****************************************** Infos *******************************************/
-
-.info_div {
-    margin: 10px;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-    position: relative;
-    text-align: center;
-}
-
-.info_div p {
-    color: #232323;
-    letter-spacing: 0.5px;
-    font-size: 1.1em;
-}
-
-.info_component {
-    position: absolute;
-    width: 100%;
-    padding: 15px;
-    background-color: white;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-}
-
-/****************************************** Trophys *******************************************/
-
-.trophy {
-    font-size: 3em;
-    float: right;
-}
-
-#trophy_first {
-    color: #FFD700;
-}
-
-#trophy_second {
-    color: #C0C0C0;
-}
-
-#trophy_third {
-    color: #CD7F32;
-}
-
-/****************************************** Animations *******************************************/
-
-@keyframes animate {
-    0% {
-        transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-    }
-}
-
-.fadeIn {
-    opacity: 0;
-    transition: opacity 1.5s ease-in;
-    -webkit-transition: opacity 1.5s ease-in;
-    -moz-transition: opacity 1.5s ease-in;
-    -o-transition: opacity 1.5s ease-in;
-    -ms-transition: opacity 1.5s ease-in;
-}
-
-.fadeIn.load {
-    opacity: 1;
-    transition: opacity 1.5s ease-out;
-    -webkit-transition: opacity 1.5s ease-out;
-    -moz-transition: opacity 1.5s ease-out;
-    -o-transition: opacity 1.5s ease-out;
-    -ms-transition: opacity 1.5s ease-out;
+.points img {
+    width: 30px;
 }

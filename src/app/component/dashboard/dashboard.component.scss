@@ -450,7 +450,7 @@ hr {
 
 /****************************************** Chat and Top Contributors *******************************************/
 
-.chat, .top_gifters {
+.chat, .top_donators {
   position: relative;
   display: grid;
   height: 650px;
@@ -478,7 +478,7 @@ hr {
   overflow: hidden;
 }
 
-.top_gifters .imgBx {
+.top_donators .imgBx {
   position: relative;
   width: 70px;
   height: 70px;
@@ -491,7 +491,7 @@ hr {
 }
 
 .chat .imgBx img,
-.top_gifters .imgBx img{
+.top_donators .imgBx img{
   position: absolute;
   top: 0;
   left: 0;
@@ -501,7 +501,7 @@ hr {
 }
 
 .chat table tr:hover,
-.top_gifters table tr:hover{
+.top_donators table tr:hover{
   background: $primary;
   color: $background;
 }
@@ -510,14 +510,14 @@ hr {
   padding: 10px 10px;
 }
 
-.top_gifters tr td{
+.top_donators tr td{
   padding-top: 12%;
   padding-bottom: 12%;
   padding-left: 10px;
   padding-right: 10px;
 }
 
-.top_gifters{
+.top_donators{
   overflow: hidden;
 }
 
@@ -527,7 +527,7 @@ hr {
   line-height: 1.2em;
 }
 
-.top_gifters tr td h4 {
+.top_donators tr td h4 {
   font-size: 1.2em;
   font-weight: 500;
   line-height: 1.5em;
