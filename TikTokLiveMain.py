@@ -26,7 +26,7 @@ api_url_dashboard_top_donators = base_url + 'top_donators'
 api_url_dashboard_boys_girls_counter = base_url + 'boys_girls_counter'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "gaby952775"
+liveName = "boys_officialchad"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados | alteanne
 # Mon live : boys_officialchad
 
@@ -55,8 +55,7 @@ connected = False
 live_ended = False
 
 # Constantes 
-ratioRevenu = 0.01285714286
-ratioRevenuTel = 0.01785714286
+ratioRevenu = 0.0050491803
 
 # Connexion au live
 client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+liveName, **({"enable_extended_gift_info": True, "lang": "fr-FR"}))

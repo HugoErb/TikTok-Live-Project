@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
 
 
     // Miscellaneous dashboard global variables
-    public ratioRevenu = 0.01285714286;
+    public ratioRevenu = 0.0050491803;
     public connected_icon = "checkmark-circle-outline";
     public connected_text_state = "Déconnecté";
     public connected_state: boolean = false;

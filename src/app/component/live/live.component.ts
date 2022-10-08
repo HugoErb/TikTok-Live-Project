@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
     StatusService
 } from './../../services/status.service';
@@ -18,7 +18,7 @@ export class LiveComponent implements OnInit {
     interval!: NodeJS.Timer;
 
     // Sub global variables
-    private _boysGirlsCounter!:any;
+    private _boysGirlsCounter!: any;
 
     constructor(private statusService: StatusService) { }
 
@@ -50,6 +50,7 @@ export class LiveComponent implements OnInit {
             "../../../assets/musics/Thank You.mp3",
             "../../../assets/musics/All the things she said.mp3",
             "../../../assets/musics/Neon Blade.mp3",
+            "../../../assets/musics/You are my ennemy.mp3",
         ];
         var music = listSound[Math.floor(Math.random() * listSound.length)];
         var mySound = new buzz.sound(music);
