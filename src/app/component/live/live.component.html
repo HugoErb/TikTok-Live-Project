@@ -1,19 +1,12 @@
-<body>
-	<main>
-		<div class="split top mai">
-			<div class="centered botCounter">
-				<div class="points" #girlCounter>{{countRose | frnumber}}
-					<img src="../assets/img/rose.PNG">
-				</div>
-			</div>
-		</div>
-		<!-- ------------------------------------------------------------------------------ -->
-		<div class="split bottom gojo">
-			<div class="centered topCounter">
-				<div class="points" #boyCounter>{{countWeights | frnumber}}
-					<img src="../assets/img/weights.PNG">
-				</div>
-			</div>
-		</div>
-	</main>
-</body>
+<div #gif class="split top"></div>
+<div class="botCounter">
+	<div class="points" #girlCounter>{{countRose | frnumber}}
+		<img src="../assets/img/rose.PNG">
+	</div>
+</div>
+<div #gif2 class="split bottom"></div>
+<div class="topCounter">
+	<div class="points" #boyCounter>{{countWeights | frnumber}}
+		<img src="../assets/img/weights.PNG">
+	</div>
+</div>
