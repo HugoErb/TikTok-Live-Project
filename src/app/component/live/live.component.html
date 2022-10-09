@@ -1,10 +1,14 @@
-<div #gif class="split top"></div>
+<video class="split" autoplay muted loop>
+	<source #video [src]="video_src_url" id="test" type="video/mp4">
+</video>
 <div class="botCounter">
 	<div class="points" #girlCounter>{{countRose | frnumber}}
 		<img src="../assets/img/rose.PNG">
 	</div>
 </div>
-<div #gif2 class="split bottom"></div>
+<video class="split bottom" autoplay muted loop>
+	<source #video2 [src]="video2_src_url" type="video/mp4">
+</video>
 <div class="topCounter">
 	<div class="points" #boyCounter>{{countWeights | frnumber}}
 		<img src="../assets/img/weights.PNG">

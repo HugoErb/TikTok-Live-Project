@@ -14,22 +14,18 @@
     -moz-transition: all 0.5s linear;
     -o-transition: all 0.5s linear;
     -ms-transition: all 0.5s linear;
+    overflow: hidden;
 }
 
-.top {
-    top: 0;
-    background-image: url(https://media.tenor.com/RpEaEuHYowoAAAAd/luxmira1.gif);
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
-}
-
-.bottom {
+.bottom{
     top: 50%;
-    background-image: url(https://media.tenor.com/r8lCitXM_9UAAAAd/gon.gif);
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
+}
+
+video {
+    position: absolute;
+    left: -28%; 
+    vertical-align: middle;
+    width: 756px !important;
 }
 
 .topCounter {
@@ -40,7 +36,7 @@
 }
 
 .botCounter {
-    margin-top: 74%;
+    margin-top: 73%;
     margin-left: 5%;
     position: absolute;
     z-index: 1;

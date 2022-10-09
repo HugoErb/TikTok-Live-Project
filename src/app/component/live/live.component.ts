@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import {
     StatusService
 } from './../../services/status.service';
@@ -33,65 +33,71 @@ export class LiveComponent implements OnInit {
         "../../../assets/musics/Neon Blade.mp3",
         "../../../assets/musics/You are my enemy.mp3"];
 
-    boysGifUrls = [
-        'https://media.tenor.com/_LXobN73z80AAAAd/one-punch-man-garou-vs-saitama.gif',
-        'https://media.tenor.com/8I-zJn-yrocAAAAC/benimaru.gif',
-        'https://media.tenor.com/F2q8AHyHa4oAAAAC/goku-songoku.gif',
-        'https://media.tenor.com/rH0jFMF5z3AAAAAC/kirito-sao.gif',
-        'https://media.tenor.com/dRIFx4u1GmcAAAAd/luffy-monkey-d-luffy.gif',
-        'https://media.tenor.com/3OFnL8VfOmwAAAAd/david-edgerunners.gif',
-        'https://media.tenor.com/Js4cPKKQUtsAAAAC/demon-slayer-kimetsu-no-yaiba.gif',
-        'https://media.tenor.com/4LsqigkIqoIAAAAC/anime-boys.gif',
-        'https://media.tenor.com/xVY4rq-4RBsAAAAC/black-clover-rakugaki-page.gif',
-        'https://media.tenor.com/LJdpj6S0QK4AAAAC/anim%C3%A9.gif',
-        'https://media.tenor.com/nEe0t726IZoAAAAd/naruto.gif',
-        'https://media.tenor.com/HYZD06iWjlwAAAAC/sasuke-naruto.gif',
-        'https://media.tenor.com/QNuPMp9L0REAAAAC/sharingan-itachi-uchiha.gif',
-        'https://media.tenor.com/3Mv0Img3Ca4AAAAC/shoto-todoroki-my-hero-academia.gif',
-        'https://media.tenor.com/r8lCitXM_9UAAAAd/gon.gif',
-        'https://media.tenor.com/6oOwU5DNKnMAAAAC/zragon-infinity-zoro.gif',
-        'https://media.tenor.com/mgWk9PRE1HgAAAAd/zoro-wano.gif',
-        'https://media.tenor.com/pLhhw8tQib0AAAAC/killua-hunter-x-hunter.gif',
-        'https://media.tenor.com/Df9P1tV4khIAAAAd/anime-ayanokoji.gif',
-        'https://media.tenor.com/sMGZ93n6Nc4AAAAC/death-note-anime.gif',
-        'https://media.tenor.com/MNtqvOEE5Z0AAAAC/zenitsu-zenitsu-agatsuma.gif',
-        'https://media.tenor.com/8vxzZEUgDLYAAAAC/goblin-slayer.gif'];
+    boysVideoUrls = [
+        'https://media.tenor.com/_LXobN73z80AAAPo/one-punch-man-garou-vs-saitama.mp4',
+        'https://media.tenor.com/M5qnkJbd_T8AAAPo/fire-force-benimaru-shinmon.mp4',
+        'https://media.tenor.com/F2q8AHyHa4oAAAPo/goku-songoku.mp4',
+        'https://media.tenor.com/zbZ3fR5i5hcAAAPo/sao-kirito.mp4',
+        'https://media.tenor.com/G9XzSVsTbncAAAPo/cyberpunk-cyberpunk-anime.mp4',
+        'https://media.tenor.com/D3gygEesiVEAAAPo/jujutsu-kaisen.mp4',
+        'https://media.tenor.com/Js4cPKKQUtsAAAPo/demon-slayer-kimetsu-no-yaiba.mp4',
+        'https://media.tenor.com/xVY4rq-4RBsAAAPo/black-clover-rakugaki-page.mp4',
+        'https://media.tenor.com/LJdpj6S0QK4AAAPo/anim%C3%A9.mp4',
+        'https://media.tenor.com/ffe3-fyhK0wAAAPo/classroom-of-the-elite.mp4',
+        'https://media.tenor.com/nEe0t726IZoAAAPo/naruto.mp4',
+        'https://media.tenor.com/HYZD06iWjlwAAAPo/sasuke-naruto.mp4',
+        'https://media.tenor.com/QNuPMp9L0REAAAPo/sharingan-itachi-uchiha.mp4',
+        'https://media.tenor.com/3Mv0Img3Ca4AAAPo/shoto-todoroki-my-hero-academia.mp4',
+        'https://media.tenor.com/r8lCitXM_9UAAAPo/gon.mp4',
+        'https://media.tenor.com/6oOwU5DNKnMAAAPo/zragon-infinity-zoro.mp4',
+        'https://media.tenor.com/mgWk9PRE1HgAAAPo/zoro-wano.mp4',
+        'https://media.tenor.com/pLhhw8tQib0AAAPo/killua-hunter-x-hunter.mp4',
+        'https://media.tenor.com/sMGZ93n6Nc4AAAPo/death-note-anime.mp4',
+        'https://media.tenor.com/MNtqvOEE5Z0AAAPo/zenitsu-zenitsu-agatsuma.mp4',
+        'https://media.tenor.com/Ss2Oy9D2ra8AAAPo/goblin-slayer-rage.mp4',
+        'https://media.tenor.com/nJW6x9jzp1AAAAPo/mob-psycho100-mob-psycho.mp4',
+        'https://media.tenor.com/x3tOr0N__jUAAAPo/levi-ackerman.mp4',
+        'https://media.tenor.com/IqSp4ITuCdcAAAPo/satorou-gojo-satoru-gojo.mp4'];
 
-    girlsGifUrls = [
-        'https://media.tenor.com/w_vsQrD460kAAAAC/rias.gif',
-        'https://media.tenor.com/HK6779s4Z_cAAAAC/nami-nami-wano.gif',
-        'https://media.tenor.com/w7ybY6JjkDEAAAAC/pfp-boa.gif',
-        'https://media.tenor.com/mrzI0AC4Rz4AAAAC/rias-gremory-rias.gif',
-        'https://media.tenor.com/AXC-aHSGZZgAAAAC/anime-girl-cool-anime-girl.gif',
-        'https://media.tenor.com/EX3e82-9sHkAAAAd/cyberpunk-cyberpunk-anime.gif',
-        'https://media.tenor.com/R03tgxlwbysAAAAd/daki-daki-demon-slayer.gif',
-        'https://media.tenor.com/JSgFUQVFa6AAAAAC/jolyne-kujo-jolyne-cujoh.gif',
-        'https://media.tenor.com/jh4EA2d5pIcAAAAC/kitagawa-marin-kitagawa.gif',
-        'https://media.tenor.com/K2fXA6tA4GYAAAAd/anime-girl.gif',
-        'https://media.tenor.com/m292GSi3JNYAAAAd/aqua-konosuba.gif',
-        'https://media.tenor.com/Uz5iy1iEKAoAAAAd/shikimoris-not-just-cute-shikimori.gif',
-        'https://media.tenor.com/ZKyywOPBcpwAAAAC/akame-akame-ga-k-ill.gif',
-        'https://media.tenor.com/NBnnmy6an8IAAAAC/erza-scarlet-erza.gif',
-        'https://media.tenor.com/0IJVLVdc-QAAAAAC/erza-erza-scarlet.gif',
-        'https://media.tenor.com/Ww9ony-HQAwAAAAC/esdeath-agk.gif',
-        'https://media.tenor.com/6Sz_9iSt7kAAAAAd/idoly-pride-anime-girl-dancing.gif',
-        'https://media.tenor.com/wFDPSTUwuYgAAAAC/fire-force-tamaki-kotatsu.gif',
-        'https://media.tenor.com/ZKQj33zGSYcAAAAC/fire-force-maki-oze.gif',
-        'https://media.tenor.com/D1IIF2tgyxoAAAAC/princess-hibana.gif',
-        'https://media.tenor.com/cxEkoaz4y0UAAAAC/uraraka-ochako.gif',
-        'https://media.tenor.com/GVI_OXQMT14AAAAC/nemuri-midnight.gif'
-    ];
+    girlsVideoUrls = [
+        'https://media.tenor.com/w_vsQrD460kAAAPo/rias.mp4',
+        'https://media.tenor.com/HK6779s4Z_cAAAPo/nami-nami-wano.mp4',
+        'https://media.tenor.com/AXC-aHSGZZgAAAPo/anime-girl-cool-anime-girl.mp4',
+        'https://media.tenor.com/EX3e82-9sHkAAAPo/cyberpunk-cyberpunk-anime.mp4',
+        'https://media.tenor.com/R03tgxlwbysAAAPo/daki-daki-demon-slayer.mp4',
+        'https://media.tenor.com/JSgFUQVFa6AAAAPo/jolyne-kujo-jolyne-cujoh.mp4',
+        'https://media.tenor.com/K2fXA6tA4GYAAAPo/anime-girl.mp4',
+        'https://media.tenor.com/ZKyywOPBcpwAAAPo/akame-akame-ga-k-ill.mp4',
+        'https://media.tenor.com/NBnnmy6an8IAAAPo/erza-scarlet-erza.mp4',
+        'https://media.tenor.com/0IJVLVdc-QAAAAPo/erza-erza-scarlet.mp4',
+        'https://media.tenor.com/Ww9ony-HQAwAAAPo/esdeath-agk.mp4',
+        'https://media.tenor.com/wFDPSTUwuYgAAAPo/fire-force-tamaki-kotatsu.mp4',
+        'https://media.tenor.com/ZKQj33zGSYcAAAPo/fire-force-maki-oze.mp4',
+        'https://media.tenor.com/D1IIF2tgyxoAAAPo/princess-hibana.mp4',
+        'https://media.tenor.com/3Kgx92jYQgoAAAPo/zero-two-zero.mp4',
+        'https://media.tenor.com/GVI_OXQMT14AAAPo/nemuri-midnight.mp4',
+        'https://media.tenor.com/vD0cfocNwtcAAAPo/yamato-one-piece.mp4',
+        'https://media.tenor.com/Xibx6rxiLSkAAAPo/cyberpunk-cyberpunk-anime.mp4',
+        'https://media.tenor.com/giyqfACP9hMAAAPo/highschooldxd-rias.mp4',
+        'https://media.tenor.com/ACCxl7AXouYAAAPo/akame.mp4',
+        'https://media.tenor.com/DY9SDSFFrG4AAAPo/boa-hancock.mp4',
+        'https://media.tenor.com/wsE6XKFDTh0AAAPo/daki-kimetsu-no-yaiba.mp4',
+        'https://media.tenor.com/Jo82odq693IAAAPo/zero-two-pose.mp4',
+        'https://media.tenor.com/e8RbfKtfPTcAAAPo/sono-bisque-doll-wa-koi-wo-suru-my-dress-up-darling.mp4',
+        'https://media.tenor.com/KpNg7EV75q0AAAPo/mai-sakurajima.mp4'];
+
+    video_src_url!: string;
+    video2_src_url!: string;
 
     // Sub global variables
     private _boysGirlsCounter!: any;
 
-    constructor(private statusService: StatusService) { }
+    constructor(private statusService: StatusService, private elRef: ElementRef) { }
 
-    @ViewChild("gif") gif!: ElementRef<HTMLDivElement>;
-    @ViewChild("gif2") gif2!: ElementRef<HTMLDivElement>;
+    @ViewChild("video") video!: ElementRef<HTMLVideoElement>;
+    @ViewChild("video2") video2!: ElementRef<HTMLVideoElement>;
 
     ngOnInit(): void {
-
         // Counter setup
         this._boysGirlsCounter = this.statusService.boysGirlsCounter.subscribe(gift => {
             console.log("Ajout de " + gift.number + " " + gift.type);
@@ -110,6 +116,7 @@ export class LiveComponent implements OnInit {
         mySound.play();
         console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
         this.setSounds(mySound);
+        this.changeVideo();
     }
 
     ngOnDestroy() {
@@ -123,15 +130,26 @@ export class LiveComponent implements OnInit {
             newSound.play();
             console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
             this.setSounds(newSound);
-            this.changeGif();
+            this.changeVideo();
         });
     }
 
-    changeGif() {
-        var randomBoyGif = this.boysGifUrls[Math.floor(Math.random() * this.boysGifUrls.length)];
-        var randomGirlGif = this.girlsGifUrls[Math.floor(Math.random() * this.girlsGifUrls.length)];
-        this.gif.nativeElement.style.backgroundImage = "url(" + randomGirlGif + ");";
-        this.gif2.nativeElement.style.backgroundImage =  "url(" + randomBoyGif + ");";
+    changeVideo() {
+        var randomBoyVideo = this.boysVideoUrls[Math.floor(Math.random() * this.boysVideoUrls.length)];
+        var randomGirlVideo = this.girlsVideoUrls[Math.floor(Math.random() * this.girlsVideoUrls.length)];
+        this.video_src_url = randomGirlVideo;
+        this.video2_src_url = randomBoyVideo;
+        const player = this.elRef.nativeElement.querySelectorAll('video');
+        player.forEach((item: any) => {
+            item.load();
+        })
+    }
+
+    @HostListener('window:keyup', ['$event'])
+    keyEvent(event: KeyboardEvent) {
+        if (event.key === "Enter") {
+            this.changeVideo();
+        }
     }
 
 }
