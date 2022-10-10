@@ -26,7 +26,7 @@ api_url_dashboard_top_donators = base_url + 'top_donators'
 api_url_dashboard_boys_girls_counter = base_url + 'boys_girls_counter'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "boys_officialchad"
+liveName = "championdumonde75"
 # Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados | alteanne
 # Mon live : boys_officialchad
 
@@ -50,9 +50,8 @@ lastLikedUser = ""
 gifts = []
 top_donators = []
 
-# Variables de connexion
+# Variable de connexion
 connected = False
-live_ended = False
 
 # Constantes 
 ratioRevenu = 0.0050491803
@@ -216,8 +215,6 @@ async def on_gift(event: GiftEvent):
 @client.on("live_end")
 async def on_connect(event: LiveEndEvent):
     global connected
-    global live_ended
-    live_ended = True
     print("Live terminé.")
     stats()
     connected = False
@@ -226,17 +223,13 @@ async def on_connect(event: LiveEndEvent):
 # Lorsque l'on subit une déconnexion du live
 @client.on("disconnect")
 async def on_disconnect(event: DisconnectEvent):
-    sleep(5000)
-    global connected
-    global live_ended
-    if(live_ended == False):
-        print("Déconnecté du live. ")
-        stats()
-        connected = False
-        requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
-        print("Tentative de reconnexion...")
-        client.stop()
-        client.start()
+    print("Déconnecté du live. ")
+    stats()
+    connected = False
+    requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
+    print("Tentative de reconnexion...")
+    client.stop()
+    client.run()
     
 def stats():
     """

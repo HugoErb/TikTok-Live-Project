@@ -31,7 +31,9 @@ export class LiveComponent implements OnInit {
         "../../../assets/musics/Thank You.mp3",
         "../../../assets/musics/All the things she said.mp3",
         "../../../assets/musics/Neon Blade.mp3",
-        "../../../assets/musics/You are my enemy.mp3"];
+        "../../../assets/musics/Gangsta's Paradise.mp3",
+        "../../../assets/musics/Toxic.mp3",
+        "../../../assets/musics/Lay all your love on me.mp3"];
 
     boysVideoUrls = [
         'https://media.tenor.com/_LXobN73z80AAAPo/one-punch-man-garou-vs-saitama.mp4',
@@ -57,14 +59,14 @@ export class LiveComponent implements OnInit {
         'https://media.tenor.com/Ss2Oy9D2ra8AAAPo/goblin-slayer-rage.mp4',
         'https://media.tenor.com/nJW6x9jzp1AAAAPo/mob-psycho100-mob-psycho.mp4',
         'https://media.tenor.com/x3tOr0N__jUAAAPo/levi-ackerman.mp4',
-        'https://media.tenor.com/IqSp4ITuCdcAAAPo/satorou-gojo-satoru-gojo.mp4'];
+        'https://media.tenor.com/IqSp4ITuCdcAAAPo/satorou-gojo-satoru-gojo.mp4',
+        'https://media.tenor.com/6d-whLGpo-QAAAPo/boku-no-hero-academia-my-hero-academia.mp4'];
 
     girlsVideoUrls = [
         'https://media.tenor.com/w_vsQrD460kAAAPo/rias.mp4',
         'https://media.tenor.com/HK6779s4Z_cAAAPo/nami-nami-wano.mp4',
         'https://media.tenor.com/AXC-aHSGZZgAAAPo/anime-girl-cool-anime-girl.mp4',
         'https://media.tenor.com/EX3e82-9sHkAAAPo/cyberpunk-cyberpunk-anime.mp4',
-        'https://media.tenor.com/R03tgxlwbysAAAPo/daki-daki-demon-slayer.mp4',
         'https://media.tenor.com/JSgFUQVFa6AAAAPo/jolyne-kujo-jolyne-cujoh.mp4',
         'https://media.tenor.com/K2fXA6tA4GYAAAPo/anime-girl.mp4',
         'https://media.tenor.com/ZKyywOPBcpwAAAPo/akame-akame-ga-k-ill.mp4',
@@ -84,7 +86,9 @@ export class LiveComponent implements OnInit {
         'https://media.tenor.com/wsE6XKFDTh0AAAPo/daki-kimetsu-no-yaiba.mp4',
         'https://media.tenor.com/Jo82odq693IAAAPo/zero-two-pose.mp4',
         'https://media.tenor.com/e8RbfKtfPTcAAAPo/sono-bisque-doll-wa-koi-wo-suru-my-dress-up-darling.mp4',
-        'https://media.tenor.com/KpNg7EV75q0AAAPo/mai-sakurajima.mp4'];
+        'https://media.tenor.com/KpNg7EV75q0AAAPo/mai-sakurajima.mp4',
+        'https://media.tenor.com/DO2R1nI7hOcAAAPo/marin-kitagawa.mp4',
+        'https://media.tenor.com/eBir-b9ajmUAAAPo/goldstar-waifu.mp4'];
 
     video_src_url!: string;
     video2_src_url!: string;
@@ -96,14 +100,24 @@ export class LiveComponent implements OnInit {
 
     @ViewChild("video") video!: ElementRef<HTMLVideoElement>;
     @ViewChild("video2") video2!: ElementRef<HTMLVideoElement>;
+    @ViewChild("girlCounter") girlCounterDiv!: ElementRef<HTMLDivElement>;
+    @ViewChild("boyCounter") boyCounterDiv!: ElementRef<HTMLDivElement>;
 
     ngOnInit(): void {
         // Counter setup
         this._boysGirlsCounter = this.statusService.boysGirlsCounter.subscribe(gift => {
             console.log("Ajout de " + gift.number + " " + gift.type);
             if (gift.type === "Rose") {
+                this.girlCounterDiv.nativeElement.classList.add('newGift');
+                setTimeout(() => {
+                    this.girlCounterDiv.nativeElement.classList.remove('newGift');
+                }, 100);
                 this.countRose = this.countRose + gift.number;
             } else if (gift.type === "Weights") {
+                this.boyCounterDiv.nativeElement.classList.add('newGift');
+                setTimeout(() => {
+                    this.boyCounterDiv.nativeElement.classList.remove('newGift');
+                }, 100);
                 this.countWeights = this.countWeights + gift.number;
             }
         });
@@ -135,10 +149,8 @@ export class LiveComponent implements OnInit {
     }
 
     changeVideo() {
-        var randomBoyVideo = this.boysVideoUrls[Math.floor(Math.random() * this.boysVideoUrls.length)];
-        var randomGirlVideo = this.girlsVideoUrls[Math.floor(Math.random() * this.girlsVideoUrls.length)];
-        this.video_src_url = randomGirlVideo;
-        this.video2_src_url = randomBoyVideo;
+        this.video_src_url = this.girlsVideoUrls[Math.floor(Math.random() * this.girlsVideoUrls.length)];
+        this.video2_src_url = this.boysVideoUrls[Math.floor(Math.random() * this.boysVideoUrls.length)];
         const player = this.elRef.nativeElement.querySelectorAll('video');
         player.forEach((item: any) => {
             item.load();
