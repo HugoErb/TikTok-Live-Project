@@ -15,6 +15,7 @@ export class LiveComponent implements OnInit {
 
     public lastBoyVideo = "";
     public lastGirlVideo = "";
+    public lastMusic = "";
 
     countRose: number = 0;
     countWeights: number = 0;
@@ -30,13 +31,16 @@ export class LiveComponent implements OnInit {
         "../../../assets/musics/Murder in my mind.mp3",
         "../../../assets/musics/My Ordinary Life.mp3",
         "../../../assets/musics/One Piece OST.mp3",
-        "../../../assets/musics/Reject weakness; workout.mp3",
         "../../../assets/musics/Thank You.mp3",
         "../../../assets/musics/All the things she said.mp3",
         "../../../assets/musics/Neon Blade.mp3",
         "../../../assets/musics/Gangsta's Paradise.mp3",
         "../../../assets/musics/Toxic.mp3",
         "../../../assets/musics/Lay all your love on me.mp3",
+        "../../../assets/musics/Rave.mp3",
+        "../../../assets/musics/Vendetta.mp3",
+        "../../../assets/musics/Sunrise.mp3",
+        "../../../assets/musics/HellDrift 2.mp3",
         "../../../assets/musics/U got that.mp3"];
 
     boysVideoUrls = [
@@ -66,7 +70,7 @@ export class LiveComponent implements OnInit {
         'https://media.tenor.com/6d-whLGpo-QAAAPo/boku-no-hero-academia-my-hero-academia.mp4',
         'https://media.tenor.com/sOxPdcPaOYYAAAPo/madara-uchiha.mp4',
         'https://media.tenor.com/8B5CLfU_u1EAAAPo/%D9%85%D8%A7%D8%AF%D8%A7%D8%B1%D8%A7.mp4',
-    'https://media.tenor.com/xbmjL6WMr3YAAAPo/gojo-satoru-gojo.mp4'];
+        'https://media.tenor.com/xbmjL6WMr3YAAAPo/gojo-satoru-gojo.mp4'];
 
     girlsVideoUrls = [
         'https://media.tenor.com/w_vsQrD460kAAAPo/rias.mp4',
@@ -95,7 +99,6 @@ export class LiveComponent implements OnInit {
         'https://media.tenor.com/DO2R1nI7hOcAAAPo/marin-kitagawa.mp4',
         'https://media.tenor.com/eBir-b9ajmUAAAPo/goldstar-waifu.mp4',
         'https://media.tenor.com/l3nLVNfrOpkAAAPo/good-night.mp4',
-        'https://media.tenor.com/kehEXO7bBBkAAAPo/boobs-anime.mp4',
         'https://media.tenor.com/UkcPP7WZ_F8AAAPo/catharsis.mp4',
         'https://media.tenor.com/lHj8R96TneUAAAPo/nami-waifu.mp4'];
 
@@ -135,13 +138,14 @@ export class LiveComponent implements OnInit {
         buzz.defaults.preload = 'auto';
         buzz.defaults.volume = 5;
         var music = this.listSound[Math.floor(Math.random() * this.listSound.length)];
+        this.lastMusic = music;
         var mySound = new buzz.sound(music);
         mySound.play();
         console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
         this.setSounds(mySound);
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.createSourceElement();
     }
 
@@ -152,6 +156,10 @@ export class LiveComponent implements OnInit {
     setSounds(sound: any) {
         sound.bind("ended", () => {
             var music = this.listSound[Math.floor(Math.random() * this.listSound.length)];
+            while (this.lastMusic == music) {
+                music = this.listSound[Math.floor(Math.random() * this.listSound.length)];
+            }
+            this.lastMusic = music
             var newSound = new buzz.sound(music);
             newSound.play();
             console.log("Music played : " + music.replace(".mp3", "").replace("../../../assets/musics/", ""));
