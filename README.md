@@ -1,7 +1,3 @@
-Voici une version améliorée du README avec une description détaillée des fonctionnalités du script Python au lieu de la section API.
-
----
-
 # Interactive TikTok Live Dashboard
 
 Ce projet vise à rendre les lives TikTok interactifs en capturant et en affichant en temps réel les interactions d'un live TikTok sur un tableau de bord. Le composant `live` est destiné à être mis en live sur TikTok, tandis que le composant `dashboard` est utilisé pour visualiser les données.
@@ -47,15 +43,6 @@ La structure de l'application Angular se présente comme suit :
     - `live.component.html` : Template HTML pour le composant en direct.
     - `live.component.scss` : Styles spécifiques pour le composant en direct.
     - `live.component.ts` : Code TypeScript pour la logique du composant en direct.
-
-- **`config`** : Contient les fichiers de configuration et les constantes utilisées dans l’application.
-- **`interface`** : Déclare les interfaces pour typage TypeScript, facilitant la structure des données.
-- **`pipe`** : Définie les pipes Angular si nécessaire, pour les transformations de données.
-- **`services`** : Contient les services Angular utilisés pour communiquer avec l'API backend.
-  - `status.service.ts` : Service qui gère les appels au backend pour obtenir ou envoyer des données de statut en temps réel.
-
-- **`assets`** : Dossier pour les ressources statiques.
-- **`environments`** : Contient les fichiers de configuration d'environnement (production et développement).
 
 ---
 
