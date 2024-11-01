@@ -2,7 +2,7 @@ import {
   HttpClientModule
 } from '@angular/common/http';
 import {
-  NgModule
+  NgModule, CUSTOM_ELEMENTS_SCHEMA
 } from '@angular/core';
 import {
   BrowserModule
@@ -11,13 +11,19 @@ import {
   SocketIoModule,
   SocketIoConfig
 } from 'ngx-socket-io';
-
+import {
+  NgParticlesModule
+} from "ng-particles";
 import {
   AppRoutingModule
 } from './app-routing.module';
 import {
   AppComponent
 } from './app.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { FrnumberPipe } from './pipe/frnumber.pipe';
+import { RoundfrnumberPipe } from './pipe/roundfrnumber.pipe';
+import { LiveComponent } from './component/live/live.component';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:8080',
@@ -26,15 +32,21 @@ const config: SocketIoConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardComponent,
+    FrnumberPipe,
+    RoundfrnumberPipe,
+    LiveComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    NgParticlesModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {}

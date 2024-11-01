@@ -1,0 +1,16 @@
+<video class="split" autoplay loop #girlVideo>
+	<source [src]="video_src_url" type="video/mp4">
+</video>
+<div class="botCounter">
+	<div class="points" #girlCounter>{{countRose | frnumber}}
+		<img src="../assets/img/rose.PNG">
+	</div>
+</div>
+<video class="split bottom" autoplay loop #boyVideo>
+	<source [src]="video2_src_url" type="video/mp4">
+</video>
+<div class="topCounter">
+	<div class="points" #boyCounter>{{countWeights | frnumber}}
+		<img src="../assets/img/weights.PNG">
+	</div>
+</div>

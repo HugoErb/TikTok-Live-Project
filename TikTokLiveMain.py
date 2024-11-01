@@ -1,16 +1,34 @@
 # https://github.com/isaackogan/TikTokLive
 from TikTokLive import TikTokLiveClient
 from TikTokLive.types.events import CommentEvent, ConnectEvent, FollowEvent, ShareEvent, ViewerCountUpdateEvent, SubscribeEvent, LiveEndEvent, LikeEvent, JoinEvent, GiftEvent, DisconnectEvent
-from TikTokLive.types.errors import FailedConnection, LiveNotFound
-from TikTokLive.types import User
 import datetime
-import time
+from anyio import sleep
 import requests
 
-api_url = 'http://localhost:8080/handle'
+base_url = 'http://localhost:8080/'
+api_url_stream = base_url + 'stream'
+api_url_dashboard_viewer_count = base_url + 'viewer_count'
+api_url_dashboard_max_viewer_count = base_url + 'max_viewer_count'
+api_url_dashboard_like_count = base_url + 'like_count'
+api_url_dashboard_follower_count = base_url + 'follower_count'
+api_url_dashboard_sub_count = base_url + 'sub_count'
+api_url_dashboard_share_count = base_url + 'share_count'
+api_url_dashboard_comment_count = base_url + 'comment_count'
+api_url_dashboard_comment = base_url + 'comment'
+api_url_dashboard_gift_count = base_url + 'gift_count'
+api_url_dashboard_gift = base_url + 'gift'
+api_url_dashboard_coin_count = base_url + 'coin_count'
+api_url_dashboard_join_count = base_url + 'join_count'
+api_url_dashboard_connected_state = base_url + 'connected_state'
+api_url_dashboard_live_start_hour = base_url + 'live_start_hour'
+api_url_dashboard_live_name = base_url + 'live_name'
+api_url_dashboard_top_donators = base_url + 'top_donators'
+api_url_dashboard_boys_girls_counter = base_url + 'boys_girls_counter'
 
 # Nom du live auquel vous souhaitez vous connectez
-liveName = "topparty1"
+liveName = "championdumonde75"
+# Streamers de tests : topparty1 | cedriccommelabd | tiibox | tiibox_spam | d.fdetalles_pirograbados | alteanne
+# Mon live : boys_officialchad
 
 # Variables de statistiques
 nbFollow = 0
@@ -20,7 +38,7 @@ nbShare = 0
 nbJoin = 0
 nbComment = 0
 nbGift = 0
-nbCoins = 0
+nbCoin = 0
 maxViewers = 0
 lastNbViewers = 0
 girlCounter = 0
@@ -30,11 +48,13 @@ dateDebutLive = ""
 dateFinLive = ""
 lastLikedUser = ""
 gifts = []
+top_donators = []
+
+# Variable de connexion
 connected = False
 
 # Constantes 
-ratioRevenu = 0.01285714286
-ratioRevenuTel = 0.01785714286
+ratioRevenu = 0.0050491803
 
 # Connexion au live
 client: TikTokLiveClient = TikTokLiveClient(unique_id="@"+liveName, **({"enable_extended_gift_info": True, "lang": "fr-FR"}))
@@ -47,20 +67,16 @@ async def on_connect(_: ConnectEvent):
     global dateDebutLive
     global gifts
     global connected
+    global liveName
     dateDebutLive = now
-    heureDebutLive = dateDebutLive.strftime("%H:%M:%S")
+    heureDebutLive = dateDebutLive.strftime("%Hh%M")
     for gift in client.available_gifts.values():
         gifts.append({"name" : gift.name, "coin_value" : gift.diamond_count, "image_url": gift.icon.url_list[0]})
     print(f"{heureDebutLive} : Connecté au live.")
     connected = True
-
-@client.on("disconnect")
-async def on_disconnect(event: DisconnectEvent):
-    global connected
-    if (connected == True):
-        print("Déconnecté du live.")
-        stats()
-        connected = False
+    send_payload({'live_start_hour': heureDebutLive}, api_url_dashboard_live_start_hour)
+    send_payload({'connected_state': connected}, api_url_dashboard_connected_state)
+    send_payload({'live_name': liveName}, api_url_dashboard_live_name)
 
 # Lorsque le compteur de viewers se met à jour
 @client.on("viewer_count_update")
@@ -70,11 +86,13 @@ async def on_connect(event: ViewerCountUpdateEvent):
         now = datetime.datetime.now().strftime("%H:%M:%S")
         global maxViewers
         global lastNbViewers
+        if (maxViewers < event.viewerCount):
+            maxViewers = event.viewerCount
         if (event.viewerCount != lastNbViewers):
             lastNbViewers = event.viewerCount 
             print(f"{now} : Viewers :", event.viewerCount)
-        if (maxViewers < event.viewerCount):
-            maxViewers = event.viewerCount
+            send_payload({'viewer_count': event.viewerCount}, api_url_dashboard_viewer_count)  
+            send_payload({'max_viewer_count': maxViewers}, api_url_dashboard_max_viewer_count)      
 
 # Lorsqu'un utilisateur follow le live
 @client.on("follow")
@@ -85,6 +103,7 @@ async def on_follow(event: FollowEvent):
         global nbFollow
         nbFollow += 1
         print(f"{now} : \033[32m{event.user.uniqueId}\033[0m a follow l'hôte.")
+        send_payload({'follower_count': nbFollow}, api_url_dashboard_follower_count)
 
 # Lorsqu'un utilisateur like le live
 @client.on("like")
@@ -98,6 +117,7 @@ async def on_like(event: LikeEvent):
         if {event.user.uniqueId} != lastLikedUser:
             lastLikedUser = {event.user.uniqueId}
             print(f"{now} : \033[32m{event.user.uniqueId}\033[0m a liké le live.")
+        send_payload({'like_count': nbLike}, api_url_dashboard_like_count)
 
 # Lorsqu'un utilisateur partage le live
 @client.on("share")
@@ -108,15 +128,18 @@ async def on_share(event: ShareEvent):
         global nbShare
         nbShare += 1
         print(f"{now} : \033[32m{event.user.uniqueId}\033[0m a partagé le live.")
+        send_payload({'share_count': nbShare}, api_url_dashboard_share_count)
+        
 
 # Lorsqu'un utilisateur rejoint le live
 @client.on("join")
 async def on_join(event: JoinEvent):
     global connected
     if (connected == True):
-        now = datetime.datetime.now().strftime("%H:%M:%S")
+        now = datetime.datetime.now().strftime("%H:%M")
         global nbJoin
         nbJoin += 1
+        send_payload({'join_count': nbJoin}, api_url_dashboard_join_count)
         # print(f"{now.hour}:{now.minute}:\033[32m{event.user.uniqueId}\033[0m a rejoint le live.")
 
 # Lorsqu'un utilisateur envoie un message sur le live
@@ -131,6 +154,8 @@ async def on_connect(event: CommentEvent):
         userNickname = event.user.nickname
         userComment = event.comment
         print(f"{now} : \033[32m{userNickname}\033[0m a dit : {userComment}")
+        send_payload({'comment_count': nbComment}, api_url_dashboard_comment_count)
+        send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname, 'user_comment': userComment}, api_url_dashboard_comment)
 
 # Lorsqu'un utilisateur s'abonne au live
 @client.on("subscribe")
@@ -140,56 +165,76 @@ async def on_connect(event: SubscribeEvent):
         now = datetime.datetime.now().strftime("%H:%M:%S")
         global nbSub
         nbSub += 1
-        userNickname = event.user.nickname
+        userNickname = event.user.uniqueId
         print(f"{now} : \033[32m{userNickname}\033[0m s'est abonné au live.")
+        send_payload({'sub_count': nbSub}, api_url_dashboard_sub_count)
 
 # Lorsqu'un utilisateur envoie un cadeau
 @client.on("gift")
 async def on_gift(event: GiftEvent):
     global connected
     if (connected == True):
-        now = datetime.datetime.now().strftime("%H:%M:%S")
-        global boyCounter
-        global girlCounter
-        global nbGift
-        global gifts
-        global nbCoins
-        giftValue = next(z["coin_value"] for z in gifts if z["name"] == {event.gift.extended_gift.name}.pop())
+        if (event.gift.extended_gift):
+            now = datetime.datetime.now().strftime("%H:%M:%S")
+            global boyCounter
+            global girlCounter
+            global nbGift
+            global gifts
+            global nbCoin
+            giftValue = next(z["coin_value"] for z in gifts if z["name"] == {event.gift.extended_gift.name}.pop())
+            userProfilePicture = event.user.profilePicture.urls[-1]
+            userNickname = event.user.nickname
+            userID = event.user.uniqueId
 
-        # Gift streakable, on attend donc que la streak soit finie 
-        if event.gift.gift_type == 1:
-            if event.gift.repeat_end == 1:
-                nbGift += {event.gift.repeat_count}.pop()
-                nbCoins += {event.gift.repeat_count}.pop() * giftValue
-                print(
-                    f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
+            # Gift chainable, on attend donc que la streak soit finie
+            if event.gift.gift_type == 1:
+                if event.gift.repeat_end == 1:
+                    nbGift += {event.gift.repeat_count}.pop()
+                    nbCoin += {event.gift.repeat_count}.pop() * giftValue
+                    print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé {event.gift.repeat_count} \"{event.gift.extended_gift.name}\" !\033[0m")
+                    if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
+                        send_payload({'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()},api_url_dashboard_boys_girls_counter)
+                    send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
+                    send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
+                    send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
+                    set_top_donators({'user_ID': userID ,'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': {event.gift.repeat_count}.pop() * giftValue})
+
+            # Gift non chainable, on fait donc la suite directement
+            else:
+                nbGift += 1
+                nbCoin += giftValue
+                print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
                 if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
-                    myobj = {'type': {event.gift.extended_gift.name}.pop(), 'number': {event.gift.repeat_count}.pop()}
-                    requests.post(api_url, json = myobj)
-                    girlCounter += {event.gift.repeat_count}.pop() 
-                    print(girlCounter)
-
-        # Gift non streakable, on fait donc la suite directement
-        else:
-            print(f"{now} : \033[32m{event.user.uniqueId}\033[0m \033[31ma envoyé \"{event.gift.extended_gift.name}\" !\033[0m")
-            nbGift += 1
-            nbCoins += giftValue
-            if ({event.gift.extended_gift.name}.pop() in ["Weights", "Rose"]):
-                myobj = {'type': {event.gift.extended_gift.name}.pop(), 'number': 1}
-                requests.post(api_url, json = myobj)
-                girlCounter += 1
-                print(girlCounter)
+                    send_payload({'type': {event.gift.extended_gift.name}.pop(), 'number': 1},api_url_dashboard_boys_girls_counter)
+                send_payload({'gift_count': nbGift}, api_url_dashboard_gift_count)
+                send_payload({'coin_count': nbCoin}, api_url_dashboard_coin_count)
+                send_payload({'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_nb_gifted': {event.gift.repeat_count}.pop(), 'user_type_gifted': {event.gift.extended_gift.name}.pop(), 'gifted_value': giftValue, 'total_gifted_value': {event.gift.repeat_count}.pop() * giftValue}, api_url_dashboard_gift)
+                set_top_donators({'user_ID': userID, 'user_profile_picture': userProfilePicture, 'user_nickname': userNickname,'user_total_coins_gifted': giftValue})
 
 # Lorsque le live se termine
 @client.on("live_end")
 async def on_connect(event: LiveEndEvent):
     global connected
-    if (connected == True):
-        print("Live terminé.")
-        stats()
-        connected = False
+    print("Live terminé.")
+    stats()
+    connected = False
+    requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
+
+# Lorsque l'on subit une déconnexion du live
+@client.on("disconnect")
+async def on_disconnect(event: DisconnectEvent):
+    print("Déconnecté du live. ")
+    stats()
+    connected = False
+    requests.post(api_url_dashboard_connected_state, json = {'connected_state': connected})
+    print("Tentative de reconnexion...")
+    client.stop()
+    client.run()
     
 def stats():
+    """
+    Affiche les statistiques du live
+    """
     now = datetime.datetime.now()
     global dateFinLive
     global dateDebutLive
@@ -204,8 +249,8 @@ def stats():
     print(f"Durée du live : {dureeLive}")
     print(f"Max de viewers en simultané : {maxViewers}")
     print(f"Gifts : {nbGift}")
-    print(f"Coins : {nbCoins}")
-    print(f"Revenus estimés : {round(nbCoins*ratioRevenu,2)}€")
+    print(f"Coins : {nbCoin}")
+    print(f"Revenus estimés : {round(nbCoin*ratioRevenu,2)}€")
     print(f"Likes : {nbLike}")
     print(f"Abonnements au live : {nbSub}")
     print(f"Nouveaux abonnés : {nbFollow}")
@@ -214,21 +259,74 @@ def stats():
     print(f"Commentaires : {nbComment}")
     print("---------------------------------------------------------------------")
 
-# @client.on("error")
-# async def on_connect(error: Exception):
-#     # Handle the error
-#     if isinstance(error, LiveNotFound):
-#         print("Désolé, cet utilisateur n'est pas en live actuellement.")
-#         return
+def send_payload(payload, url):
+    """
+    Envoie le payload reçu en paramètre, sur l'url reçue en paramètre.
+    Envoie également l'état de la connexion, le nom du live et l'heure de connexion du live au dashboard afin de le garder à jour.
 
-#     # Otherwise, log the error
-#     client._log_error(error)
+    Args:
+        payload (dict): payload à envoyer
+        url (string): url sur laquelle doit être envoyée le payload (dashboard ou live)
+    """
+    global connected
+    global heureDebutLive
+    global liveName
+    requests.post(url, json = payload)
+    payload_connected_state = {'connected_state': connected}
+    requests.post(api_url_dashboard_connected_state, json = payload_connected_state)
+    payload_live_name = {'live_name': liveName}
+    requests.post(api_url_dashboard_live_name, json = payload_live_name)
+    payload_live_start_hour = {'live_start_hour': heureDebutLive}
+    requests.post(api_url_dashboard_live_start_hour, json = payload_live_start_hour)
+
+def set_top_donators(potential_new_top_donator):
+    """
+    Cherche si le donateur actuel est déjà connu de la liste des top donateurs.
+    Si oui, on augmente son nombre de coins envoyées.
+    Sinon, on l'ajoute à la liste des donateurs si il a fait assez de don.
+
+    Args:
+        potential_new_top_donator (dict): données du donateur actuel
+    """
+    global top_donators
+    user = next((item for item in top_donators if item['user_ID'] == potential_new_top_donator['user_ID']), None)
+
+    # Si on a pas encore complètement rempli la liste, c'est à dire pas encore 3 top contributeurs
+    if(len(top_donators) < 3):
+        # Si l'utilisateur n'est pas présent dans la liste des top contributeurs
+        if not user:
+            top_donators.insert(0,potential_new_top_donator)
+        # Si l'utilisateur est déjà présent dans la liste des top contributeurs
+        else:
+            # On cherche sa position dans la liste, et on le remplace par lui même avec sa valeur incrémentée
+            user_index = top_donators.index(user)
+            user['user_total_coins_gifted'] += potential_new_top_donator['user_total_coins_gifted']
+            top_donators[user_index] = user
+
+    # Si on a déjà 3 top contributeurs, donc que la liste est complète
+    else:
+        # Si l'utilisateur n'est pas présent dans la liste des top contributeurs
+        if not user:
+                # On regarde si son nombre de coins envoyées est supérieur au dernier des top contributeurs 
+                # Si oui, on supprime le dernier et on ajoute le nouveau top contributeurs
+                if(potential_new_top_donator['user_total_coins_gifted'] > top_donators[0]['user_total_coins_gifted']):
+                    del top_donators[0]
+                    top_donators.insert(0,potential_new_top_donator)
+
+        # Si l'utilisateur est déjà présent dans la liste des top contributeurs
+        else:
+            # On cherche sa position dans la liste, et on le remplace par lui même avec sa valeur incrémentée
+            user_index = top_donators.index(user)
+            user['user_total_coins_gifted'] += potential_new_top_donator['user_total_coins_gifted']
+            top_donators[user_index] = user
+
+    # Tri de la liste (ordre croissant selon le nombre de dons), puis on envoie l'info à l'API
+    top_donators = sorted(top_donators, key=lambda x: x['user_total_coins_gifted'])
+    send_payload(top_donators, api_url_dashboard_top_donators)
 
 # Fonction main
 if __name__ == '__main__':
-    # Run the client and block the main thread
-    # await client.start() to run non-blocking
+    """
+    Fonction main : lance le client et bloque le thread principal
+    """
     client.run()
-
-    
-    
